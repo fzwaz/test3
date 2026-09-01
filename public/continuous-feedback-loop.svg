@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="730" height="492" viewBox="0 0 730 492" fill="none">
+  <defs>
+    <linearGradient id="flow" x1="20" y1="335" x2="340" y2="65" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E96B00" stop-opacity=".12"/>
+      <stop offset=".45" stop-color="#FF7800" stop-opacity=".72"/>
+      <stop offset=".8" stop-color="#FF8A00"/>
+      <stop offset="1" stop-color="#FF9A19"/>
+    </linearGradient>
+
+    <linearGradient id="flowSoft" x1="20" y1="350" x2="340" y2="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF6A00" stop-opacity=".05"/>
+      <stop offset=".55" stop-color="#FF7300" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#FF8A00" stop-opacity=".55"/>
+    </linearGradient>
+
+    <linearGradient id="orange" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#FF9B1A"/>
+      <stop offset="1" stop-color="#F36B00"/>
+    </linearGradient>
+
+    <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+
+  <!-- Continuous feedback flow -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- soft atmospheric flow lines -->
+    <path d="M-25 140 C45 153 88 228 139 245 C196 265 211 221 238 157 C263 99 291 57 329 58"
+          stroke="url(#flowSoft)" stroke-width="2"/>
+    <path d="M-28 183 C43 193 82 259 137 271 C195 284 216 244 244 181 C267 129 295 82 331 81"
+          stroke="url(#flowSoft)" stroke-width="1.7"/>
+    <path d="M-28 218 C39 229 80 283 135 292 C195 302 222 269 250 214 C274 166 298 112 335 103"
+          stroke="url(#flowSoft)" stroke-width="1.5"/>
+    <path d="M-30 255 C40 264 83 306 135 313 C192 321 227 294 258 246 C282 209 305 158 341 133"
+          stroke="url(#flowSoft)" stroke-width="1.4"/>
+    <path d="M-30 291 C40 298 83 329 134 335 C190 342 231 322 264 286 C290 258 314 208 345 177"
+          stroke="url(#flowSoft)" stroke-width="1.2"/>
+    <path d="M-18 320 C42 325 86 348 135 352 C190 356 233 344 270 318 C300 297 321 258 349 224"
+          stroke="url(#flowSoft)" stroke-width="1"/>
+
+    <!-- main luminous waves -->
+    <path d="M-10 136 C66 151 102 229 157 257 C213 286 227 220 254 150 C274 98 297 59 322 59"
+          stroke="#FF7200" stroke-opacity=".22" stroke-width="8" filter="url(#softGlow)"/>
+    <path d="M-10 136 C66 151 102 229 157 257 C213 286 227 220 254 150 C274 98 297 59 322 59"
+          stroke="url(#flow)" stroke-width="3.2"/>
+
+    <path d="M-8 207 C61 218 91 275 143 292 C196 309 226 280 254 226 C278 180 301 143 348 132"
+          stroke="#FF7200" stroke-opacity=".22" stroke-width="7" filter="url(#softGlow)"/>
+    <path d="M-8 207 C61 218 91 275 143 292 C196 309 226 280 254 226 C278 180 301 143 348 132"
+          stroke="url(#flow)" stroke-width="2.8"/>
+
+    <path d="M-15 268 C53 273 90 312 139 320 C194 329 228 313 263 278 C292 249 314 221 347 207"
+          stroke="url(#flowSoft)" stroke-width="2"/>
+
+    <path d="M-15 302 C50 305 91 331 139 339 C190 347 235 338 274 314 C305 295 322 275 350 260"
+          stroke="url(#flowSoft)" stroke-width="1.6"/>
+
+    <!-- arrow at upper output -->
+    <path d="M315 53 L322 59 L315 65" stroke="#FF7A00" stroke-width="2.2"/>
+    <!-- arrow at middle output -->
+    <path d="M347 126 L354 132 L347 138" stroke="#FF7A00" stroke-width="2.1"/>
+  </g>
+
+  <!-- divider before refined risk scores -->
+  <path d="M374 21 V114" stroke="#FF6F00" stroke-opacity=".82" stroke-width="2"/>
+  <path d="M374 21 V114" stroke="#FF8A00" stroke-opacity=".12" stroke-width="8" filter="url(#softGlow)"/>
+
+  <!-- divider before continuous risk reduction -->
+  <path d="M383 183 V282" stroke="#FF6F00" stroke-opacity=".82" stroke-width="2"/>
+  <path d="M383 183 V282" stroke="#FF8A00" stroke-opacity=".12" stroke-width="8" filter="url(#softGlow)"/>
+
+  <!-- Refined Risk Scores icon -->
+  <g transform="translate(476 31)" stroke="url(#orange)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="0" y="17" width="7" height="19" rx="1"/>
+    <rect x="11" y="7" width="7" height="29" rx="1"/>
+    <rect x="22" y="0" width="7" height="36" rx="1"/>
+  </g>
+
+  <text x="387" y="111"
+        fill="#E9E9E9"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="25"
+        font-weight="500"
+        letter-spacing="-0.5">
+    Refined Risk Scores
+  </text>
+
+  <!-- downward arrow -->
+  <g stroke="#FF7A00" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M497 132 V158"/>
+    <path d="M491 152 L497 159 L503 152"/>
+  </g>
+
+  <!-- shield/check icon -->
+  <g transform="translate(478 193)" fill="none" stroke="url(#orange)" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 0 L37 7 V20 C37 33 29 43 19 48 C9 43 1 33 1 20 V7 Z"/>
+    <path d="M11 23 L17 29 L28 17"/>
+  </g>
+
+  <text x="430" y="280"
+        fill="#E9E9E9"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="25"
+        font-weight="500"
+        text-anchor="middle"
+        letter-spacing="-0.5">
+    Continuous
+  </text>
+  <text x="430" y="319"
+        fill="#E9E9E9"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="25"
+        font-weight="500"
+        text-anchor="middle"
+        letter-spacing="-0.5">
+    Risk Reduction
+  </text>
+
+  <!-- subtle bottom boundary from the supplied design -->
+  <path d="M0 423 H698 Q729 423 729 391 V330"
+        stroke="#FF6A00" stroke-opacity=".28" stroke-width="1.5"/>
+</svg>
