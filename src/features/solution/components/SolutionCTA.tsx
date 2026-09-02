@@ -1,58 +1,126 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Sparkles, Shield, Lock } from "lucide-react";
+import { Shield, ArrowRight, Mail } from "lucide-react";
 
 export default function SolutionCTA() {
-  return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 relative z-10 overflow-hidden">
-      <div className="max-w-5xl mx-auto">
-        <div className="rounded-3xl bg-gradient-to-b from-[#140e08] via-[#0d0d12] to-[#08080c] border border-orange-500/40 p-8 sm:p-12 lg:p-16 text-center relative overflow-hidden shadow-[0_20px_60px_rgba(249,115,22,0.15)]">
-          {/* Ambient center glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-orange-500/15 rounded-full blur-[120px] pointer-events-none" />
+  const [coords, setCoords] = useState({ x: "50%", y: "50%" });
 
-          <div className="relative z-10 max-w-2xl mx-auto space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/15 border border-orange-500/30 text-orange-400 text-xs font-semibold uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Tailored Deployment</span>
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCoords({
+      x: `${e.clientX - rect.left}px`,
+      y: `${e.clientY - rect.top}px`,
+    });
+  };
+
+  return (
+    <section className="py-10 px-4 sm:px-6 lg:px-8 relative z-10 bg-[#000000] text-slate-100">
+      <div className="max-w-6xl mx-auto">
+        <div
+          onMouseMove={handleMouseMove}
+          className="relative group/cta-box rounded-2xl sm:rounded-3xl bg-[#080808] border border-white/[0.1] px-7 py-8 sm:px-12 sm:py-10 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.9)]"
+        >
+          {/* 1. Base Dot Grid */}
+          <div
+            className="absolute inset-0 z-0 pointer-events-none opacity-40"
+            style={{
+              backgroundImage:
+                "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='16' height='16' fill='none'%3E%3Ccircle fill='%23ffffff' cx='10' cy='10' r='1.2' opacity='0.15'/%3E%3C/svg%3E\")",
+            }}
+          />
+
+          {/* 2. Interactive Orange Dot-Glow Highlight */}
+          <div
+            className="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover/cta-box:opacity-75 transition-opacity duration-500"
+            style={{
+              backgroundImage:
+                "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='16' height='16' fill='none'%3E%3Ccircle fill='%23FF6B35' cx='10' cy='10' r='1.5'/%3E%3C/svg%3E\")",
+              maskImage: `radial-gradient(380px circle at ${coords.x} ${coords.y}, black 0%, transparent 100%)`,
+              WebkitMaskImage: `radial-gradient(380px circle at ${coords.x} ${coords.y}, black 0%, transparent 100%)`,
+            }}
+          />
+
+          {/* 3. Interactive Ambient Orange Torch Glow */}
+          <div
+            className="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover/cta-box:opacity-100 transition-opacity duration-500"
+            style={{
+              background: `radial-gradient(420px circle at ${coords.x} ${coords.y}, rgba(255, 107, 53, 0.08), transparent 70%)`,
+            }}
+          />
+
+          {/* ===== CONTENT ===== */}
+          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+            {/* Left Column */}
+            <div className="max-w-xl">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#160d07] border border-orange-500/40 text-[#f97316] text-xs font-mono font-semibold uppercase tracking-wider mb-4">
+                <Shield className="w-3.5 h-3.5 text-[#f97316]" strokeWidth={2} />
+                <span>DIRECT SUPPORT</span>
+              </div>
+
+              {/* Headline */}
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight leading-snug">
+                Ready to secure your business? <br />
+                <span className="text-[#f95700]">Fill out the form above.</span>
+              </h2>
+
+              {/* Description */}
+              <p className="mt-3 text-zinc-400 text-sm sm:text-[15px] leading-relaxed max-w-lg">
+                Our cybersecurity architects respond within 24 hours. Prefer email? Reach us
+                directly at{" "}
+                <a
+                  href="mailto:info@risknox.ai"
+                  className="text-white font-medium underline underline-offset-4 hover:text-[#f97316] transition-colors"
+                >
+                  info@risknox.ai
+                </a>
+                .
+              </p>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
-              Ready to See Cyber Risk Through <span className="text-[#f97316]">Your World?</span>
-            </h2>
-
-            <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-              Experience an interactive demonstration mapped directly to your industry’s threat vectors and your specific executive role.
-            </p>
-
-            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+            {/* Right Column: Buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 flex-shrink-0">
               <Link
                 href="/contact"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-orange-500 to-[#f95700] hover:from-orange-400 hover:to-orange-500 text-white font-bold text-base shadow-[0_0_30px_rgba(249,115,22,0.5)] hover:shadow-[0_0_40px_rgba(249,115,22,0.7)] transition-all duration-200 hover:scale-105 active:scale-95"
+                className="group relative inline-flex items-center justify-center p-[1px] bg-white/20 hover:bg-[#ff7936] hover:shadow-[0_0_18px_rgba(255,121,54,0.45)] transition-all duration-200 active:scale-[0.97]"
+                style={{
+                  clipPath:
+                    "polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px)",
+                }}
               >
-                <span>Book A Tailored Demo</span>
-                <ArrowRight className="w-4 h-4" />
+                <div
+                  className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-gradient-to-br from-[#ff7936]/15 via-[#140e0a] to-[#090a0d] group-hover:from-[#ff7936]/30 group-hover:via-[#1c120c] group-hover:to-[#0e0d12] text-zinc-100 group-hover:text-white font-medium text-sm transition-all duration-200 w-full"
+                  style={{
+                    clipPath:
+                      "polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px)",
+                  }}
+                >
+                  <span>Explore the platform</span>
+                  <ArrowRight className="w-4 h-4 text-orange-300 group-hover:text-[#ff7936] group-hover:translate-x-1 transition-all duration-200" />
+                </div>
               </Link>
 
-              <Link
-                href="/contact#risk-posture"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-black/60 hover:bg-white/[0.06] text-white border border-white/[0.15] hover:border-orange-500/50 font-semibold text-base transition-all duration-200"
+              <a
+                href="mailto:info@risknox.ai"
+                className="group relative inline-flex items-center justify-center p-[1px] bg-white/20 hover:bg-[#ff7936] hover:shadow-[0_0_18px_rgba(255,121,54,0.45)] transition-all duration-200 active:scale-[0.97]"
+                style={{
+                  clipPath:
+                    "polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px)",
+                }}
               >
-                <span>Find Your Risk Posture</span>
-                <Shield className="w-4 h-4 text-orange-400" />
-              </Link>
-            </div>
-
-            <div className="pt-6 flex items-center justify-center gap-6 text-xs text-slate-400 font-medium">
-              <div className="flex items-center gap-1.5">
-                <Lock className="w-3.5 h-3.5 text-orange-400" />
-                <span>Zero Agent Installation</span>
-              </div>
-              <span>•</span>
-              <div>SOC 2 & ISO 27001 Certified</div>
-              <span>•</span>
-              <div>Live in Under 10 Minutes</div>
+                <div
+                  className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-gradient-to-br from-[#ff7936]/15 via-[#140e0a] to-[#090a0d] group-hover:from-[#ff7936]/30 group-hover:via-[#1c120c] group-hover:to-[#0e0d12] text-zinc-100 group-hover:text-white font-medium text-sm transition-colors duration-200 w-full"
+                  style={{
+                    clipPath:
+                      "polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px)",
+                  }}
+                >
+                  <Mail className="w-4 h-4 text-orange-300 group-hover:text-[#ff7936] transition-colors duration-200" />
+                  <span>Email Us</span>
+                </div>
+              </a>
             </div>
           </div>
         </div>

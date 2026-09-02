@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Header from "@/components/header";
-import TrustStrip from "@/components/trust-strip";
 import ProofStrip from "@/components/proofstrip";
 import DashboardSection from "@/components/dashboard-section";
 import PipelineSection from "@/components/pipeline-section";
@@ -69,10 +68,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ─────────────── 2. TRUST STRIP ─────────────── */}
-      <TrustStrip />
-
-      {/* ─────────────── 2b. PROOF STRIP ─────────────── */}
+      {/* ─────────────── 2. PROOF STRIP ─────────────── */}
       <ProofStrip />
 
       {/* ─────────────── 3. DASHBOARD SECTION ─────────────── */}

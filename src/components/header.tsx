@@ -299,11 +299,11 @@ export default function Header({ currentPath }: HeaderProps) {
 
             {/* Partners */}
             <Link
-              href="/partners"
+              href="/partner"
               onClick={closeAll}
-              className={`px-2.5 py-1.5 rounded-lg transition-colors font-medium ${
+              className={`relative px-2.5 py-1.5 rounded-lg transition-colors font-medium ${
                 pathname.startsWith("/partner")
-                  ? "text-orange-400 font-semibold"
+                  ? "text-orange-400 font-semibold after:content-[''] after:absolute after:-bottom-[18px] after:left-1/2 after:-translate-x-1/2 after:w-7 after:h-[2px] after:bg-orange-500 after:rounded-full after:shadow-[0_0_8px_#f97316]"
                   : "text-slate-300 hover:text-white hover:bg-white/[0.08]"
               }`}
             >
@@ -817,7 +817,7 @@ export default function Header({ currentPath }: HeaderProps) {
             Solutions
           </Link>
           <Link
-            href="/partners"
+            href="/partner"
             onClick={closeAll}
             className={`block px-3.5 py-2 rounded-lg text-sm transition-colors ${
               pathname.startsWith("/partner")
