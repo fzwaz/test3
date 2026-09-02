@@ -5,51 +5,73 @@ import type { CSSProperties } from "react";
 
 export function FeatureHeroBackground() {
   const heroBars = useMemo(() => {
-    const numBars = 15;
+    const numBars = 20;
     return Array.from({ length: numBars }).map((_, i) => {
       const position = i / (numBars - 1);
       const center = 0.5;
       const distanceFromCenter = Math.abs(position - center);
-      const heightPercentage = Math.pow(distanceFromCenter * 2, 1.2);
-      const height = 25 + (65 - 25) * heightPercentage;
+      // Bars are tallest at edges, shortest at center (matches reference image)
+      const heightPercentage = Math.pow(distanceFromCenter * 2, 1.4);
+      // Range: center bars ~20% tall, edge bars ~90% tall
+      const height = 20 + (90 - 20) * heightPercentage;
+      // Edge bars pulse faster, center bars slower
+      const duration = 2.5 + distanceFromCenter * 1.5;
 
       return {
         height,
-        delay: i * 0.1,
+        delay: i * 0.12,
+        duration,
         width: 100 / numBars,
+        // Edge bars are brighter orange; center bars are dimmer
+        opacity: 0.5 + distanceFromCenter * 1,
       };
     });
   }, []);
 
   return (
     <>
-      <div className="absolute top-[9rem] inset-x-0 h-full z-0 flex px-0 pointer-events-none overflow-hidden">
+      {/* Bar container — anchored to bottom so bars grow upward */}
+      <div className="absolute inset-x-0 bottom-0 h-full z-0 flex px-0 pointer-events-none overflow-hidden">
         {heroBars.map((bar, i) => (
           <div
             key={i}
-            className="flex-1 hero-bar-anim"
+            className="hero-bar-anim"
             style={{
               "--base-scale": bar.height / 100,
               animationDelay: `${bar.delay}s`,
+              animationDuration: `${bar.duration}s`,
               height: "100%",
               flex: `1 0 ${bar.width}%`,
               maxWidth: `${bar.width}%`,
+              opacity: bar.opacity,
+              // Bright orange glow: transparent at top, intense orange in mid, fiery at bottom
               background:
-                `linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(200,65,0,0.85) 30%, rgba(255,110,0,0.95) 55%, rgba(200,65,0,0.6) 80%, rgba(0,0,0,0) 100%)`,
+                `linear-gradient(to top,
+                  rgba(255, 80, 0, 0.0) 0%,
+                  rgba(220, 70, 0, 0.9) 20%,
+                  rgba(255, 120, 0, 1.0) 45%,
+                  rgba(200, 55, 0, 0.7) 70%,
+                  rgba(0, 0, 0, 0.0) 100%
+                )`,
+              boxShadow: `0 0 18px 4px rgba(255, 90, 0, 0.25)`,
               transformOrigin: "bottom",
-              transform: `scaleY(${bar.height / 100})`,
-              outline: "1px solid rgba(0, 0, 0, 0)",
               boxSizing: "border-box",
             } as CSSProperties}
           />
         ))}
       </div>
-      {/* Top fade: black -> transparent so bars emerge from darkness */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black via-black/30 to-transparent pointer-events-none" />
-      {/* Bottom fade: transparent -> black */}
-      <div className="absolute bottom-0 inset-x-0 h-1/2 z-[1] bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none" />
-      {/* Left/right edge vignette */}
-      <div className="absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,transparent_40%,black_100%)] pointer-events-none" />
+
+      {/* Top-heavy fade — keeps upper portion very dark */}
+      <div
+        className="absolute inset-0 z-[1] pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to bottom, #000000 0%, #000000 20%, rgba(0,0,0,0.5) 60%, transparent 100%)",
+        }}
+      />
+
+      {/* Bottom ground fade — merges bars into floor */}
+
     </>
   );
 }

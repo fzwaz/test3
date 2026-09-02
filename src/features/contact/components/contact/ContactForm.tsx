@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import { PhoneInput } from "react-international-phone";
@@ -134,15 +134,12 @@ export const ContactForm: React.FC = () => {
   };
 
   return (
-    <section className="py-10 bg-transparent">
+    <section className="py-10 bg-[#000000]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main Elevated Card Container */}
-        <div className="bg-[#080a10]/95 rounded-[32px] border border-slate-800/90 shadow-[0_25px_60px_rgba(0,0,0,0.85)] overflow-hidden p-6 sm:p-10 lg:p-12 backdrop-blur-2xl relative">
+        <div className="bg-[#000000] rounded-[32px] border border-slate-800/90 shadow-[0_25px_60px_rgba(0,0,0,0.85)] overflow-hidden p-6 sm:p-10 lg:p-12 relative">
           
-          {/* Subtle glow */}
-          <div className="absolute -top-24 -right-24 w-80 h-80 bg-orange-600/10 rounded-full blur-[100px] pointer-events-none" />
-
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 relative z-10">
             
             {/* ========================================================================= */}
@@ -173,7 +170,7 @@ export const ContactForm: React.FC = () => {
                 
                 {/* Trust Item 1 */}
                 <div className="flex items-start gap-3.5">
-                  <div className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 shrink-0 mt-0.5">
+                  <div className="w-8 h-8 rounded-full bg-zinc-900 border border-slate-800 flex items-center justify-center text-slate-400 shrink-0 mt-0.5">
                     <Lock className="w-4 h-4 text-orange-400" />
                   </div>
                   <span className="text-xs sm:text-sm text-slate-300 font-medium leading-normal">
@@ -183,7 +180,7 @@ export const ContactForm: React.FC = () => {
 
                 {/* Trust Item 2 */}
                 <div className="flex items-start gap-3.5">
-                  <div className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 shrink-0 mt-0.5">
+                  <div className="w-8 h-8 rounded-full bg-zinc-900 border border-slate-800 flex items-center justify-center text-slate-400 shrink-0 mt-0.5">
                     <Clock className="w-4 h-4 text-orange-400" />
                   </div>
                   <span className="text-xs sm:text-sm text-slate-300 font-medium leading-normal">
@@ -193,7 +190,7 @@ export const ContactForm: React.FC = () => {
 
                 {/* Trust Item 3 */}
                 <div className="flex items-start gap-3.5">
-                  <div className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 shrink-0 mt-0.5">
+                  <div className="w-8 h-8 rounded-full bg-zinc-900 border border-slate-800 flex items-center justify-center text-slate-400 shrink-0 mt-0.5">
                     <Users className="w-4 h-4 text-orange-400" />
                   </div>
                   <span className="text-xs sm:text-sm text-slate-300 font-medium leading-normal">
@@ -233,7 +230,7 @@ export const ContactForm: React.FC = () => {
                       setPhoneNumber("");
                       setCustomService("");
                     }}
-                    className="mt-6 px-6 py-2.5 bg-slate-900 border border-slate-700 text-white rounded-full text-xs font-bold hover:bg-slate-800 transition-colors cursor-pointer"
+                    className="mt-6 px-6 py-2.5 bg-zinc-900 border border-slate-700 text-white rounded-full text-xs font-bold hover:bg-slate-800 transition-colors cursor-pointer"
                   >
                     Send another message
                   </button>
@@ -275,7 +272,7 @@ export const ContactForm: React.FC = () => {
                         className={`cursor-pointer rounded-2xl p-4 border transition-all duration-200 flex items-center justify-between ${
                           reachOutFor === "Product Demo"
                             ? "bg-orange-500/15 border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.2)]"
-                            : "bg-[#0f121a]/90 border-slate-800 hover:border-slate-700"
+                            : "bg-zinc-900/90 border-slate-800 hover:border-slate-700"
                         }`}
                       >
                         <div className="flex items-center gap-3.5">
@@ -283,7 +280,7 @@ export const ContactForm: React.FC = () => {
                             className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
                               reachOutFor === "Product Demo"
                                 ? "bg-orange-500/20 text-orange-400 border border-orange-500/40"
-                                : "bg-slate-900 border border-slate-800 text-slate-400"
+                                : "bg-zinc-900 border border-slate-800 text-slate-400"
                             }`}
                           >
                             <Boxes className="w-5 h-5" />
@@ -318,7 +315,7 @@ export const ContactForm: React.FC = () => {
                         className={`cursor-pointer rounded-2xl p-4 border transition-all duration-200 flex items-center justify-between ${
                           reachOutFor === "Service Inquiry"
                             ? "bg-orange-500/15 border-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.2)]"
-                            : "bg-[#0f121a]/90 border-slate-800 hover:border-slate-700"
+                            : "bg-zinc-900/90 border-slate-800 hover:border-slate-700"
                         }`}
                       >
                         <div className="flex items-center gap-3.5">
@@ -326,7 +323,7 @@ export const ContactForm: React.FC = () => {
                             className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
                               reachOutFor === "Service Inquiry"
                                 ? "bg-orange-500/20 text-orange-400 border border-orange-500/40"
-                                : "bg-slate-900 border border-slate-800 text-slate-400"
+                                : "bg-zinc-900 border border-slate-800 text-slate-400"
                             }`}
                           >
                             <ShieldCheck className="w-5 h-5" />
@@ -376,7 +373,7 @@ export const ContactForm: React.FC = () => {
                               className={`cursor-pointer rounded-2xl p-4 border transition-all duration-200 text-left flex flex-col justify-between min-h-[90px] ${
                                 isSelected
                                   ? "bg-orange-500/20 border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.25)]"
-                                  : "bg-[#0f121a]/90 border-slate-800 hover:border-slate-700 hover:bg-slate-900"
+                                  : "bg-zinc-900/90 border-slate-800 hover:border-slate-700 hover:bg-zinc-900"
                               }`}
                             >
                               <h4 className="text-sm font-extrabold text-white">
@@ -410,7 +407,7 @@ export const ContactForm: React.FC = () => {
                               className={`cursor-pointer rounded-2xl p-4 border transition-all duration-200 text-left flex flex-col justify-between min-h-[95px] ${
                                 isSelected
                                   ? "bg-orange-500/20 border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.25)]"
-                                  : "bg-[#0f121a]/90 border-slate-800 hover:border-slate-700 hover:bg-slate-900"
+                                  : "bg-zinc-900/90 border-slate-800 hover:border-slate-700 hover:bg-zinc-900"
                               }`}
                             >
                               <div className="flex items-center justify-between">
@@ -441,7 +438,7 @@ export const ContactForm: React.FC = () => {
                             placeholder="e.g. Red Teaming, Incident Response, Cloud Audit..."
                             value={customService}
                             onChange={(e) => setCustomService(e.target.value)}
-                            className="w-full h-11 px-4 text-sm rounded-xl border border-orange-500/60 bg-[#0f121a] text-white placeholder:text-slate-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
+                            className="w-full h-11 px-4 text-sm rounded-xl border border-orange-500/60 bg-zinc-900 text-white placeholder:text-zinc-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
                           />
                         </div>
                       )}
@@ -468,7 +465,7 @@ export const ContactForm: React.FC = () => {
                           placeholder="Enter your full name"
                           value={formData.fullName}
                           onChange={handleChange}
-                          className="w-full h-11 px-4 text-sm rounded-xl border border-slate-800 bg-[#0f121a] text-white placeholder:text-slate-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
+                          className="w-full h-11 px-4 text-sm rounded-xl border border-slate-800 bg-zinc-900 text-white placeholder:text-zinc-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
                         />
                       </div>
 
@@ -484,7 +481,7 @@ export const ContactForm: React.FC = () => {
                           placeholder="Enter your work email"
                           value={formData.workEmail}
                           onChange={handleChange}
-                          className="w-full h-11 px-4 text-sm rounded-xl border border-slate-800 bg-[#0f121a] text-white placeholder:text-slate-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
+                          className="w-full h-11 px-4 text-sm rounded-xl border border-slate-800 bg-zinc-900 text-white placeholder:text-zinc-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
                         />
                       </div>
 
@@ -505,7 +502,7 @@ export const ContactForm: React.FC = () => {
                           placeholder="Enter your company name"
                           value={formData.companyName}
                           onChange={handleChange}
-                          className="w-full h-11 px-4 text-sm rounded-xl border border-slate-800 bg-[#0f121a] text-white placeholder:text-slate-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
+                          className="w-full h-11 px-4 text-sm rounded-xl border border-slate-800 bg-zinc-900 text-white placeholder:text-zinc-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
                         />
                       </div>
 
@@ -520,9 +517,9 @@ export const ContactForm: React.FC = () => {
                           onChange={(phone: string) => setPhoneNumber(phone)}
                           placeholder="Enter your phone number"
                           className="w-full flex items-center"
-                          inputClassName="!w-full !h-11 !px-4 !text-sm !rounded-r-xl !border-slate-800 !bg-[#0f121a] !text-white !placeholder:text-slate-500 focus:!border-orange-500 focus:!ring-1 focus:!ring-orange-500"
+                          inputClassName="!w-full !h-11 !px-4 !text-sm !rounded-r-xl !border-slate-800 !bg-zinc-900 !text-white !placeholder:text-zinc-400 focus:!border-orange-500 focus:!ring-1 focus:!ring-orange-500"
                           countrySelectorStyleProps={{
-                            buttonClassName: "!h-11 !px-3 !bg-slate-900 !border-slate-800 !rounded-l-xl !text-xs !font-bold !text-slate-200",
+                            buttonClassName: "!h-11 !px-3 !bg-zinc-900 !border-slate-800 !rounded-l-xl !text-xs !font-bold !text-slate-200",
                           }}
                         />
                       </div>
@@ -543,7 +540,7 @@ export const ContactForm: React.FC = () => {
                           placeholder="Your designation"
                           value={formData.jobTitle}
                           onChange={handleChange}
-                          className="w-full h-11 px-4 text-sm rounded-xl border border-slate-800 bg-[#0f121a] text-white placeholder:text-slate-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
+                          className="w-full h-11 px-4 text-sm rounded-xl border border-slate-800 bg-zinc-900 text-white placeholder:text-zinc-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
                         />
                       </div>
 
@@ -557,13 +554,13 @@ export const ContactForm: React.FC = () => {
                             name="companySize"
                             value={formData.companySize}
                             onChange={handleChange}
-                            className="w-full h-11 px-4 pr-10 text-sm rounded-xl border border-slate-800 bg-[#0f121a] text-slate-200 appearance-none cursor-pointer focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
+                            className="w-full h-11 px-4 pr-10 text-sm rounded-xl border border-slate-800 bg-zinc-900 text-slate-200 appearance-none cursor-pointer focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
                           >
-                            <option value="" disabled className="bg-slate-900 text-slate-400">
+                            <option value="" disabled className="bg-zinc-900 text-slate-400">
                               Select company size
                             </option>
                             {COMPANY_SIZES.map((size) => (
-                              <option key={size} value={size} className="bg-slate-900 text-white">
+                              <option key={size} value={size} className="bg-zinc-900 text-white">
                                 {size}
                               </option>
                             ))}
@@ -585,7 +582,7 @@ export const ContactForm: React.FC = () => {
                         placeholder="Tell us about your goals or any specific requirements..."
                         value={formData.requirements}
                         onChange={handleChange}
-                        className="w-full p-4 text-sm rounded-xl border border-slate-800 bg-[#0f121a] text-white placeholder:text-slate-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors resize-none"
+                        className="w-full p-4 text-sm rounded-xl border border-slate-800 bg-zinc-900 text-white placeholder:text-zinc-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors resize-none"
                       />
                     </div>
 
@@ -634,3 +631,6 @@ export const ContactForm: React.FC = () => {
 };
 
 export default ContactForm;
+
+
+

@@ -10,6 +10,7 @@ import RiskNumberCTASection from "@/components/risk-number-cta-section";
 import TestimonialsSection from "@/components/testimonials-section";
 import Footer from "@/components/footer";
 import { ArrowRight, Activity, Search, Zap } from "lucide-react";
+import { FeatureHeroBackground } from "@/components/FeatureHeroBackground";
 
 export default function Home() {
   const [activeModal, setActiveModal] = useState<"demo" | "posture" | null>(null);
@@ -34,15 +35,17 @@ export default function Home() {
       {/* Fixed navbar — rendered outside flex flow */}
       <Header currentPath="/" />
 
-      <div className="relative min-h-screen flex flex-col bg-black">
+      <div className="relative min-h-screen flex flex-col bg-black overflow-hidden">
+        {/* Animated orange bar background */}
+        <FeatureHeroBackground />
         {/* Centered hero content — fills remaining viewport height, padded for fixed navbar */}
-        <div className="flex-1 flex flex-col items-center justify-center text-center px-4 pt-28 pb-12 max-w-6xl mx-auto">
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[78px] font-black tracking-tight leading-[1.08] select-none">
+        <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 pt-28 pb-12 max-w-6xl mx-auto -translate-y-8">
+          <h1 className="text-5xl sm:text-6xl xl:text-7xl font-black leading-[0.92] tracking-[-0.055em] select-none">
             <span className="block text-white">Know your cyber risk.</span>
-            <span className="block text-[#f95700] mt-1">In dollars, not just scores.</span>
+            <span className="block text-[#f95700]">In dollars, not just scores.</span>
           </h1>
 
-          <p className="mt-6 max-w-3xl text-base sm:text-lg md:text-xl text-slate-300 font-normal leading-relaxed">
+          <p className="mt-6 max-w-[620px] text-lg md:text-xl text-slate-300 font-normal leading-relaxed">
             Risknox turns your security posture into a quantified financial number, maps your compliance obligations, and connects the result directly to the right insurance coverage — AI-driven, in one platform.
           </p>
 

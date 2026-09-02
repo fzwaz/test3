@@ -38,6 +38,18 @@ body {
   animation: fadeSlideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Hero bar animation — uses --base-scale set inline per bar */
+@keyframes heroBarPulse {
+  0%   { transform: scaleY(calc(var(--base-scale) * 0.85)); }
+  50%  { transform: scaleY(calc(var(--base-scale) * 1.0));  }
+  100% { transform: scaleY(calc(var(--base-scale) * 0.85)); }
+}
+
+.hero-bar-anim {
+  transform-origin: bottom;
+  animation: heroBarPulse 3s ease-in-out infinite;
+}
+
 /* Glassmorphism */
 .glass-panel {
   background: rgba(255, 255, 255, 0.04);

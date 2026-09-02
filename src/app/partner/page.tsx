@@ -4,6 +4,7 @@ import Footer from "@/components/footer";
 import PartnerHero from "@/features/partner/components/Hero";
 import TrustStrip from "@/components/trust-strip";
 import InsurersSection from "@/features/partner/components/InsurersSection";
+import EvaluationSection from "@/features/partner/components/EvaluationSection";
 
 export const metadata = {
   title: "Partners | Risknox - Better Underwriting Starts with Better Intelligence",
@@ -20,6 +21,7 @@ export default function PartnerPage() {
         <PartnerHero />
         <TrustStrip />
         <InsurersSection />
+        <EvaluationSection />
       </main>
 
       <Footer />
