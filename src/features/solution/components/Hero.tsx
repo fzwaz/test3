@@ -1,163 +1,236 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import { Building2, User, ArrowRight } from "lucide-react";
-import Link from "next/link";
+import React, { useMemo, useState, useCallback, useEffect } from "react";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import dynamic from "next/dynamic";
+import { useHeroReveal } from "@/hooks/useHeroReveal";
+import { INDUSTRIES_DATA } from "@/features/solution/lib/constants";
+
+const Beams = dynamic(() => import("@/components/Beams"), { ssr: false });
+
+const OUT = "cubic-bezier(0.16,1,0.3,1)";
+
+const INDUSTRY_SLIDES = INDUSTRIES_DATA.map((ind) => ({
+  name: ind.name,
+  oneLiner:
+    ind.id === "bfsi"
+      ? "Resilient financial architecture & regulatory assurance for high-frequency transaction networks."
+      : ind.id === "healthcare"
+      ? "Uncompromising patient data privacy & medical IoT defense without disrupting clinical ops."
+      : ind.id === "saas"
+      ? "Turn security into a sales accelerator with continuous trust across multi-cloud environments."
+      : ind.id === "manufacturing"
+      ? "OT/IT convergence security & supply chain integrity for Industry 4.0 operations."
+      : ind.id === "energy"
+      ? "National grid resilience & sovereign defense against nation-state adversaries."
+      : "Customer credential protection & brand integrity during peak-season traffic.",
+}));
 
 export default function Hero() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { mounted, textStyle } = useHeroReveal();
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [dir, setDir] = useState<1 | -1>(1);
+  const total = INDUSTRY_SLIDES.length;
+
+  const go = useCallback(
+    (d: 1 | -1) => {
+      setDir(d);
+      setActiveIdx((i) => (i + d + total) % total);
+    },
+    [total],
+  );
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const timer = setInterval(() => go(1), 5000);
+    return () => clearInterval(timer);
+  }, [go]);
 
-    let animationFrameId: number;
-    let width = (canvas.width = canvas.parentElement?.clientWidth || window.innerWidth);
-    let height = (canvas.height = canvas.parentElement?.clientHeight || window.innerHeight);
+  const beamCount = useMemo(() => (mounted ? 12 : 0), [mounted]);
 
-    const handleResize = () => {
-      if (!canvas || !canvas.parentElement) return;
-      width = canvas.width = canvas.parentElement.clientWidth;
-      height = canvas.height = canvas.parentElement.clientHeight;
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    // Particle dust field matching the screenshot's floating glowing orange embers/stars
-    const particleCount = 140;
-    const particles: {
-      x: number;
-      y: number;
-      size: number;
-      speedX: number;
-      speedY: number;
-      opacity: number;
-      twinkleSpeed: number;
-    }[] = [];
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        size: Math.random() * 2.2 + 0.6,
-        speedX: (Math.random() - 0.5) * 0.25,
-        speedY: (Math.random() - 0.5) * 0.25,
-        opacity: Math.random() * 0.8 + 0.2,
-        twinkleSpeed: Math.random() * 0.02 + 0.005,
-      });
-    }
-
-    const render = () => {
-      ctx.clearRect(0, 0, width, height);
-
-      // Draw floating glowing orange particles
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        p.x += p.speedX;
-        p.y += p.speedY;
-        p.opacity += Math.sin(Date.now() * p.twinkleSpeed) * 0.01;
-
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
-        if (p.y > height) p.y = 0;
-
-        const clampedOpacity = Math.max(0.1, Math.min(0.95, p.opacity));
-        ctx.fillStyle = `rgba(249, 115, 22, ${clampedOpacity * 0.85})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Extra glow for larger particles
-        if (p.size > 1.8) {
-          ctx.fillStyle = `rgba(255, 140, 0, ${clampedOpacity * 0.3})`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * 2.5, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-
-      animationFrameId = requestAnimationFrame(render);
-    };
-
-    render();
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  const slide = INDUSTRY_SLIDES[activeIdx];
 
   return (
-    <section className="relative min-h-[92vh] md:min-h-screen flex flex-col justify-center items-center text-center px-4 sm:px-6 lg:px-8 pt-32 pb-24 overflow-hidden bg-[#000000]">
-      {/* 1. Canvas Dynamic Background (Glowing Stardust Particles) */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full pointer-events-none z-0"
+    <section
+      className="relative min-h-[92vh] md:min-h-screen flex flex-col overflow-hidden bg-[#000000]"
+      style={{ contain: "layout style" }}
+    >
+      {/* Beams background */}
+      <div
+        className="absolute inset-0 overflow-hidden"
+        style={{
+          opacity: mounted ? 0.6 : 0,
+          transform: mounted ? "scale(1) rotate(0deg)" : "scale(1.35) rotate(3deg)",
+          transition: `opacity 1200ms ${OUT} 100ms, transform 1800ms ${OUT} 100ms`,
+          willChange: "opacity, transform",
+        }}
+      >
+        <Beams
+          beamWidth={2}
+          beamHeight={22}
+          beamNumber={beamCount}
+          lightColor="#ffa500"
+          beamColor="#1a0a00"
+          backgroundColor="#000000"
+          speed={2}
+          noiseIntensity={1.65}
+          scale={0.22}
+          rotation={18}
+        />
+      </div>
+
+      {/* Flash burst */}
+      <div
+        className="absolute inset-0 z-[1] pointer-events-none"
+        style={{
+          background: "radial-gradient(circle at 50% 50%, rgba(255,165,0,0.65) 0%, rgba(255,100,0,0.25) 25%, transparent 55%)",
+          opacity: mounted ? 0 : 1,
+          transition: "opacity 800ms ease-out",
+        }}
       />
 
-      {/* 2. Hero Content */}
-      <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center">
-        {/* Solutions Badge (matching screenshot: 6-dot matrix icon + SOLUTIONS text) */}
-        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#181109]/90 border border-orange-500/30 text-orange-400 text-xs sm:text-sm font-semibold tracking-wider uppercase shadow-[0_0_20px_rgba(249,115,22,0.2)] backdrop-blur-md mb-8 hover:border-orange-500/60 transition-colors">
-          <div className="grid grid-cols-3 gap-1 w-3.5 h-2.5 items-center justify-center">
-            <span className="w-1 h-1 rounded-[1px] bg-orange-400"></span>
-            <span className="w-1 h-1 rounded-[1px] bg-orange-400"></span>
-            <span className="w-1 h-1 rounded-[1px] bg-orange-400"></span>
-            <span className="w-1 h-1 rounded-[1px] bg-orange-400"></span>
-            <span className="w-1 h-1 rounded-[1px] bg-orange-400"></span>
-            <span className="w-1 h-1 rounded-[1px] bg-orange-400"></span>
+      {/* Ambient glow */}
+      <div
+        className="absolute inset-0 z-[1] pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(255,165,0,0.1) 0%, transparent 60%)",
+          opacity: mounted ? 1 : 0,
+          transition: "opacity 1200ms ease-out 1200ms",
+          animation: mounted ? "beamPulse 4s ease-in-out infinite 2s" : "none",
+        }}
+      />
+
+      {/* Text-legibility overlays */}
+      <div className="absolute inset-0 z-[2] pointer-events-none bg-gradient-to-b from-black/30 via-black/10 to-black/75" />
+      <div className="absolute inset-0 z-[2] pointer-events-none bg-[radial-gradient(ellipse_85%_65%_at_50%_45%,transparent_35%,rgba(0,0,0,0.55)_78%,#000000_92%)]" />
+
+      {/* ── Main split layout ── */}
+      <div className="relative z-10 flex-1 flex items-center px-6 sm:px-10 lg:px-16 pt-28 pb-24 max-w-[1440px] mx-auto w-full">
+        <div className="flex flex-col lg:flex-row items-center lg:items-center w-full">
+
+          {/* ── LEFT ── */}
+          <div className="lg:w-[58%] flex flex-col justify-center items-start">
+            {/* Badge */}
+            <div style={textStyle(700)} className="mb-7">
+              <div className="inline-flex items-center gap-2.5 px-4 py-[7px] rounded-full bg-black/60 border border-orange-500/25 text-orange-400 text-xs font-semibold tracking-[0.22em] uppercase shadow-[0_0_24px_rgba(249,115,22,0.25)] backdrop-blur-md">
+                <span className="grid grid-cols-3 gap-[3px] w-3.5 items-center justify-center" aria-hidden>
+                  <span className="w-1 h-1 rounded-[1px] bg-orange-400" />
+                  <span className="w-1 h-1 rounded-[1px] bg-orange-400" />
+                  <span className="w-1 h-1 rounded-[1px] bg-orange-400" />
+                  <span className="w-1 h-1 rounded-[1px] bg-orange-400" />
+                  <span className="w-1 h-1 rounded-[1px] bg-orange-400" />
+                  <span className="w-1 h-1 rounded-[1px] bg-orange-400" />
+                </span>
+                <span>Solutions</span>
+              </div>
+            </div>
+
+            {/* Headline — two lines like reference */}
+            <h1 className="text-[38px] sm:text-[50px] lg:text-[60px] font-bold text-[#f4f1ed] tracking-[-0.02em] leading-[1.08] select-none">
+              <span className="block overflow-hidden pb-1">
+                <span className="block" style={textStyle(900)}>Cyber Risk,</span>
+              </span>
+              <span className="block overflow-hidden pb-2">
+                <span className="block whitespace-nowrap" style={textStyle(1050)}>
+                  Built Around <span className="text-[#ff7d1c]">Your World.</span>
+                </span>
+              </span>
+            </h1>
+
+            {/* Subtitle */}
+            <p className="mt-6 max-w-[560px] text-[15px] lg:text-base text-[#cfc9c2] font-normal leading-[1.65]" style={textStyle(1300)}>
+              Whether you&apos;re managing risk in a complex industry or solving it from a
+              specific role, Risknox connects exposure, compliance, and decision-making
+              into one intelligence layer.
+            </p>
+
+            {/* CTA Buttons — orange filled + dark outline */}
+            <div className="mt-9 flex flex-col sm:flex-row items-stretch sm:items-center gap-4" style={textStyle(1500)}>
+              <a
+                href="#explore-by-industry"
+                className="group inline-flex items-center justify-center gap-3 px-7 py-[15px] rounded-[10px] bg-black/70 text-white font-semibold text-[15px] border border-[#f97316]/70 shadow-[0_0_20px_rgba(249,115,22,0.15)] hover:border-orange-400 hover:shadow-[0_0_28px_rgba(249,115,22,0.35)] hover:bg-[#140c06] transition-all duration-200 active:scale-[0.98] backdrop-blur-xl cursor-pointer"
+              >
+                <span>Explore by Industry</span>
+                <ArrowRight className="w-[18px] h-[18px] stroke-[2.5] text-orange-400 group-hover:translate-x-1 transition-transform" />
+              </a>
+
+              <a
+                href="#explore-by-role"
+                className="group inline-flex items-center justify-center gap-3 px-7 py-[15px] rounded-[10px] bg-black/70 text-white font-semibold text-[15px] border border-[#f97316]/70 shadow-[0_0_20px_rgba(249,115,22,0.15)] hover:border-orange-400 hover:shadow-[0_0_28px_rgba(249,115,22,0.35)] hover:bg-[#140c06] transition-all duration-200 active:scale-[0.98] backdrop-blur-xl cursor-pointer"
+              >
+                <span>Explore by Role</span>
+                <ArrowRight className="w-[18px] h-[18px] stroke-[2.5] text-orange-400 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </div>
           </div>
-          <span>SOLUTIONS</span>
-        </div>
 
-        {/* Main Headline (exact typography and color split: "Cyber Risk," and "Built Around Your World.") */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[76px] font-bold text-white tracking-tight leading-[1.08] select-none">
-          <span className="block">Cyber Risk,</span>
-          <span className="block mt-1">
-            Built Around <span className="text-[#f97316]">Your World.</span>
-          </span>
-        </h1>
-
-        {/* Subtitle description */}
-        <p className="mt-8 max-w-2xl text-base sm:text-lg md:text-[19px] text-slate-300 font-normal leading-relaxed">
-          Whether you’re managing risk in a complex industry or solving it from a specific role,
-          Risknox connects exposure, compliance, and decision-making into one intelligence layer.
-        </p>
-
-        {/* Dual Action Cards / CTA Buttons (matching screenshot) */}
-        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full max-w-xl">
-          {/* Left CTA: Explore by Industry */}
-          <Link
-            href="#explore-by-industry"
-            className="group w-full sm:w-auto flex-1 inline-flex items-center justify-between sm:justify-center gap-4 px-6 py-4 rounded-xl bg-[#0e0e11]/80 hover:bg-[#1a1714] border border-orange-500/25 hover:border-orange-500 text-white font-medium text-base shadow-[0_4px_20px_rgba(0,0,0,0.6),0_0_15px_rgba(249,115,22,0.12)] hover:shadow-[0_0_25px_rgba(249,115,22,0.35)] transition-all duration-200 active:scale-[0.98] backdrop-blur-xl cursor-pointer"
+          {/* ── RIGHT: Industry carousel ── */}
+          <div
+            className="lg:w-[42%] w-full flex flex-col justify-center items-start mt-14 lg:mt-0 lg:pl-14 lg:ml-6 lg:border-l border-white/10"
+            style={textStyle(1150)}
           >
-            <div className="flex items-center gap-3">
-              <Building2 className="w-5 h-5 text-orange-400 group-hover:scale-110 transition-transform" />
-              <span className="font-semibold text-white group-hover:text-orange-100 transition-colors">
-                Explore by Industry
+            <div className="relative min-h-[150px] w-full max-w-[420px]">
+              <div
+                key={activeIdx}
+                className="animate-heroSlideIn"
+                style={{ animationDirection: dir === 1 ? "normal" : "reverse" }}
+              >
+                <p className="text-[19px] lg:text-[21px] text-[#eae5df] font-normal leading-[1.5]">
+                  {slide.oneLiner}
+                </p>
+                <p className="mt-6 text-[12px] text-[#ff7d1c] font-medium tracking-[0.22em] uppercase">
+                  {slide.name}
+                </p>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="w-full max-w-[420px] border-t border-white/15 mt-10" />
+
+            {/* Navigation */}
+            <div className="mt-6 flex items-center gap-3">
+              <button
+                onClick={() => go(-1)}
+                className="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center text-slate-300 hover:text-white hover:border-orange-500/60 hover:bg-orange-500/10 transition-all cursor-pointer"
+                aria-label="Previous industry"
+              >
+                <ChevronLeft className="w-[18px] h-[18px]" />
+              </button>
+              <button
+                onClick={() => go(1)}
+                className="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center text-slate-300 hover:text-white hover:border-orange-500/60 hover:bg-orange-500/10 transition-all cursor-pointer"
+                aria-label="Next industry"
+              >
+                <ChevronRight className="w-[18px] h-[18px]" />
+              </button>
+
+              {/* Progress dots */}
+              <div className="flex items-center gap-2 ml-4">
+                {INDUSTRY_SLIDES.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      setDir(i > activeIdx ? 1 : -1);
+                      setActiveIdx(i);
+                    }}
+                    className={`h-[6px] rounded-full transition-all duration-300 cursor-pointer ${
+                      i === activeIdx
+                        ? "w-8 bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.7)]"
+                        : "w-[6px] bg-white/20 hover:bg-white/40"
+                    }`}
+                    aria-label={`Go to slide ${i + 1}`}
+                  />
+                ))}
+              </div>
+
+              {/* Counter */}
+              <span className="ml-4 text-[15px] text-slate-500 tabular-nums">
+                {String(activeIdx + 1).padStart(2, "0")}/{String(total).padStart(2, "0")}
               </span>
             </div>
-            <ArrowRight className="w-4 h-4 text-orange-400 group-hover:translate-x-1 transition-transform" />
-          </Link>
-
-          {/* Right CTA: Explore by Role */}
-          <Link
-            href="#explore-by-role"
-            className="group w-full sm:w-auto flex-1 inline-flex items-center justify-between sm:justify-center gap-4 px-6 py-4 rounded-xl bg-[#0e0e11]/80 hover:bg-[#1a1714] border border-orange-500/25 hover:border-orange-500 text-white font-medium text-base shadow-[0_4px_20px_rgba(0,0,0,0.6),0_0_15px_rgba(249,115,22,0.12)] hover:shadow-[0_0_25px_rgba(249,115,22,0.35)] transition-all duration-200 active:scale-[0.98] backdrop-blur-xl cursor-pointer"
-          >
-            <div className="flex items-center gap-3">
-              <User className="w-5 h-5 text-orange-400 group-hover:scale-110 transition-transform" />
-              <span className="font-semibold text-white group-hover:text-orange-100 transition-colors">
-                Explore by Role
-              </span>
-            </div>
-            <ArrowRight className="w-4 h-4 text-orange-400 group-hover:translate-x-1 transition-transform" />
-          </Link>
+          </div>
         </div>
       </div>
+
     </section>
   );
 }

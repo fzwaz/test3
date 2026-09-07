@@ -1,0 +1,27 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "explabs": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Experiential Labs",
+      "options": {
+        "baseURL": "https://api.experientiallabs.ai/v1",
+        "apiKey": "{env:EXPLABS_API_KEY}"
+      },
+      "models": {
+        "gpt-6-astra": {
+          "name": "gpt-6-astra"
+        },
+        "claude-fable-5.1": {
+          "name": "Claude Fable 5.1"
+        },
+        "gemini-3.7-flash": {
+          "name": "gemini-3.7-flash"
+        },
+        "deepseek-v4-flash": {
+          "name": "deepseek-v4-flash"
+        }
+      }
+    }
+  }
+}
