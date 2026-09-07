@@ -11,8 +11,10 @@ import TestimonialsSection from "@/components/testimonials-section";
 import Footer from "@/components/footer";
 import { ArrowRight, Activity, Search, Zap } from "lucide-react";
 import { FeatureHeroBackground } from "@/components/FeatureHeroBackground";
+import { useHeroReveal } from "@/hooks/useHeroReveal";
 
 export default function Home() {
+  const { mounted, textStyle } = useHeroReveal();
   const [activeModal, setActiveModal] = useState<"demo" | "posture" | null>(null);
   const [domainInput, setDomainInput] = useState("");
   const [analyzing, setAnalyzing] = useState(false);
@@ -35,21 +37,25 @@ export default function Home() {
       {/* Fixed navbar — rendered outside flex flow */}
       <Header currentPath="/" />
 
-      <div className="relative min-h-screen flex flex-col bg-black overflow-hidden">
+      <div className="relative min-h-screen flex flex-col bg-black overflow-hidden" style={{ contain: "layout style" }}>
         {/* Animated orange bar background */}
-        <FeatureHeroBackground />
+        <FeatureHeroBackground mounted={mounted} />
         {/* Centered hero content — fills remaining viewport height, padded for fixed navbar */}
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 pt-28 pb-12 max-w-6xl mx-auto -translate-y-8">
           <h1 className="text-5xl sm:text-6xl xl:text-7xl font-black leading-[0.92] tracking-[-0.055em] select-none">
-            <span className="block text-white">Know your cyber risk.</span>
-            <span className="block text-[#f95700]">In dollars, not just scores.</span>
+            <span className="block overflow-hidden pb-3 -mb-1">
+              <span className="block text-white" style={textStyle(900)}>Know your cyber risk.</span>
+            </span>
+            <span className="block overflow-hidden mt-2 pb-3 -mb-1">
+              <span className="block text-[#f95700]" style={textStyle(1050)}>In dollars, not just scores.</span>
+            </span>
           </h1>
 
-          <p className="mt-6 max-w-[620px] text-lg md:text-xl text-slate-300 font-normal leading-relaxed">
+          <p className="mt-6 max-w-[880px] text-lg md:text-xl text-slate-300 font-normal leading-relaxed" style={textStyle(1300)}>
             Risknox turns your security posture into a quantified financial number, maps your compliance obligations, and connects the result directly to the right insurance coverage — AI-driven, in one platform.
           </p>
 
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4" style={textStyle(1550)}>
             <button
               type="button"
               onClick={() => setActiveModal("demo")}

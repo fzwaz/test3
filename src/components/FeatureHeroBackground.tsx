@@ -3,7 +3,9 @@
 import { useMemo } from "react";
 import type { CSSProperties } from "react";
 
-export function FeatureHeroBackground() {
+const OUT = "cubic-bezier(0.16,1,0.3,1)";
+
+export function FeatureHeroBackground({ mounted }: { mounted: boolean }) {
   const heroBars = useMemo(() => {
     const numBars = 20;
     return Array.from({ length: numBars }).map((_, i) => {
@@ -19,7 +21,9 @@ export function FeatureHeroBackground() {
 
       return {
         height,
-        delay: i * 0.12,
+        // Negative delay = pre-phased mid-cycle on mount, so no left-to-right
+        // sweep when the component remounts on refresh / client navigation.
+        delay: -(i * 0.37),
         duration,
         width: 100 / numBars,
         // Edge bars are brighter orange; center bars are dimmer
@@ -30,8 +34,18 @@ export function FeatureHeroBackground() {
 
   return (
     <>
-      {/* Bar container — anchored to bottom so bars grow upward */}
-      <div className="absolute inset-x-0 bottom-0 h-full z-0 flex px-0 pointer-events-none overflow-hidden">
+      {/* Bar container — anchored to bottom so bars grow upward.
+          Same intro as the other pages' BeamsBackground: fade + settle
+          from a slightly zoomed state on mount. */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-full z-0 flex px-0 pointer-events-none overflow-hidden"
+        style={{
+          opacity: mounted ? 1 : 0,
+          transform: mounted ? "scale(1)" : "scale(1.12)",
+          transition: `opacity 1200ms ${OUT} 100ms, transform 1800ms ${OUT} 100ms`,
+          willChange: "opacity, transform",
+        }}
+      >
         {heroBars.map((bar, i) => (
           <div
             key={i}
