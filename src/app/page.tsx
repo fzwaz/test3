@@ -3,11 +3,14 @@
 import React, { useState } from "react";
 import Header from "@/components/header";
 import ProofStrip from "@/components/proofstrip";
-import DashboardSection from "@/components/dashboard-section";
 import PipelineSection from "@/components/pipeline-section";
 import TakeActionSection from "@/components/take-action-section";
+import IndustriesMarquee from "@/components/industries-marquee";
 import RiskNumberCTASection from "@/components/risk-number-cta-section";
 import TestimonialsSection from "@/components/testimonials-section";
+import AwardsSection from "@/components/awards-section";
+import ResourcesPreview from "@/components/resources-preview";
+import FaqSection from "@/components/faq-section";
 import Footer from "@/components/footer";
 import { ArrowRight, Activity, Search, Zap } from "lucide-react";
 import { FeatureHeroBackground } from "@/components/FeatureHeroBackground";
@@ -80,20 +83,29 @@ export default function Home() {
       {/* ─────────────── 2. PROOF STRIP ─────────────── */}
       <ProofStrip />
 
-      {/* ─────────────── 3. DASHBOARD SECTION ─────────────── */}
-      <DashboardSection />
-
       {/* ─────────────── 4. PIPELINE SECTION ─────────────── */}
       <PipelineSection />
 
       {/* ─────────────── 5. TAKE ACTION SECTION ─────────────── */}
       <TakeActionSection />
 
+      {/* ─────────────── 5b. INDUSTRIES MARQUEE ─────────────── */}
+      <IndustriesMarquee />
+
       {/* ─────────────── 6. TESTIMONIALS SECTION ─────────────── */}
       <TestimonialsSection />
 
+      {/* ─────────────── 6b. AWARDS SECTION ─────────────── */}
+      <AwardsSection />
+
+      {/* ─────────────── 6c. RESOURCES PREVIEW ─────────────── */}
+      <ResourcesPreview />
+
       {/* ─────────────── 7. RISK NUMBER CTA SECTION ─────────────── */}
       <RiskNumberCTASection />
+
+      {/* ─────────────── 7b. FAQ SECTION ─────────────── */}
+      <FaqSection />
 
       {/* ─────────────── 8. FOOTER ─────────────── */}
       <Footer />

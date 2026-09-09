@@ -1,4 +1,4 @@
-import { Category, BlogPost, PopularPost, StatItem, NavGroup } from '../types';
+import { Category, BlogPost, StatItem, NavGroup } from '../types';
 
 /**
  * Categories list with meta counts and color themes.
@@ -267,32 +267,100 @@ Defenders must leverage AI-driven continuous monitoring to detect anomalies in r
 ];
 
 /**
- * Popular Posts dataset displayed in the right sidebar widget.
+ * Popular Posts dataset displayed above the latest articles feed.
+ * Full posts so they render exactly like latest article cards.
  */
-export const POPULAR_POSTS: PopularPost[] = [
+export const POPULAR_POSTS: BlogPost[] = [
   {
     id: 'pop-1',
     slug: 'the-real-cost-of-ransomware-in-2025',
     title: 'The Real Cost of Ransomware in 2025',
+    excerpt: 'Downtime, recovery, and reputation — a practical breakdown of what a ransomware incident really costs an enterprise.',
+    content: `
+# The Real Cost of Ransomware in 2025
+
+Ransom payments make the headlines, but they are only a fraction of the true cost of a ransomware incident. For most enterprises, downtime, recovery operations, and reputational damage dwarf the payment itself.
+
+## Beyond the Ransom
+
+A typical enterprise ransomware event includes:
+- Operational downtime across critical business systems.
+- Forensic investigation and environment rebuild costs.
+- Regulatory notifications and potential penalties.
+- Customer churn following loss of trust.
+
+## Quantify Before It Happens
+
+By modeling ransomware scenarios in financial terms before an incident, leadership can right-size backups, segmentation, and cyber insurance coverage — turning a board-level fear into a budgeted, managed exposure.
+    `,
+    category: CATEGORIES[1], // Threat Intelligence
+    author: {
+      name: 'Threat Research Desk',
+      avatar: '/avatars/researcher.png',
+    },
     publishedAt: '2025-05-08',
     readTime: '5 min read',
-    categoryTheme: 'blue',
+    illustrationType: 'threat-intel',
+    tags: ['Ransomware', 'Risk Quantification', 'Incident Response'],
   },
   {
     id: 'pop-2',
     slug: 'mapping-threats-to-mitre-attck',
     title: 'Mapping Threats to MITRE ATT&CK',
+    excerpt: 'How mapping adversary behavior to ATT&CK tactics sharpens detection and prioritizes engineering effort.',
+    content: `
+# Mapping Threats to MITRE ATT&CK
+
+MITRE ATT&CK gives security teams a common language for adversary behavior. The real value comes from mapping what you observe in your own environment to those tactics — and engineering detections where coverage is thinnest.
+
+## From Framework to Coverage
+
+Start with the tactics most relevant to your industry, then:
+- Inventory existing detections per technique.
+- Score coverage gaps by asset criticality.
+- Prioritize engineering work that closes the highest-risk gaps first.
+
+## Make It Continuous
+
+Threat landscapes shift quarterly. Re-mapping on a cadence turns ATT&CK from a one-time exercise into a living measurement of defensive posture.
+    `,
+    category: CATEGORIES[3], // Security Engineering
+    author: {
+      name: 'Threat Research Desk',
+      avatar: '/avatars/researcher.png',
+    },
     publishedAt: '2025-04-20',
     readTime: '7 min read',
-    categoryTheme: 'purple',
+    illustrationType: 'security-eng',
+    tags: ['MITRE ATT&CK', 'Detection Engineering', 'Threat Intel'],
   },
   {
     id: 'pop-3',
     slug: '10-security-metrics-every-ciso-should-track',
     title: '10 Security Metrics Every CISO Should Track',
+    excerpt: 'Move past vanity metrics — the ten measurements that connect security performance to business outcomes.',
+    content: `
+# 10 Security Metrics Every CISO Should Track
+
+Patch counts and blocked attacks describe activity, not outcomes. These ten metrics connect security performance to the business results boards actually fund.
+
+## Outcome Over Activity
+
+Prioritize metrics like mean time to contain, percentage of critical assets with validated controls, third-party exposure in monetary terms, and audit finding recurrence rates.
+
+## Report in Currency
+
+Every metric lands harder paired with its financial exposure. A CISO who reports risk in dollars earns budget faster than one who reports it in ticket counts.
+    `,
+    category: CATEGORIES[0], // Risk Quantification
+    author: {
+      name: 'Threat Research Desk',
+      avatar: '/avatars/researcher.png',
+    },
     publishedAt: '2025-04-15',
     readTime: '6 min read',
-    categoryTheme: 'orange',
+    illustrationType: 'risk-quant',
+    tags: ['CISO', 'Security Metrics', 'Risk Quantification'],
   },
 ];
 

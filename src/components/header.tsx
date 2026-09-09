@@ -24,6 +24,7 @@ import {
   Cpu,
   Lock,
   Globe2,
+  MailCheck,
 } from "lucide-react";
 
 interface HeaderProps {
@@ -142,9 +143,9 @@ export default function Header({ currentPath }: HeaderProps) {
               onMouseEnter={handlePlatformEnter}
               onMouseLeave={handlePlatformLeave}
             >
-              <button
-                type="button"
-                onClick={() => setPlatformOpen((prev) => !prev)}
+              <Link
+                href="/platform"
+                onClick={closeAll}
                 className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-all duration-200 cursor-pointer ${
                   platformOpen || pathname.startsWith("/platform")
                     ? "text-orange-400 bg-white/[0.1] shadow-[0_0_12px_rgba(249,115,22,0.3)]"
@@ -158,22 +159,32 @@ export default function Header({ currentPath }: HeaderProps) {
                     platformOpen ? "rotate-180 text-orange-400" : ""
                   }`}
                 />
-              </button>
+              </Link>
 
               {/* Platform Dropdown Content */}
               {platformOpen && (
-                <div className="absolute top-full mt-3 -left-4 w-[330px] rounded-2xl bg-[#0c0d12]/95 backdrop-blur-2xl border border-white/[0.12] p-2 shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_20px_rgba(249,115,22,0.12)] animate-in fade-in slide-in-from-top-2 overflow-hidden z-50">
-                  {/* Ambient Glow */}
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-[40px] pointer-events-none" />
+                <div className="absolute top-full mt-3 -left-4 w-[330px] rounded-2xl bg-black/95 backdrop-blur-2xl border border-orange-500/20 p-2 shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_35px_-5px_rgba(249,115,22,0.25)] animate-in fade-in slide-in-from-top-2 overflow-hidden z-50">
+                  {/* Themed background: base dot grid + dual orange torch glows */}
+                  <div
+                    className="absolute inset-0 pointer-events-none opacity-40"
+                    style={{
+                      backgroundImage:
+                        "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='16' height='16' fill='none'%3E%3Ccircle fill='%23ffffff' cx='10' cy='10' r='1.2' opacity='0.15'/%3E%3C/svg%3E\")",
+                    }}
+                  />
+                  <div className="absolute -top-16 -right-10 w-56 h-56 bg-orange-500/[0.14] rounded-full blur-[60px] pointer-events-none" />
+                  <div className="absolute -bottom-20 -left-10 w-56 h-56 bg-orange-600/[0.08] rounded-full blur-[70px] pointer-events-none" />
+                  {/* Top orange hairline */}
+                  <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-orange-500/60 to-transparent pointer-events-none" />
 
                   <div className="space-y-1 relative z-10">
                     {/* Fortress */}
                     <Link
                       href="/platform/fortress"
                       onClick={closeAll}
-                      className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-white/[0.06] transition-all"
+                      className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-orange-500/[0.06] transition-all"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-[#231711] border border-[#3e2216] flex items-center justify-center flex-shrink-0 group-hover:border-orange-500/50 group-hover:bg-[#2c1d15] transition-all">
+                      <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/25 flex items-center justify-center flex-shrink-0 group-hover:border-orange-500/60 group-hover:bg-orange-500/[0.16] group-hover:shadow-[0_0_14px_rgba(249,115,22,0.35)] transition-all">
                         <ShieldAlert className="w-4 h-4 text-orange-400" />
                       </div>
                       <div>
@@ -190,9 +201,9 @@ export default function Header({ currentPath }: HeaderProps) {
                     <Link
                       href="/platform/pulse"
                       onClick={closeAll}
-                      className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-white/[0.06] transition-all"
+                      className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-orange-500/[0.06] transition-all"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-[#231711] border border-[#3e2216] flex items-center justify-center flex-shrink-0 group-hover:border-orange-500/50 group-hover:bg-[#2c1d15] transition-all">
+                      <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/25 flex items-center justify-center flex-shrink-0 group-hover:border-orange-500/60 group-hover:bg-orange-500/[0.16] group-hover:shadow-[0_0_14px_rgba(249,115,22,0.35)] transition-all">
                         <Activity className="w-4 h-4 text-orange-400" />
                       </div>
                       <div>
@@ -209,9 +220,9 @@ export default function Header({ currentPath }: HeaderProps) {
                     <Link
                       href="/platform/compass"
                       onClick={closeAll}
-                      className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-white/[0.06] transition-all"
+                      className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-orange-500/[0.06] transition-all"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-[#231711] border border-[#3e2216] flex items-center justify-center flex-shrink-0 group-hover:border-orange-500/50 group-hover:bg-[#2c1d15] transition-all">
+                      <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/25 flex items-center justify-center flex-shrink-0 group-hover:border-orange-500/60 group-hover:bg-orange-500/[0.16] group-hover:shadow-[0_0_14px_rgba(249,115,22,0.35)] transition-all">
                         <Compass className="w-4 h-4 text-orange-400" />
                       </div>
                       <div>
@@ -228,9 +239,9 @@ export default function Header({ currentPath }: HeaderProps) {
                     <Link
                       href="/platform/accord"
                       onClick={closeAll}
-                      className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-white/[0.06] transition-all"
+                      className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-orange-500/[0.06] transition-all"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-[#231711] border border-[#3e2216] flex items-center justify-center flex-shrink-0 group-hover:border-orange-500/50 group-hover:bg-[#2c1d15] transition-all">
+                      <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/25 flex items-center justify-center flex-shrink-0 group-hover:border-orange-500/60 group-hover:bg-orange-500/[0.16] group-hover:shadow-[0_0_14px_rgba(249,115,22,0.35)] transition-all">
                         <Scale className="w-4 h-4 text-orange-400" />
                       </div>
                       <div>
@@ -242,10 +253,29 @@ export default function Header({ currentPath }: HeaderProps) {
                         </p>
                       </div>
                     </Link>
+
+                    {/* DMARC Monitoring */}
+                    <Link
+                      href="/platform/dmarc-monitoring"
+                      onClick={closeAll}
+                      className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-orange-500/[0.06] transition-all"
+                    >
+                      <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/25 flex items-center justify-center flex-shrink-0 group-hover:border-orange-500/60 group-hover:bg-orange-500/[0.16] group-hover:shadow-[0_0_14px_rgba(249,115,22,0.35)] transition-all">
+                        <MailCheck className="w-4 h-4 text-orange-400" />
+                      </div>
+                      <div>
+                        <div className="font-semibold text-white text-xs group-hover:text-orange-400 transition-colors flex items-center gap-1.5">
+                          DMARC Monitoring
+                        </div>
+                        <p className="text-[11px] text-slate-400 leading-tight mt-0.5">
+                          Email Authentication & Monitoring
+                        </p>
+                      </div>
+                    </Link>
                   </div>
 
                   {/* Bottom link */}
-                  <div className="mt-2 pt-2 border-t border-white/[0.08]">
+                  <div className="mt-2 pt-2 border-t border-orange-500/15">
                     <Link
                       href="/platform"
                       onClick={closeAll}
@@ -265,9 +295,9 @@ export default function Header({ currentPath }: HeaderProps) {
               onMouseEnter={handleComplianceEnter}
               onMouseLeave={handleComplianceLeave}
             >
-              <button
-                type="button"
-                onClick={() => setComplianceOpen((prev) => !prev)}
+              <Link
+                href="/compliance"
+                onClick={closeAll}
                 className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-all duration-200 cursor-pointer ${
                   complianceOpen || pathname.startsWith("/compliance")
                     ? "text-orange-400 bg-white/[0.1] shadow-[0_0_12px_rgba(249,115,22,0.3)]"
@@ -281,7 +311,7 @@ export default function Header({ currentPath }: HeaderProps) {
                     complianceOpen ? "rotate-180 text-orange-400" : ""
                   }`}
                 />
-              </button>
+              </Link>
             </div>
 
             {/* Solutions Link */}
@@ -336,22 +366,14 @@ export default function Header({ currentPath }: HeaderProps) {
               Why Risknox
             </Link>
 
-            {/* Under attack? urgent link */}
-            <Link
-              href="/incident-response"
-              onClick={closeAll}
-              className="px-2.5 py-1.5 rounded-lg text-orange-400 font-semibold hover:text-orange-300 hover:bg-orange-500/10 transition-all flex items-center gap-1.5"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-              </span>
-              <span>Under attack?</span>
-            </Link>
           </nav>
 
           {/* 3. Right: CTA Button (Desktop) & Hamburger (Mobile) */}
           <div className="flex items-center gap-3">
+            {/* Under attack? plain text */}
+            <span className="hidden sm:inline text-xs md:text-sm text-orange-400/90 font-normal whitespace-nowrap select-none">
+              Under attack?
+            </span>
             {/* Desktop CTA Button */}
             <Link
               href="/contact"
@@ -383,11 +405,20 @@ export default function Header({ currentPath }: HeaderProps) {
           <div
             onMouseEnter={handleComplianceEnter}
             onMouseLeave={handleComplianceLeave}
-            className="absolute top-full mt-3 left-0 right-0 rounded-2xl bg-[#080808]/98 backdrop-blur-3xl border border-white/[0.12] shadow-[0_24px_60px_-12px_rgba(0,0,0,0.9),0_0_35px_-5px_rgba(249,115,22,0.2)] animate-in fade-in slide-in-from-top-2 overflow-hidden z-50"
+            className="absolute top-full mt-3 left-0 right-0 rounded-2xl bg-black/95 backdrop-blur-3xl border border-orange-500/20 shadow-[0_24px_60px_-12px_rgba(0,0,0,0.9),0_0_45px_-5px_rgba(249,115,22,0.25)] animate-in fade-in slide-in-from-top-2 overflow-hidden z-50"
           >
-            {/* Dual Ambient Glows */}
-            <div className="absolute -top-24 left-10 w-96 h-96 bg-orange-500/12 rounded-full blur-[100px] pointer-events-none" />
-            <div className="absolute -top-24 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none" />
+            {/* Themed background: base dot grid + dual orange torch glows */}
+            <div
+              className="absolute inset-0 pointer-events-none opacity-40"
+              style={{
+                backgroundImage:
+                  "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='16' height='16' fill='none'%3E%3Ccircle fill='%23ffffff' cx='10' cy='10' r='1.2' opacity='0.15'/%3E%3C/svg%3E\")",
+              }}
+            />
+            <div className="absolute -top-24 left-10 w-96 h-96 bg-orange-500/[0.14] rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute -bottom-32 right-10 w-96 h-96 bg-orange-600/[0.08] rounded-full blur-[110px] pointer-events-none" />
+            {/* Top orange hairline */}
+            <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-orange-500/60 to-transparent pointer-events-none" />
 
             <div className="relative z-10 p-6 md:p-8 space-y-6">
               {/* Top Header Section */}
@@ -433,7 +464,7 @@ export default function Header({ currentPath }: HeaderProps) {
                     <Link
                       href="/compliance/iso-27001"
                       onClick={closeAll}
-                      className="group p-4 rounded-xl bg-[#111113] border border-[#202024] hover:border-orange-500/40 hover:bg-[#161619] transition-all flex flex-col justify-between"
+                      className="group p-4 rounded-xl bg-white/[0.02] border border-white/10 hover:border-orange-500/40 hover:bg-orange-500/[0.04] hover:shadow-[0_0_25px_rgba(249,115,22,0.12)] transition-all flex flex-col justify-between"
                     >
                       <div>
                         <div className="flex items-center justify-between mb-3">
@@ -461,14 +492,14 @@ export default function Header({ currentPath }: HeaderProps) {
                     <Link
                       href="/compliance/soc-2"
                       onClick={closeAll}
-                      className="group p-4 rounded-xl bg-[#111113] border border-[#202024] hover:border-orange-500/40 hover:bg-[#161619] transition-all flex flex-col justify-between"
+                      className="group p-4 rounded-xl bg-white/[0.02] border border-white/10 hover:border-orange-500/40 hover:bg-orange-500/[0.04] hover:shadow-[0_0_25px_rgba(249,115,22,0.12)] transition-all flex flex-col justify-between"
                     >
                       <div>
                         <div className="flex items-center justify-between mb-3">
-                          <div className="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/25 flex items-center justify-center text-[#3b82f6]">
+                          <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/25 flex items-center justify-center text-orange-400">
                             <FileCheck className="w-4 h-4" />
                           </div>
-                          <span className="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                          <span className="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-orange-500/10 text-orange-400 border border-orange-500/20">
                             Type I & II
                           </span>
                         </div>
@@ -479,7 +510,7 @@ export default function Header({ currentPath }: HeaderProps) {
                           Automated trust service criteria tests and auditor-ready evidence vault.
                         </p>
                       </div>
-                      <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs text-blue-400 group-hover:text-orange-400 font-medium transition-colors">
+                      <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs text-orange-400 font-medium transition-colors">
                         <span>Get audit-ready</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </div>
@@ -489,14 +520,14 @@ export default function Header({ currentPath }: HeaderProps) {
                     <Link
                       href="/compliance/dpdpa-data-mapping"
                       onClick={closeAll}
-                      className="group p-4 rounded-xl bg-[#111113] border border-[#202024] hover:border-orange-500/40 hover:bg-[#161619] transition-all flex flex-col justify-between"
+                      className="group p-4 rounded-xl bg-white/[0.02] border border-white/10 hover:border-orange-500/40 hover:bg-orange-500/[0.04] hover:shadow-[0_0_25px_rgba(249,115,22,0.12)] transition-all flex flex-col justify-between"
                     >
                       <div>
                         <div className="flex items-center justify-between mb-3">
-                          <div className="w-9 h-9 rounded-lg bg-purple-500/10 border border-purple-500/25 flex items-center justify-center text-[#a855f7]">
+                          <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/25 flex items-center justify-center text-orange-400">
                             <Database className="w-4 h-4" />
                           </div>
-                          <span className="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                          <span className="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-orange-500/10 text-orange-400 border border-orange-500/20">
                             Accord Module
                           </span>
                         </div>
@@ -507,7 +538,7 @@ export default function Header({ currentPath }: HeaderProps) {
                           Automated data principal consent & lineage discovery engine.
                         </p>
                       </div>
-                      <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs text-purple-400 group-hover:text-orange-400 font-medium transition-colors">
+                      <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs text-orange-400 font-medium transition-colors">
                         <span>Get audit-ready</span>
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </div>
@@ -518,7 +549,7 @@ export default function Header({ currentPath }: HeaderProps) {
                 {/* Right (col-span-4): More Frameworks */}
                 <div className="lg:col-span-4 space-y-3">
                   <div className="flex items-center gap-2 text-xs font-semibold text-slate-300 uppercase tracking-wider">
-                    <Layers className="w-4 h-4 text-blue-400" />
+                    <Layers className="w-4 h-4 text-orange-400" />
                     <span>More Frameworks</span>
                   </div>
 
@@ -527,7 +558,7 @@ export default function Header({ currentPath }: HeaderProps) {
                     <Link
                       href="/compliance/nist"
                       onClick={closeAll}
-                      className="group flex items-center justify-between p-2.5 rounded-xl bg-[#111113] border border-[#202024] hover:border-orange-500/35 hover:bg-[#151518] transition-all"
+                      className="group flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/10 hover:border-orange-500/35 hover:bg-orange-500/[0.04] transition-all"
                     >
                       <div className="flex items-center gap-2.5">
                         <Lock className="w-4 h-4 text-slate-400 group-hover:text-orange-400 transition-colors" />
@@ -547,7 +578,7 @@ export default function Header({ currentPath }: HeaderProps) {
                     <Link
                       href="/compliance/gdpr"
                       onClick={closeAll}
-                      className="group flex items-center justify-between p-2.5 rounded-xl bg-[#111113] border border-[#202024] hover:border-orange-500/35 hover:bg-[#151518] transition-all"
+                      className="group flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/10 hover:border-orange-500/35 hover:bg-orange-500/[0.04] transition-all"
                     >
                       <div className="flex items-center gap-2.5">
                         <Globe2 className="w-4 h-4 text-slate-400 group-hover:text-orange-400 transition-colors" />
@@ -567,7 +598,7 @@ export default function Header({ currentPath }: HeaderProps) {
                     <Link
                       href="/compliance/pci-dss"
                       onClick={closeAll}
-                      className="group flex items-center justify-between p-2.5 rounded-xl bg-[#111113] border border-[#202024] hover:border-orange-500/35 hover:bg-[#151518] transition-all"
+                      className="group flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/10 hover:border-orange-500/35 hover:bg-orange-500/[0.04] transition-all"
                     >
                       <div className="flex items-center gap-2.5">
                         <ShieldAlert className="w-4 h-4 text-slate-400 group-hover:text-orange-400 transition-colors" />
@@ -587,7 +618,7 @@ export default function Header({ currentPath }: HeaderProps) {
                     <Link
                       href="/compliance/eu-ai-act"
                       onClick={closeAll}
-                      className="group flex items-center justify-between p-2.5 rounded-xl bg-[#111113] border border-[#202024] hover:border-orange-500/35 hover:bg-[#151518] transition-all"
+                      className="group flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/10 hover:border-orange-500/35 hover:bg-orange-500/[0.04] transition-all"
                     >
                       <div className="flex items-center gap-2.5">
                         <Cpu className="w-4 h-4 text-slate-400 group-hover:text-orange-400 transition-colors" />
@@ -619,9 +650,9 @@ export default function Header({ currentPath }: HeaderProps) {
               </div>
 
               {/* Bottom Action Bar */}
-              <div className="pt-4 border-t border-white/[0.08] bg-gradient-to-r from-orange-500/[0.04] to-blue-500/[0.04] -mx-6 -mb-6 md:-mx-8 md:-mb-8 p-4 md:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="pt-4 border-t border-orange-500/15 bg-gradient-to-r from-orange-500/[0.07] via-orange-500/[0.02] to-transparent -mx-6 -mb-6 md:-mx-8 md:-mb-8 p-4 md:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-2 text-xs text-slate-300">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-orange-400 flex-shrink-0" />
                   <span>Self-serve automated builder or full enterprise managed rollout.</span>
                 </div>
 
@@ -629,16 +660,16 @@ export default function Header({ currentPath }: HeaderProps) {
                   <Link
                     href="/contact/rollout"
                     onClick={closeAll}
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-[#141417] hover:bg-[#1e1e23] border border-white/10 text-xs font-medium text-white transition-all"
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-white/[0.03] hover:bg-orange-500/10 border border-white/10 hover:border-orange-500/40 text-xs font-medium text-white transition-all"
                   >
-                    <PhoneCall className="w-3.5 h-3.5 text-blue-400" />
+                    <PhoneCall className="w-3.5 h-3.5 text-orange-400" />
                     <span>Talk to us about a managed rollout</span>
                   </Link>
 
                   <Link
                     href="/grc-builder"
                     onClick={closeAll}
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-xs font-semibold text-white shadow-[0_0_16px_rgba(249,115,22,0.4)] transition-all active:scale-95"
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-[#f97316] hover:bg-[#ff7d1c] text-xs font-semibold text-white shadow-[0_0_16px_rgba(249,115,22,0.45)] hover:shadow-[0_0_24px_rgba(249,115,22,0.6)] transition-all active:scale-95"
                   >
                     <SlidersHorizontal className="w-3.5 h-3.5" />
                     <span>Build your GRC program</span>
@@ -726,6 +757,17 @@ export default function Header({ currentPath }: HeaderProps) {
                     <div className="text-[10px] text-slate-400">Risk Quantification & Analytics</div>
                   </div>
                 </Link>
+                <Link
+                  href="/platform/dmarc-monitoring"
+                  onClick={closeAll}
+                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/[0.06] text-xs text-slate-300"
+                >
+                  <MailCheck className="w-4 h-4 text-orange-400" />
+                  <div>
+                    <div className="font-semibold text-white">DMARC Monitoring</div>
+                    <div className="text-[10px] text-slate-400">Email Authentication & Monitoring</div>
+                  </div>
+                </Link>
 
                 <Link
                   href="/platform"
@@ -783,7 +825,7 @@ export default function Header({ currentPath }: HeaderProps) {
                     className="p-2 rounded-lg bg-white/[0.03] text-xs text-white font-medium hover:text-orange-400 flex items-center justify-between"
                   >
                     <span>SOC 2 Readiness</span>
-                    <span className="text-[10px] text-blue-400">Type I & II</span>
+                    <span className="text-[10px] text-orange-400">Type I & II</span>
                   </Link>
                   <Link
                     href="/compliance/dpdpa-data-mapping"
@@ -791,7 +833,7 @@ export default function Header({ currentPath }: HeaderProps) {
                     className="p-2 rounded-lg bg-white/[0.03] text-xs text-white font-medium hover:text-orange-400 flex items-center justify-between"
                   >
                     <span>DPDPA Data Flow Mapping</span>
-                    <span className="text-[10px] text-purple-400">Accord Module</span>
+                    <span className="text-[10px] text-orange-400">Accord Module</span>
                   </Link>
                   <Link
                     href="/compliance"
@@ -849,13 +891,9 @@ export default function Header({ currentPath }: HeaderProps) {
           >
             Why Risknox
           </Link>
-          <Link
-            href="/incident-response"
-            onClick={closeAll}
-            className="block px-3.5 py-2 rounded-lg text-sm font-semibold text-orange-400 hover:bg-orange-500/10"
-          >
+          <span className="block px-3.5 py-2 text-sm text-orange-400/90 select-none">
             Under attack?
-          </Link>
+          </span>
 
           {/* Mobile Bottom Action CTAs */}
           <div className="pt-3 border-t border-white/[0.1] space-y-2">

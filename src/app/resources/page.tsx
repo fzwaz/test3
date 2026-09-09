@@ -5,10 +5,11 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Hero from "@/features/blog/components/blog/Hero";
 import ArticleGrid from "@/features/blog/components/blog/ArticleGrid";
+import ArticleCard from "@/features/blog/components/blog/ArticleCard";
 import Sidebar from "@/features/blog/components/blog/Sidebar";
 import ArticleModal from "@/features/blog/components/blog/ArticleModal";
 import SolutionCTA from "@/features/solution/components/SolutionCTA";
-import { ARTICLES, FEATURED_ARTICLE } from "@/features/blog/data/posts";
+import { ARTICLES, FEATURED_ARTICLE, POPULAR_POSTS } from "@/features/blog/data/posts";
 import { BlogPost } from "@/features/blog/types";
 
 export default function ResourcesPage() {
@@ -57,12 +58,7 @@ export default function ResourcesPage() {
     setCurrentPage(1);
   };
 
-  const handleSelectPopularPost = (slug: string) => {
-    const found = allPosts.find((p) => p.slug === slug);
-    if (found) {
-      setActiveModalPost(found);
-    }
-  };
+  const showPopular = !searchQuery.trim() && !selectedCategory;
 
   return (
     <div className="min-h-screen flex flex-col bg-[#000000] text-slate-100 selection:bg-orange-500/30 selection:text-orange-200 relative overflow-x-clip">
@@ -84,6 +80,19 @@ export default function ResourcesPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             {/* Left Content Column: Scrollable Articles Grid (8 cols) */}
             <div className="lg:col-span-8 space-y-8">
+              {/* Popular posts — same cards as latest articles, above the feed */}
+              {showPopular && (
+                <div className="space-y-6">
+                  <h3 className="text-xl font-bold text-white tracking-tight font-sans">
+                    Popular posts
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {POPULAR_POSTS.map((post) => (
+                      <ArticleCard key={post.id} post={post} onReadPost={(p) => setActiveModalPost(p)} />
+                    ))}
+                  </div>
+                </div>
+              )}
               <ArticleGrid
                 posts={paginatedPosts}
                 currentPage={currentPage}
@@ -105,7 +114,6 @@ export default function ResourcesPage() {
                   setSelectedCategory(catId);
                   setCurrentPage(1);
                 }}
-                onSelectPopularPost={handleSelectPopularPost}
               />
             </div>
           </div>

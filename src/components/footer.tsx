@@ -8,11 +8,11 @@ const navColumns = [
   {
     heading: "PLATFORM",
     links: [
-      { label: "Pulse", href: "#pulse" },
+      { label: "Pulse", href: "https://pulse.risknox.ai", external: true },
       { label: "Fortress", href: "#fortress" },
-      { label: "Compass", href: "#compass" },
-      { label: "Accord", href: "#accord" },
-      { label: "DMARC Monitoring", href: "#dmarc" },
+      { label: "Compass", href: "https://compass.risknox.ai", external: true },
+      { label: "Accord", href: "https://accord.risknox.ai", external: true },
+      { label: "DMARC Monitoring", href: "/platform/dmarc-monitoring" },
     ],
   },
   {
@@ -151,12 +151,23 @@ export default function Footer() {
                 <ul className="space-y-2.5">
                   {col.links.map((link) => (
                     <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        className="text-sm text-slate-400 hover:text-white transition-colors duration-150"
-                      >
-                        {link.label}
-                      </Link>
+                      {"external" in link && link.external ? (
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-slate-400 hover:text-white transition-colors duration-150"
+                        >
+                          {link.label}
+                        </a>
+                      ) : (
+                        <Link
+                          href={link.href}
+                          className="text-sm text-slate-400 hover:text-white transition-colors duration-150"
+                        >
+                          {link.label}
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -182,15 +193,6 @@ export default function Footer() {
             <Link href="#terms" className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
               Terms of Service
             </Link>
-
-            {/* Systems Operational badge */}
-            <div className="flex items-center gap-1.5">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-              </span>
-              <span className="text-xs text-emerald-400 font-medium">Systems Operational</span>
-            </div>
           </div>
         </div>
       </div>

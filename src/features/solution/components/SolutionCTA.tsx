@@ -33,7 +33,7 @@ export default function SolutionCTA() {
 
           {/* 2. Interactive Orange Dot-Glow Highlight */}
           <div
-            className="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover/cta-box:opacity-75 transition-opacity duration-500"
+            className="absolute inset-0 z-0 pointer-events-none opacity-20 group-hover/cta-box:opacity-75 transition-opacity duration-500"
             style={{
               backgroundImage:
                 "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='16' height='16' fill='none'%3E%3Ccircle fill='%23FF6B35' cx='10' cy='10' r='1.5'/%3E%3C/svg%3E\")",

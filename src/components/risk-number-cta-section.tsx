@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, TrendingUp, IndianRupee, ShieldAlert } from "lucide-react";
 import { useState } from "react";
+import Reveal from "@/components/reveal";
 
 /**
  * DiscoveryCallAndMetrics Component (Business Section)
@@ -34,10 +35,10 @@ export default function BusinessSection() {
         }
       `}</style>
 
-      {/* 1. INTERACTIVE DOT-GLOW HIGHLIGHT (Same as Hero) */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-50" style={{ backgroundImage: "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='16' height='16' fill='none'%3E%3Ccircle fill='%23ffffff' cx='10' cy='10' r='1.2' opacity='0.15'/%3E%3C/svg%3E\")" }} />
+      {/* 1. STATIC LIGHT-ORANGE DOT GRID (brightens on hover via layer 2) */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-80" style={{ backgroundImage: "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='16' height='16' fill='none'%3E%3Ccircle fill='%23FF6B35' cx='10' cy='10' r='1.5' opacity='0.5'/%3E%3C/svg%3E\")" }} />
       <div
-        className="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover/section:opacity-60 transition-opacity duration-500"
+        className="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover/section:opacity-100 transition-opacity duration-500"
         style={{
           backgroundImage: "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='16' height='16' fill='none'%3E%3Ccircle fill='%23FF6B35' cx='10' cy='10' r='1.5'/%3E%3C/svg%3E\")",
           maskImage: `radial-gradient(400px circle at ${coords.x} ${coords.y}, black 0%, transparent 100%)`,
@@ -53,7 +54,8 @@ export default function BusinessSection() {
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
 
           {/* Left Column: Headlines & Call to Action */}
-          <div className="lg:col-span-6 space-y-8">
+          <div className="lg:col-span-6">
+            <Reveal className="space-y-8">
 
             {/* Tagline Badge */}
             <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
@@ -93,10 +95,12 @@ export default function BusinessSection() {
               </div>
             </div>
 
+            </Reveal>
           </div>
 
           {/* Right Column: Dashboard Mockup */}
           <div className="lg:col-span-6 relative w-full h-full flex items-center justify-center">
+            <Reveal className="w-full flex items-center justify-center" delay={0.15}>
 
             {/* The Dashboard Mockup Card */}
             <div className="w-full max-w-lg bg-[#1A1A1A] rounded-2xl border border-[#2A2A2A] overflow-hidden flex flex-col shadow-2xl">
@@ -218,6 +222,7 @@ export default function BusinessSection() {
               </div>
 
             </div>
+            </Reveal>
           </div>
 
         </div>

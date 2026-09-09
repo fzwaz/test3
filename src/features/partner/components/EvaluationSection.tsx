@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import CircuitTrace from "@/components/circuit-trace";
 import { UserPlus, Lock, BarChart2, ArrowRight } from "lucide-react";
 
 export default function EvaluationSection() {
@@ -66,11 +67,13 @@ export default function EvaluationSection() {
                 />
                 <svg className="w-full h-full relative z-10 overflow-visible" viewBox="0 0 280 120" fill="none">
                   <path d="M 10 100 L 50 100 L 80 78 L 120 78 L 155 50 L 200 50 L 230 28 L 270 28" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M 155 50 L 200 50 L 230 28" stroke="#ff7936" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  <circle cx="230" cy="28" r="3" fill="#ff7936" />
-                  <circle cx="230" cy="28" r="7" fill="#ff7936" fillOpacity="0.3" />
-                  <circle cx="270" cy="28" r="3" fill="#ff7936" />
-                  <circle cx="270" cy="28" r="7" fill="#ff7936" fillOpacity="0.3" />
+                  {/* Animated circuit trace — draws left to right */}
+                  <CircuitTrace
+                    d="M 10 100 L 50 100 L 80 78 L 120 78 L 155 50 L 200 50 L 230 28 L 270 28"
+                    endX={270}
+                    endY={28}
+                    phase={2.25}
+                  />
                 </svg>
               </div>
             </div>

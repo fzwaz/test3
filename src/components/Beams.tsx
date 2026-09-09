@@ -3,9 +3,28 @@
 
 import { forwardRef, useImperativeHandle, useEffect, useRef, useMemo } from "react";
 import * as THREE from "three";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { PerspectiveCamera } from "@react-three/drei";
 import "./Beams.css";
+
+function WebGLManager() {
+  const { gl } = useThree();
+
+  useEffect(() => {
+    const canvas = gl.domElement;
+    const handleContextLost = (e: Event) => {
+      e.preventDefault();
+    };
+    canvas.addEventListener("webglcontextlost", handleContextLost, false);
+
+    return () => {
+      canvas.removeEventListener("webglcontextlost", handleContextLost);
+      gl.dispose();
+    };
+  }, [gl]);
+
+  return null;
+}
 
 function extendMaterial(BaseMaterial: any, cfg: any) {
   const physical = (THREE.ShaderLib as any).physical;
@@ -49,7 +68,37 @@ function extendMaterial(BaseMaterial: any, cfg: any) {
 }
 
 const CanvasWrapper = ({ children }: { children: React.ReactNode }) => (
-  <Canvas dpr={[1, 2]} frameloop="always" className="beams-container">
+  <Canvas
+    dpr={[1, 2]}
+    frameloop="always"
+    className="beams-container"
+    onCreated={({ gl }) => {
+      // r3f sizes the canvas once from the container at creation. If that
+      // measurement races page layout (client-side nav / streaming), the
+      // canvas is left at the 300x150 default and renders black forever —
+      // v9 has no container ResizeObserver to heal it. Re-sync from the
+      // live container a few times after mount; no-ops when already right.
+      const sync = () => {
+        const canvas = gl.domElement;
+        if (!canvas.isConnected) return;
+        const parent = canvas.parentElement;
+        if (!parent) return;
+        const w = Math.floor(parent.clientWidth);
+        const h = Math.floor(parent.clientHeight);
+        if (w <= 0 || h <= 0) return;
+        const dpr = gl.getPixelRatio();
+        if (canvas.width !== Math.floor(w * dpr) || canvas.height !== Math.floor(h * dpr)) {
+          gl.setSize(w, h);
+        }
+      };
+      requestAnimationFrame(sync);
+      const t1 = setTimeout(sync, 500);
+      const t2 = setTimeout(sync, 1500);
+      void t1;
+      void t2;
+    }}
+  >
+    <WebGLManager />
     {children}
   </Canvas>
 );

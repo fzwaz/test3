@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import CircuitTrace from "@/components/circuit-trace";
 import {
   FileText,
   Users,
@@ -110,18 +111,12 @@ export default function InsurersSection() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
-                  {/* Glowing Highlight Path Segments */}
-                  <path
-                    d="M 140 65 L 170 35"
-                    stroke="#ff7936"
-                    strokeWidth="2"
-                    strokeLinecap="round"
+                  {/* Animated circuit trace — draws left to right */}
+                  <CircuitTrace
+                    d="M 10 90 L 70 90 L 100 65 L 140 65 L 170 35 L 230 35 L 245 20 L 270 20"
+                    endX={270}
+                    endY={20}
                   />
-                  <circle cx="170" cy="35" r="3" fill="#ff7936" />
-                  <circle cx="170" cy="35" r="7" fill="#ff7936" fillOpacity="0.3" />
-
-                  <circle cx="270" cy="20" r="3" fill="#ff7936" />
-                  <circle cx="270" cy="20" r="7" fill="#ff7936" fillOpacity="0.3" />
                 </svg>
               </div>
             </div>

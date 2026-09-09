@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import SpecularCardBorder from "@/components/SpecularCard";
 
 type RoleCard = {
   id: string;
@@ -80,9 +81,9 @@ export default function RoleSection() {
         {/* 2. 2x2 Grid of Role Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           {ROLE_CARDS.map((card) => (
+            <div key={card.id} className="relative group">
             <div
-              key={card.id}
-              className="relative p-[1px] bg-white/10 hover:bg-[#ff7936]/40 shadow-[0_0_20px_rgba(255,121,54,0.05)] hover:shadow-[0_0_30px_rgba(255,121,54,0.15)] transition-all duration-300 group"
+              className="relative p-[1px] bg-white/10 hover:bg-white/25 shadow-[0_0_20px_rgba(255,121,54,0.05)] hover:shadow-[0_0_30px_rgba(255,121,54,0.15)] transition-all duration-300"
               style={{
                 clipPath:
                   "polygon(0 0, calc(100% - 32px) 0, 100% 32px, 100% 100%, 0 100%)",
@@ -153,6 +154,8 @@ export default function RoleSection() {
                   </Link>
                 </div>
               </div>
+            </div>
+            <SpecularCardBorder />
             </div>
           ))}
         </div>

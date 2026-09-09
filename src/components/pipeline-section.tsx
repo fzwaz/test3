@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
+import React, { useState, useRef, useLayoutEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
 interface StepData {
   id: string;
@@ -15,6 +16,7 @@ interface StepData {
   ctaText: string;
   ctaLink: string;
   stageName: string;
+  kicker: string;
   renderGraphic: () => React.ReactNode;
   renderIcon: () => React.ReactNode;
 }
@@ -24,6 +26,7 @@ const pipelineSteps: StepData[] = [
     id: "01",
     stepNumber: "",
     stageName: "Pulse",
+    kicker: "See everything, as it happens",
     title: "Monitor — Pulse",
     description:
       "See your cyber environment in real time with continuous AI-powered monitoring, anomaly detection, and actionable alerts.",
@@ -54,6 +57,7 @@ const pipelineSteps: StepData[] = [
     id: "02",
     stepNumber: "",
     stageName: "Fortress",
+    kicker: "From signals to dollar impact",
     title: "Quantify — Fortress",
     description:
       "Turn cyber exposure into financial impact with risk intelligence your leadership and board can understand and act on.",
@@ -93,6 +97,7 @@ const pipelineSteps: StepData[] = [
     id: "03",
     stepNumber: "",
     stageName: "Compass",
+    kicker: "Underwrite with confidence",
     title: "Underwrite — Compass",
     description:
       "Transform technical risk signals into underwriting-grade intelligence for faster, smarter risk assessment and premium decisions.",
@@ -126,6 +131,7 @@ const pipelineSteps: StepData[] = [
     id: "04",
     stepNumber: "",
     stageName: "Accord",
+    kicker: "Govern what you deploy",
     title: "Govern — Accord",
     description:
       "Bring AI governance, compliance, and insurability into one framework with automated workflows aligned to leading standards.",
@@ -140,7 +146,7 @@ const pipelineSteps: StepData[] = [
     renderGraphic: () => (
       <svg viewBox="0 0 240 200" className="w-full max-w-[210px] sm:max-w-[240px] drop-shadow-[0_15px_30px_rgba(0,0,0,0.9)]" fill="none">
         <path d="M120 120 L195 155 L120 190 L45 155 Z" fill="#0f1117" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" />
-        <path d="M45 155 L120 190 V198 L45 163 Z" fill="#090a0d" />
+        <path d="M45 155 L120 190 V198 L45 163 Z" fill="#07080a" />
         <path d="M195 155 L120 190 V198 L195 163 Z" fill="#07080a" />
         <path d="M80 65 L130 40 L130 130 L80 155 Z" fill="#1a1d26" stroke="rgba(255,255,255,0.15)" strokeWidth="1.2" />
         <text x="86" y="85" fill="#e2e8f0" fontSize="10" fontWeight="bold" transform="skewY(-18)">
@@ -158,807 +164,472 @@ const pipelineSteps: StepData[] = [
   },
 ];
 
+// ── Timeline segment lengths (seconds in scrub timeline) ──
+const SEG_HEADLINE = 1; // Stage 2: center → left
+const SEG_PANEL_IN = 0.8; // Stage 2: cards window reveals
+const TRACK = 3; // Stage 3: vertical card track travel
+const SEG_OUTRO = 0.5; // Stage 4: hold before release
+const CARDS_START = SEG_HEADLINE + SEG_PANEL_IN;
+const TOTAL = CARDS_START + TRACK + SEG_OUTRO;
+
+function StepCardBody({ step, highlighted }: { step: StepData; highlighted: boolean }) {
+  const [verb, name] = step.title.includes(" — ")
+    ? step.title.split(" — ")
+    : [step.title, ""];
+  return (
+    <div
+      className={`group relative rounded-[24px] transition-all duration-500 overflow-hidden p-6 sm:p-8 ${highlighted
+        ? "bg-[#0a0a0a] shadow-[0_20px_50px_rgba(0,0,0,0.95),0_0_35px_rgba(243,103,52,0.16)] ring-1 ring-white/[0.06]"
+        : "bg-[#0a0a0a]/90 shadow-[0_12px_35px_rgba(0,0,0,0.7)] ring-1 ring-white/[0.04]"
+        }`}
+    >
+      <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 sm:gap-4 items-center">
+        {/* Left: Step Number + Radar Icon Badge */}
+        <div className="sm:col-span-3 flex flex-row sm:flex-col items-center sm:items-start justify-between sm:justify-center gap-4 sm:gap-6 flex-shrink-0">
+          <span className="font-mono text-3xl sm:text-4xl font-extrabold text-[#f36734] tracking-tight leading-none">
+            {step.id}
+          </span>
+          <div className="relative flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full border border-[#f36734]/25 flex items-center justify-center relative bg-[#0a0800] shadow-[0_0_18px_rgba(243,103,52,0.2)]">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#f36734]/80" />
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1 h-1 rounded-full bg-[#f36734]/80" />
+              <div className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#f36734] shadow-[0_0_6px_#f36734]" />
+              <div className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#f36734]/80" />
+              <div className="w-11 h-11 rounded-full border border-[#f36734]/50 flex items-center justify-center bg-[#0e0c00]/90 shadow-[0_0_14px_rgba(243,103,52,0.35)]">
+                {step.renderIcon()}
+              </div>
+            </div>
+          </div>
+        </div>
+
+                          {/* Center: Title, Description & CTA Button */}
+                          <div className="sm:col-span-5 space-y-3.5 text-left">
+                            <p className="text-[11px] font-mono font-semibold uppercase tracking-[0.18em] text-[#f36734]/90 whitespace-nowrap">
+                              {step.kicker}
+                            </p>
+                            <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug group-hover:text-orange-100 transition-colors">
+            {verb}
+            {name ? <span className="text-[#f36734]"> — {name}</span> : null}
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-300/90 leading-relaxed font-normal">
+            {step.description}
+          </p>
+          <div className="pt-1.5">
+            <Link
+              href={step.ctaLink}
+              onClick={(e) => e.stopPropagation()}
+              className="group/btn relative inline-flex items-center justify-center px-4 py-2 bg-[#f36734] text-[#080808] rounded-[12px] sm:rounded-[14px] font-semibold text-xs sm:text-[13px] overflow-hidden shadow-[0_0_16px_rgba(243,103,52,0.3)] hover:shadow-[0_0_24px_rgba(243,103,52,0.5)] active:scale-[0.98] transition-all cursor-pointer"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 ease-in-out" />
+              <span className="relative z-10 font-bold">{step.ctaText}</span>
+              <ArrowRight className="relative z-10 ml-1.5 w-3.5 h-3.5 text-[#080808] group-hover/btn:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Right: Graphic */}
+        <div className="sm:col-span-4 flex items-center justify-center sm:justify-end">
+          {step.renderGraphic()}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function PipelineSection() {
   const [activeStep, setActiveStep] = useState<string>("01");
   const [hoveredStep, setHoveredStep] = useState<string | null>(null);
-  const isManualScrolling = useRef<boolean>(false);
 
   // GSAP refs
   const sectionRef = useRef<HTMLElement>(null);
-  const leftRef = useRef<HTMLDivElement>(null);
-  const progressRef = useRef<HTMLDivElement>(null);
-  const cardsContainerRef = useRef<HTMLDivElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const indicatorRef = useRef<HTMLDivElement>(null);
-  const navRef = useRef<HTMLDivElement>(null);
-  const feedbackRef = useRef<HTMLDivElement>(null);
+  const pinRef = useRef<HTMLDivElement>(null);
+  const headlineRef = useRef<HTMLDivElement>(null);
+  const storyUiRef = useRef<HTMLDivElement>(null);
+  const cardsStageRef = useRef<HTMLDivElement>(null);
+  const progressFillRef = useRef<HTMLDivElement>(null);
+  const ghostRef = useRef<HTMLDivElement>(null);
+  const spineFillRef = useRef<HTMLDivElement>(null);
+  const spineDotRef = useRef<HTMLDivElement>(null);
+  const mobileHeadlineRef = useRef<HTMLDivElement>(null);
 
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const dotRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const graphicRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const mobileCardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const storyTl = useRef<gsap.core.Timeline | null>(null);
+  const activeIdxRef = useRef(0);
+  const measureRef = useRef<{ centers: number[]; winH: number }>({ centers: [], winH: 0 });
 
-  // Active step via scroll (fallback, GSAP also updates)
-  useEffect(() => {
-    const handleScroll = () => {
-      if (isManualScrolling.current) return;
-      const middleThreshold = window.innerHeight * 0.45;
-      let closestStep = pipelineSteps[0].id;
-      let minDistance = Infinity;
-      pipelineSteps.forEach((step) => {
-        const el = document.getElementById(`pipeline-step-${step.id}`);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          const cardCenter = rect.top + rect.height / 2;
-          const distance = Math.abs(cardCenter - middleThreshold);
-          if (distance < minDistance) {
-            minDistance = distance;
-            closestStep = step.id;
-          }
-        }
-      });
-      // also consider feedback loop
-      const feedbackEl = feedbackRef.current;
-      if (feedbackEl) {
-        const rect = feedbackEl.getBoundingClientRect();
-        const c = rect.top + rect.height / 2;
-        const d = Math.abs(c - middleThreshold);
-        if (d < minDistance) {
-          // keep last step highlighted when feedback in view
-          closestStep = pipelineSteps[pipelineSteps.length - 1].id;
-        }
-      }
-      setActiveStep(closestStep);
+  const cacheCenters = () => {
+    const track = trackRef.current;
+    const win = cardsStageRef.current;
+    if (!track || !win || track.children.length !== pipelineSteps.length) return;
+    const kids = Array.from(track.children) as HTMLElement[];
+    measureRef.current = {
+      centers: kids.map((k) => k.offsetTop + k.offsetHeight / 2),
+      winH: win.clientHeight,
     };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  };
+
+  const scrollToStep = (idx: number) => {
+    const tl = storyTl.current;
+    const st = tl?.scrollTrigger;
+    const m = measureRef.current;
+    if (!tl || !st || m.centers.length !== pipelineSteps.length || m.winH === 0) return;
+    const yStart = m.winH / 2 - m.centers[0];
+    const yEnd = m.winH / 2 - m.centers[m.centers.length - 1];
+    const yTarget = m.winH / 2 - m.centers[idx];
+    const seg = Math.min(1, Math.max(0, (yStart - yTarget) / (yStart - yEnd || 1)));
+    const targetTime = CARDS_START + seg * TRACK;
+    const targetScroll = st.start + (targetTime / tl.duration()) * (st.end - st.start);
+    gsap.to(window, { scrollTo: targetScroll, duration: 1.1, ease: "power2.inOut" });
+  };
 
   // GSAP Scroll storytelling
   useLayoutEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
     const ctx = gsap.context(() => {
-      // ——— Intro: left sticky storytelling header ———
-      // indicator dash
-      if (indicatorRef.current) {
-        gsap.fromTo(
-          indicatorRef.current,
-          { scaleX: 0, transformOrigin: "left center" },
-          {
-            scaleX: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: leftRef.current,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      }
+      const mm = gsap.matchMedia();
 
-      // headline word by word reveal
-      if (headlineRef.current) {
-        const lines = headlineRef.current.querySelectorAll(".gsap-line");
-        gsap.fromTo(
-          lines,
-          { yPercent: 110, opacity: 0 },
-          {
-            yPercent: 0,
-            opacity: 1,
-            duration: 0.9,
-            stagger: 0.12,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: leftRef.current,
-              start: "top 82%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-        // subtle orange accent glow pulse on last line
-        const accent = headlineRef.current.querySelector(".gsap-accent");
-        if (accent) {
-          gsap.fromTo(
-            accent,
-            { opacity: 0, y: 12 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.7,
-              delay: 0.4,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: leftRef.current,
-                start: "top 82%",
-                toggleActions: "play none none reverse",
-              },
-            }
-          );
-        }
-      }
+      // ── Desktop: pinned 4-stage scroll story ──
+      mm.add("(min-width: 1024px)", () => {
+        const headline = headlineRef.current;
+        const storyUi = storyUiRef.current;
+        const stage = cardsStageRef.current;
+        const track = trackRef.current;
+        const ghost = ghostRef.current;
+        if (!headline || !storyUi || !stage || !track || !ghost) return;
+        storyTl.current = null;
+        activeIdxRef.current = 0;
 
-      if (subtitleRef.current) {
-        gsap.fromTo(
-          subtitleRef.current,
-          { y: 18, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.7,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: leftRef.current,
-              start: "top 78%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      }
+        // Measure card centers so the track can travel exactly first → last
+        cacheCenters();
+        const m0 = measureRef.current;
+        if (m0.centers.length !== pipelineSteps.length || m0.winH === 0) return;
 
-      if (navRef.current) {
-        const navLabel = navRef.current.querySelector(".gsap-nav-label");
-        const navPills = navRef.current.querySelectorAll(".gsap-nav-pill");
-        if (navLabel) {
-          gsap.fromTo(
-            navLabel,
-            { opacity: 0, y: 8 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.5,
-              scrollTrigger: {
-                trigger: navRef.current,
-                start: "top 88%",
-                toggleActions: "play none none reverse",
-              },
-            }
-          );
-        }
-        gsap.fromTo(
-          navPills,
-          { y: 12, opacity: 0, scale: 0.96 },
-          {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 0.5,
-            stagger: 0.07,
-            ease: "back.out(1.4)",
-            scrollTrigger: {
-              trigger: navRef.current,
-              start: "top 88%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      }
+        // Base states
+        gsap.set(headline, { x: 0, scale: 1.04, transformOrigin: "center center" });
+        gsap.set(storyUi, { opacity: 0, y: 24 });
+        gsap.set(stage, { opacity: 0, x: 120 });
+        gsap.set(track, { y: m0.winH / 2 - m0.centers[0] });
+        gsap.set(ghost, { yPercent: -50 });
 
-      // ——— Timeline progress: draw line as you scroll through cards ———
-      if (progressRef.current && cardsContainerRef.current) {
-        gsap.fromTo(
-          progressRef.current,
-          { scaleY: 0 },
+        const tl = gsap.timeline({
+          defaults: { ease: "power2.inOut" },
+          scrollTrigger: {
+            trigger: pinRef.current,
+            start: "top top",
+            end: "+=500%",
+            pin: true,
+            scrub: 1.5,
+            anticipatePin: 1,
+            onUpdate: (self) => {
+              const t = self.progress * TOTAL;
+              const m = measureRef.current;
+              let idx = 0;
+              let seg = 0;
+              if (t >= CARDS_START && m.centers.length === pipelineSteps.length && m.winH > 0) {
+                seg = Math.min(1, Math.max(0, (t - CARDS_START) / TRACK));
+                // Viewport center expressed in track coordinates
+                const yStart = m.winH / 2 - m.centers[0];
+                const yEnd = m.winH / 2 - m.centers[m.centers.length - 1];
+                const center = m.winH / 2 - (yStart + seg * (yEnd - yStart));
+                let best = Infinity;
+                m.centers.forEach((c, i) => {
+                  const d = Math.abs(c - center);
+                  if (d < best) {
+                    best = d;
+                    idx = i;
+                  }
+                });
+              }
+              if (idx !== activeIdxRef.current) {
+                activeIdxRef.current = idx;
+                setActiveStep(pipelineSteps[idx].id);
+              }
+              if (progressFillRef.current) {
+                progressFillRef.current.style.transform = `scaleX(${seg})`;
+              }
+              if (spineFillRef.current) {
+                spineFillRef.current.style.transform = `scaleY(${seg})`;
+              }
+              if (spineDotRef.current) {
+                spineDotRef.current.style.top = `${seg * 100}%`;
+              }
+            },
+          },
+        });
+        storyTl.current = tl;
+
+        // Stage 2 — headline: center → left, settle + shrink
+        tl.to(headline, {
+          x: () => -(pinRef.current?.offsetWidth ?? window.innerWidth) * 0.27,
+          scale: 0.88,
+          duration: SEG_HEADLINE,
+        });
+        // Stage 2 — sticky-left UI (pills / progress / counter) fades in
+        tl.to(storyUi, { opacity: 1, y: 0, duration: SEG_HEADLINE * 0.7 }, 0.25);
+        // Stage 2 — cards panel reveals from the right
+        tl.to(stage, { opacity: 1, x: 0, duration: SEG_PANEL_IN }, SEG_HEADLINE * 0.55);
+
+        // Stage 3 — storytelling: card track travels vertically (like normal
+        // downward scrolling) while the headline stays stuck on the left
+        tl.to(
+          track,
           {
-            scaleY: 1,
+            y: () => {
+              const m = measureRef.current;
+              return m.winH / 2 - m.centers[m.centers.length - 1];
+            },
+            duration: TRACK,
             ease: "none",
-            scrollTrigger: {
-              trigger: cardsContainerRef.current,
-              start: "top 70%",
-              end: "bottom 45%",
-              scrub: 0.6,
-            },
-          }
-        );
-      }
-
-      // ——— Each pipeline card: scroll-based story beat ———
-      cardRefs.current.forEach((card, i) => {
-        if (!card) return;
-        const dot = dotRefs.current[i];
-        const graphic = graphicRefs.current[i];
-
-        // Card entrance: parallax reveal + slight rotation
-        gsap.fromTo(
-          card,
-          { y: 42, opacity: 0, rotateX: 4, scale: 0.98 },
-          {
-            y: 0,
-            opacity: 1,
-            rotateX: 0,
-            scale: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 88%",
-              end: "top 58%",
-              scrub: 0.7,
-            },
-          }
+          },
+          CARDS_START,
         );
 
-        // Text cascade inside card
-        const title = card.querySelectorAll(".gsap-card-title .gsap-word");
-        const desc = card.querySelector(".gsap-card-desc");
-        const cta = card.querySelector(".gsap-card-cta");
-        const badge = card.querySelector(".gsap-card-badge");
-        const stepNum = card.querySelector(".gsap-card-step");
+        // Cinematic depth: ghost numeral + headline drift across the whole story
+        tl.fromTo(ghost, { y: 90 }, { y: -90, duration: TOTAL, ease: "none" }, 0);
+        tl.to(headline, { y: -28, duration: TRACK + SEG_OUTRO, ease: "none" }, CARDS_START);
 
-        if (title.length) {
+        // Stage 4 — hold; pin releases and the page continues normally
+        tl.to({}, { duration: SEG_OUTRO });
+      });
+
+      // ── Mobile / tablet: headline + cards flow normally, simple reveals ──
+      mm.add("(max-width: 1023px)", () => {
+        if (mobileHeadlineRef.current) {
           gsap.fromTo(
-            title,
-            { yPercent: 110, opacity: 0 },
+            mobileHeadlineRef.current,
+            { y: 34, opacity: 0 },
             {
-              yPercent: 0,
+              y: 0,
               opacity: 1,
-              duration: 0.6,
-              stagger: 0.08,
+              duration: 0.8,
               ease: "power3.out",
               scrollTrigger: {
-                trigger: card,
-                start: "top 78%",
-                toggleActions: "play none none reverse",
-              },
-            }
-          );
-        }
-        if (desc) {
-          gsap.fromTo(
-            desc,
-            { y: 14, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.6,
-              delay: 0.15,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 75%",
-                toggleActions: "play none none reverse",
-              },
-            }
-          );
-        }
-        if (cta) {
-          gsap.fromTo(
-            cta,
-            { y: 12, opacity: 0, scale: 0.96 },
-            {
-              y: 0,
-              opacity: 1,
-              scale: 1,
-              duration: 0.5,
-              delay: 0.28,
-              ease: "back.out(1.2)",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 70%",
-                toggleActions: "play none none reverse",
-              },
-            }
-          );
-        }
-        if (badge) {
-          gsap.fromTo(
-            badge,
-            { scale: 0.8, opacity: 0, rotate: -4 },
-            {
-              scale: 1,
-              opacity: 1,
-              rotate: 0,
-              duration: 0.6,
-              ease: "back.out(1.6)",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 80%",
-                toggleActions: "play none none reverse",
-              },
-            }
-          );
-        }
-        if (stepNum) {
-          gsap.fromTo(
-            stepNum,
-            { x: -12, opacity: 0 },
-            {
-              x: 0,
-              opacity: 1,
-              duration: 0.5,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 80%",
-                toggleActions: "play none none reverse",
-              },
-            }
-          );
-        }
-
-        // Graphic parallax + subtle scale
-        if (graphic) {
-          gsap.fromTo(
-            graphic,
-            { y: 18, scale: 0.96, opacity: 0.85 },
-            {
-              y: 0,
-              scale: 1,
-              opacity: 1,
-              duration: 0.7,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 82%",
-                toggleActions: "play none none reverse",
-              },
-            }
-          );
-          // gentle float scrub as you scroll past
-          gsap.to(graphic, {
-            y: -10,
-            ease: "none",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 60%",
-              end: "bottom 30%",
-              scrub: 1.2,
-            },
-          });
-        }
-
-        // Dot pulse + scale when card becomes active
-        if (dot) {
-          const pulse = dot.querySelector(".gsap-dot-pulse");
-          const core = dot.querySelector(".gsap-dot-core");
-          // entrance scale
-          gsap.fromTo(
-            dot,
-            { scale: 0.6, opacity: 0 },
-            {
-              scale: 1,
-              opacity: 1,
-              duration: 0.5,
-              ease: "back.out(1.7)",
-              scrollTrigger: {
-                trigger: card,
+                trigger: mobileHeadlineRef.current,
                 start: "top 85%",
                 toggleActions: "play none none reverse",
               },
-            }
-          );
-          // active state scrub: when card is nearcenter, enlarge + glow
-          ScrollTrigger.create({
-            trigger: card,
-            start: "top 65%",
-            end: "bottom 45%",
-            onEnter: () => {
-              if (pulse) gsap.to(pulse, { scale: 1.6, opacity: 0.22, duration: 0.35, ease: "power2.out" });
-              if (core) gsap.to(core, { scale: 1.25, boxShadow: "0 0 18px #f36734, 0 0 36px rgba(243,103,52,0.6)", duration: 0.35 });
-              setActiveStep(pipelineSteps[i].id);
             },
-            onEnterBack: () => {
-              if (pulse) gsap.to(pulse, { scale: 1.6, opacity: 0.22, duration: 0.35 });
-              if (core) gsap.to(core, { scale: 1.25, duration: 0.35 });
-              setActiveStep(pipelineSteps[i].id);
-            },
-            onLeave: () => {
-              if (pulse) gsap.to(pulse, { scale: 1, opacity: 0, duration: 0.35 });
-              if (core) gsap.to(core, { scale: 1, boxShadow: "0 0 6px rgba(243,103,52,0.3)", duration: 0.35 });
-            },
-            onLeaveBack: () => {
-              if (pulse) gsap.to(pulse, { scale: 1, opacity: 0, duration: 0.35 });
-              if (core) gsap.to(core, { scale: 1, duration: 0.35 });
-            },
-          });
-        }
-      });
-
-      // ——— Feedback loop card storytelling ———
-      if (feedbackRef.current) {
-        const fb = feedbackRef.current;
-        const fbIcon = fb.querySelector(".gsap-fb-icon");
-        const fbTitle = fb.querySelectorAll(".gsap-fb-title .gsap-word");
-        const fbDesc = fb.querySelector(".gsap-fb-desc");
-        const fbImage = fb.querySelector(".gsap-fb-image");
-
-        gsap.fromTo(
-          fb,
-          { y: 30, opacity: 0, scale: 0.98 },
-          {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 0.7,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: fb,
-              start: "top 88%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-        if (fbIcon) {
-          gsap.fromTo(
-            fbIcon,
-            { scale: 0.7, rotate: -12, opacity: 0 },
-            {
-              scale: 1,
-              rotate: 0,
-              opacity: 1,
-              duration: 0.7,
-              ease: "back.out(1.4)",
-              scrollTrigger: { trigger: fb, start: "top 82%", toggleActions: "play none none reverse" },
-            }
-          );
-          // slow orbit rotation scrub
-          gsap.to(fbIcon, {
-            rotate: 360,
-            ease: "none",
-            scrollTrigger: { trigger: fb, start: "top 80%", end: "bottom 20%", scrub: 1.5 },
-          });
-        }
-        if (fbTitle.length) {
-          gsap.fromTo(
-            fbTitle,
-            { yPercent: 110, opacity: 0 },
-            {
-              yPercent: 0,
-              opacity: 1,
-              duration: 0.6,
-              stagger: 0.08,
-              ease: "power3.out",
-              scrollTrigger: { trigger: fb, start: "top 78%", toggleActions: "play none none reverse" },
-            }
           );
         }
-        if (fbDesc) {
+        mobileCardRefs.current.forEach((card) => {
+          if (!card) return;
           gsap.fromTo(
-            fbDesc,
-            { y: 14, opacity: 0 },
+            card,
+            { y: 42, opacity: 0, scale: 0.98 },
             {
               y: 0,
-              opacity: 1,
-              duration: 0.6,
-              delay: 0.15,
-              scrollTrigger: { trigger: fb, start: "top 75%", toggleActions: "play none none reverse" },
-            }
-          );
-        }
-        if (fbImage) {
-          gsap.fromTo(
-            fbImage,
-            { x: 30, opacity: 0, scale: 0.98 },
-            {
-              x: 0,
               opacity: 1,
               scale: 1,
               duration: 0.8,
               ease: "power3.out",
-              scrollTrigger: { trigger: fb, start: "top 78%", toggleActions: "play none none reverse" },
-            }
+              scrollTrigger: {
+                trigger: card,
+                start: "top 88%",
+                toggleActions: "play none none reverse",
+              },
+            },
           );
-          gsap.to(fbImage, {
-            y: -8,
-            ease: "none",
-            scrollTrigger: { trigger: fb, start: "top 70%", end: "bottom 30%", scrub: 1 },
-          });
-        }
-
-        // dot for feedback if present
-        const fbDot = fb.querySelector(".gsap-fb-dot");
-        if (fbDot) {
-          gsap.fromTo(
-            fbDot,
-            { scale: 0, opacity: 0 },
-            {
-              scale: 1,
-              opacity: 1,
-              duration: 0.5,
-              ease: "back.out(1.7)",
-              scrollTrigger: { trigger: fb, start: "top 85%", toggleActions: "play none none reverse" },
-            }
-          );
-        }
-      }
+        });
+      });
 
       // refresh
       ScrollTrigger.refresh();
     }, sectionRef);
 
-    return () => ctx.revert();
+    const remeasure = () => {
+      cacheCenters();
+      ScrollTrigger.refresh();
+    };
+    let resizeTimer: ReturnType<typeof setTimeout> | null = null;
+    const onResize = () => {
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(remeasure, 200);
+    };
+    window.addEventListener("load", remeasure);
+    window.addEventListener("resize", onResize);
+    if (document.fonts) {
+      document.fonts.ready.then(() => remeasure()).catch(() => {});
+    }
+
+    return () => {
+      window.removeEventListener("load", remeasure);
+      window.removeEventListener("resize", onResize);
+      if (resizeTimer) clearTimeout(resizeTimer);
+      ctx.revert();
+    };
   }, []);
 
-  const scrollToStep = (id: string) => {
-    setActiveStep(id);
-    const el = document.getElementById(`pipeline-step-${id}`);
-    if (el) {
-      isManualScrolling.current = true;
-      const offset = 160;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = el.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-
-      setTimeout(() => {
-        isManualScrolling.current = false;
-      }, 900);
-    }
-  };
+  const activeIdx = Math.max(
+    0,
+    pipelineSteps.findIndex((s) => s.id === (hoveredStep || activeStep)),
+  );
 
   return (
-    <section ref={sectionRef} className="w-full py-20 md:py-28 relative bg-black border-t border-white/[0.06] overflow-clip">
+    <section ref={sectionRef} className="w-full pt-20 md:pt-28 pb-12 md:pb-16 relative bg-black border-t border-white/[0.06] overflow-clip">
       {/* Ambient background lighting */}
       <div className="absolute top-1/4 left-10 w-[500px] h-[500px] bg-[#f36734]/[0.04] rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-[600px] h-[600px] bg-[#f36734]/[0.03] rounded-full blur-[180px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-        {/* ───────── Top Part: 2-Column (Sticky Left + Dynamic Cards Right) ───────── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* ───────── Left Column: Static / Sticky Headline & Copy ───────── */}
-          <div ref={leftRef} className="lg:col-span-5 lg:sticky lg:top-28 self-start space-y-6 text-left pt-2 z-20">
+      {/* ══════════ PINNED SCROLL STORY (desktop) ══════════ */}
+      <div ref={pinRef} className="hidden lg:block h-screen relative overflow-hidden">
+        <div className="h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative flex items-center">
+          {/* Ghost chapter numeral (slow parallax layer) */}
+          <div ref={ghostRef} className="pointer-events-none absolute right-0 xl:right-10 top-1/2 select-none will-change-transform">
+            <div
+              key={activeIdx}
+              className="animate-heroSlideIn text-[13rem] xl:text-[17rem] font-extrabold leading-none tracking-tighter text-white/[0.045] tabular-nums"
+            >
+              {String(activeIdx + 1).padStart(2, "0")}
+            </div>
+          </div>
+          {/* Stage 1 → 2 → 3: headline starts centered, slides left, stays sticky */}
+          <div ref={headlineRef} className="relative z-10 w-full max-w-[880px] mx-auto text-center will-change-transform">
             {/* Top orange dash indicator */}
-            <div ref={indicatorRef} className="w-10 h-1 bg-[#f36734] rounded-full shadow-[0_0_12px_rgba(243,103,52,0.8)] will-change-transform" />
+            <div className="w-10 h-1 bg-[#f36734] rounded-full shadow-[0_0_12px_rgba(243,103,52,0.8)] mx-auto" />
 
             {/* Main Headline */}
-            <h2 ref={headlineRef} className="text-3xl sm:text-4xl lg:text-5xl xl:text-[3.35rem] font-extrabold tracking-tight text-white leading-[1.08]">
+            <h2 className="mt-6 text-5xl xl:text-6xl font-extrabold tracking-tight text-white leading-[1.08]">
               <span className="block overflow-hidden">
-                <span className="gsap-line inline-block will-change-transform">From Raw Data to</span>
+                <span className="inline-block">From Raw Data to</span>
               </span>
               <span className="block overflow-hidden">
-                <span className="gsap-line gsap-accent inline-block text-[#f36734] will-change-transform">Risk Intelligence</span>
+                <span className="inline-block text-[#f36734]">Risk Intelligence</span>
               </span>
             </h2>
 
             {/* Subtitle */}
-            <p ref={subtitleRef} className="text-sm sm:text-base text-slate-400 font-normal leading-relaxed max-w-md will-change-transform">
+            <p className="mt-5 text-base text-slate-400 font-normal leading-relaxed max-w-xl mx-auto">
               Risknox unifies telemetry, context, and analytics to deliver measurable cyber risk outcomes across your organization.
             </p>
 
-            {/* Interactive Step Navigator (4 Steps) */}
-            <div ref={navRef} className="hidden lg:flex flex-col gap-2 pt-6 border-t border-white/[0.08]">
-              <div className="gsap-nav-label text-xs font-mono uppercase tracking-wider text-slate-500 mb-1">
+            {/* Sticky-left UI: navigator + progress (reveals in Stage 2) */}
+            <div ref={storyUiRef} className="mt-8 will-change-transform">
+              <div className="text-xs font-mono uppercase tracking-wider text-slate-500 mb-3">
                 Active Pipeline Stage
               </div>
-              <div className="flex flex-wrap gap-2">
-                {pipelineSteps.map((step) => {
+              <div className="flex flex-wrap justify-center gap-2">
+                {pipelineSteps.map((step, i) => {
                   const isActive = (hoveredStep || activeStep) === step.id;
                   return (
                     <button
                       key={step.id}
-                      onClick={() => scrollToStep(step.id)}
-                      className={`gsap-nav-pill px-3 py-1.5 rounded-lg text-xs font-medium font-mono transition-all flex items-center gap-1.5 cursor-pointer will-change-transform ${isActive
+                      onClick={() => scrollToStep(i)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-medium font-mono transition-all flex items-center gap-1.5 cursor-pointer ${isActive
                         ? "bg-[#f36734]/20 text-[#f36734] border border-[#f36734]/50 shadow-[0_0_15px_rgba(243,103,52,0.25)] scale-105"
                         : "bg-white/[0.02] text-slate-500 border border-white/[0.05] hover:text-slate-300 hover:border-white/[0.12]"
                         }`}
                     >
-                      <span>{step.stepNumber}</span>
+                      <span>{step.id}</span>
                       <span>{step.stageName}</span>
                     </button>
                   );
                 })}
               </div>
-              <p className="text-[11px] text-slate-500 font-mono mt-2 hidden xl:block">Scroll to explore each stage → pipeline animates with you</p>
-            </div>
-          </div>
-
-          {/* ───────── Right Column: Pipeline Step Cards ───────── */}
-          <div className="lg:col-span-7 relative">
-            {/* Timeline wrapper */}
-            <div ref={cardsContainerRef} className="relative">
-              {/* Background track */}
-              <div className="absolute left-[16px] sm:left-[20px] top-[14px] bottom-[14px] w-px bg-white/[0.08] hidden sm:block" />
-              {/* Glowing progress line — draws as you scroll */}
-              <div
-                ref={progressRef}
-                className="absolute left-[16px] sm:left-[20px] top-[14px] bottom-[14px] w-px bg-gradient-to-b from-[#f36734]/0 via-[#f36734]/80 to-[#f36734] origin-top hidden sm:block will-change-transform"
-                style={{ transformOrigin: "top center", transform: "scaleY(0)" }}
-              />
-              {/* Arrowhead at bottom of timeline */}
-              <div className="absolute left-[16px] sm:left-[20px] bottom-0 -translate-x-1/2 translate-y-1 hidden sm:block z-20">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none" className="drop-shadow-[0_0_8px_#f36734]">
-                  <path d="M1 1 L5 6 L9 1" stroke="#f36734" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-
-              {/* Cards */}
-              <div className="space-y-12 sm:space-y-16 relative z-10">
-                {pipelineSteps.map((step, idx) => {
-                  const isHighlighted = (hoveredStep || activeStep) === step.id;
-
-                  return (
-                    <div key={step.id} id={`pipeline-step-${step.id}`} className="relative">
-                      {/* ── Timeline Node Dot — perfectly centered on the line ── */}
-                      <div
-                        ref={(el) => {
-                          dotRefs.current[idx] = el;
-                        }}
-                        className="absolute left-[16px] sm:left-[20px] top-1/2 -translate-y-1/2 -translate-x-1/2 flex items-center justify-center z-20 w-6 h-6 pointer-events-none will-change-transform"
-                      >
-                        {/* Outer pulse ring */}
-                        <div
-                          className={`gsap-dot-pulse absolute rounded-full transition-colors duration-300 ${isHighlighted ? "w-6 h-6 bg-[#f36734]/20" : "w-6 h-6 bg-transparent"
-                            }`}
-                          style={{ opacity: isHighlighted ? 0.18 : 0 }}
-                        />
-                        {/* Inner solid dot */}
-                        <div
-                          className={`gsap-dot-core rounded-full border-2 transition-all duration-300 ${isHighlighted
-                            ? "w-[14px] h-[14px] bg-[#f36734] border-[#f36734] shadow-[0_0_14px_#f36734,0_0_28px_rgba(243,103,52,0.6)]"
-                            : "w-[10px] h-[10px] bg-[#1a0a00] border-[#f36734]/60 shadow-[0_0_6px_rgba(243,103,52,0.3)]"
-                            }`}
-                        />
-                      </div>
-
-                      {/* ── Card ── */}
-                      <div
-                        ref={(el) => {
-                          cardRefs.current[idx] = el;
-                        }}
-                        onMouseEnter={() => setHoveredStep(step.id)}
-                        onMouseLeave={() => setHoveredStep(null)}
-                        onClick={() => scrollToStep(step.id)}
-                        className={`group relative ml-[36px] sm:ml-[48px] rounded-[24px] transition-all duration-500 cursor-pointer overflow-hidden p-6 sm:p-8 will-change-transform ${isHighlighted
-                          ? "bg-[#0a0a0a] shadow-[0_20px_50px_rgba(0,0,0,0.95),0_0_35px_rgba(243,103,52,0.16)] -translate-y-1 ring-1 ring-white/[0.06]"
-                          : "bg-[#0a0a0a]/90 shadow-[0_12px_35px_rgba(0,0,0,0.7)] opacity-[0.9] hover:opacity-100 ring-1 ring-white/[0.04] hover:ring-white/[0.08]"
-                          }`}
-                        style={{ perspective: "800px" }}
-                      >
-                        <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 sm:gap-4 items-center">
-                          {/* Left: Step Number + Radar Icon Badge */}
-                          <div className="sm:col-span-3 flex flex-row sm:flex-col items-center sm:items-start justify-between sm:justify-center gap-4 sm:gap-6 flex-shrink-0">
-                            <span className="gsap-card-step font-mono text-3xl sm:text-4xl font-extrabold text-[#f36734] tracking-tight leading-none will-change-transform">
-                              {step.stepNumber}
-                            </span>
-
-                            {/* Concentric Radar Badge */}
-                            <div ref={(el) => { graphicRefs.current[idx] = el; }} className="gsap-card-badge relative flex items-center justify-center will-change-transform">
-                              <div className="w-16 h-16 rounded-full border border-[#f36734]/25 flex items-center justify-center relative bg-[#0a0800] shadow-[0_0_18px_rgba(243,103,52,0.2)]">
-                                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#f36734]/80" />
-                                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1 h-1 rounded-full bg-[#f36734]/80" />
-                                <div className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#f36734] shadow-[0_0_6px_#f36734]" />
-                                <div className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#f36734]/80" />
-                                <div className="w-11 h-11 rounded-full border border-[#f36734]/50 flex items-center justify-center bg-[#0e0c00]/90 shadow-[0_0_14px_rgba(243,103,52,0.35)]">
-                                  {step.renderIcon()}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Center: Title, Description & CTA Button */}
-                          <div className="sm:col-span-5 space-y-3.5 text-left">
-                            <h3 className="gsap-card-title text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug group-hover:text-orange-100 transition-colors overflow-hidden">
-                              <span className="gsap-word inline-block overflow-hidden">
-                                <span className="inline-block will-change-transform">{step.title.split(" — ")[0]}</span>
-                              </span>
-                              {step.title.includes(" — ") && (
-                                <>
-                                  <span className="gsap-word inline-block overflow-hidden">
-                                    <span className="inline-block will-change-transform"> — {step.title.split(" — ")[1]}</span>
-                                  </span>
-                                </>
-                              )}
-                            </h3>
-                            <p className="gsap-card-desc text-xs sm:text-sm text-slate-300/90 leading-relaxed font-normal will-change-transform">
-                              {step.description}
-                            </p>
-
-                            {/* CTA Button */}
-                            <div className="gsap-card-cta pt-1.5 will-change-transform">
-                              <Link
-                                href={step.ctaLink}
-                                onClick={(e) => e.stopPropagation()}
-                                className="group/btn relative inline-flex items-center justify-center px-4 py-2 bg-[#f36734] text-[#080808] rounded-[12px] sm:rounded-[14px] font-semibold text-xs sm:text-[13px] overflow-hidden shadow-[0_0_16px_rgba(243,103,52,0.3)] hover:shadow-[0_0_24px_rgba(243,103,52,0.5)] active:scale-[0.98] transition-all cursor-pointer"
-                              >
-                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 ease-in-out" />
-                                <span className="relative z-10 font-bold">{step.ctaText}</span>
-                                <ArrowRight className="relative z-10 ml-1.5 w-3.5 h-3.5 text-[#080808] group-hover/btn:translate-x-1 transition-transform" />
-                              </Link>
-                            </div>
-                          </div>
-
-                          {/* Right: 3D Graphic */}
-                          <div className="sm:col-span-4 flex items-center justify-center sm:justify-end">
-                            <div className="gsap-graphic will-change-transform">
-                              {step.renderGraphic()}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ───────── Bottom: Continuous Feedback Loop Card — now part of the same timeline story ───────── */}
-        <div ref={feedbackRef} className="w-full flex justify-center pt-10 sm:pt-14 relative">
-          {/* Connector line from last dot to feedback card — draws on scroll */}
-          <div className="absolute left-[16px] sm:left-[20px] lg:left-[calc((100%_/_12_*_5)_+_16px)] sm:lg:left-[calc((100%_/_12_*_5)_+_20px)] top-0 bottom-1/2 w-px bg-gradient-to-b from-[#f36734]/60 to-transparent hidden sm:block lg:hidden" />
-          <div className="relative w-full max-w-[1080px] rounded-2xl md:rounded-[24px] bg-[#0a0a0a] border border-white/[0.06] pl-6 sm:pl-10 lg:pl-12 pr-0 pt-6 sm:pt-8 lg:pt-10 pb-0 shadow-[0_25px_60px_rgba(0,0,0,0.95)] overflow-hidden ring-1 ring-[#f36734]/10 will-change-transform">
-            {/* Left dot for feedback — aligned to same timeline X on mobile, centered on desktop via absolute */}
-            <div className="gsap-fb-dot absolute left-[-6px] sm:left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-[#f36734] shadow-[0_0_10px_#f36734] hidden sm:flex will-change-transform" />
-
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-4 relative z-10">
-              {/* Left side: Concentric Infinity Radar + Text */}
-              <div className="flex items-center gap-5 sm:gap-7 flex-shrink-0 py-6 lg:py-8 pr-6 sm:pr-8 lg:pr-0">
-                {/* Glowing Concentric Infinity Loop Icon */}
-                <div className="gsap-fb-icon relative flex-shrink-0 flex items-center justify-center will-change-transform">
-                  <div className="w-24 h-24 sm:w-[104px] sm:h-[104px] rounded-full border border-[#f36734]/30 flex items-center justify-center relative bg-black">
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#f36734]" />
-                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#f36734]" />
-                    <div className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[#f36734] shadow-[0_0_8px_#f36734]" />
-                    <div className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#f36734]" />
-
-                    <div className="w-[72px] h-[72px] sm:w-20 sm:h-20 rounded-full border border-[#f36734]/60 flex items-center justify-center shadow-[0_0_18px_rgba(243,103,52,0.4)] bg-black">
-                      <svg
-                        viewBox="0 0 100 60"
-                        className="w-11 h-6 sm:w-12 sm:h-7 drop-shadow-[0_0_9px_rgba(243,103,52,0.95)] bg-black"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M30 14 C18 14 11 21 11 30 C11 39 18 46 30 46 C42 46 49 35 50 30 C51 25 58 14 70 14 C82 14 89 21 89 30 C89 39 82 46 70 46 C58 46 51 35 50 30 C49 25 42 14 30 14 Z"
-                          stroke="#f36734"
-                          strokeWidth="8"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </div>
-                  </div>
+              {/* Progress: step counter + bar */}
+              <div className="mt-5 max-w-sm mx-auto">
+                <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 mb-2">
+                  <span>
+                    {String(activeIdx + 1).padStart(2, "0")} / {String(pipelineSteps.length).padStart(2, "0")}
+                  </span>
+                  <span>{pipelineSteps[activeIdx]?.stageName}</span>
                 </div>
-
-                {/* Title & Copy */}
-                <div className="space-y-3 max-w-[380px] sm:max-w-[440px]">
-                  <h3 className="gsap-fb-title text-2xl sm:text-3xl font-semibold text-white tracking-tight leading-tight overflow-hidden">
-                    <span className="gsap-word inline-block overflow-hidden">
-                      <span className="inline-block will-change-transform">Continuous Feedback</span>
-                    </span>{" "}
-                    <span className="gsap-word inline-block overflow-hidden">
-                      <span className="inline-block will-change-transform">Loop</span>
-                    </span>
-                  </h3>
-                  <p className="gsap-fb-desc text-base sm:text-lg text-slate-300 font-normal leading-[1.6] will-change-transform">
-                    Outcomes and telemetry feed back into Risknox to refine risk scores, improve accuracy, and drive continuous risk reduction.
-                  </p>
-                </div>
-              </div>
-
-              {/* Right side: feedbackloop image */}
-              <div className="gsap-fb-image w-full lg:w-auto flex-1 flex items-end justify-end min-w-0 self-end m-0 p-0 will-change-transform">
-                <div className="relative w-full max-w-[620px] lg:max-w-[660px] aspect-[3/2] m-0 p-0">
-                  <Image
-                    src="/feedbackloop.png"
-                    alt="Risknox Continuous Feedback Loop — Refined Risk Scores and Continuous Risk Reduction"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 660px"
-                    className="object-contain object-right-bottom m-0 p-0"
-                    priority
+                <div className="h-[3px] rounded-full bg-white/[0.08] overflow-hidden">
+                  <div
+                    ref={progressFillRef}
+                    className="h-full w-full rounded-full bg-gradient-to-r from-[#f36734] to-[#ffb37a] shadow-[0_0_12px_rgba(243,103,52,0.8)] origin-left"
+                    style={{ transform: "scaleX(0)" }}
                   />
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Scroll hint */}
-        <div className="flex justify-center pt-2 opacity-60">
-          <div className="flex items-center gap-2 text-[11px] font-mono tracking-widest text-slate-500 uppercase">
-            <span className="w-6 h-px bg-slate-600" />
-            <span>Scroll to follow the pipeline</span>
-            <span className="w-6 h-px bg-slate-600" />
+          {/* Stage 2 → 3: vertical card window on the right — cards travel
+              downward through it like normal page scroll */}
+          <div
+            ref={cardsStageRef}
+            className="absolute top-1/2 right-4 xl:right-8 w-[min(560px,46%)] h-[72vh] overflow-hidden will-change-transform"
+            style={{ transform: "translateY(-50%)" }}
+          >
+            {/* Chapter label */}
+            <div className="absolute -top-10 left-0 right-0 z-20 flex items-center gap-3 pointer-events-none">
+              <span
+                key={activeIdx}
+                className="animate-heroSlideIn text-[11px] font-mono font-semibold uppercase tracking-[0.22em] text-[#f36734] whitespace-nowrap"
+              >
+                Chapter {String(activeIdx + 1).padStart(2, "0")} — {pipelineSteps[activeIdx]?.stageName}
+              </span>
+              <span className="h-px flex-1 bg-gradient-to-r from-[#f36734]/50 to-transparent" />
+            </div>
+            {/* Soft edge fades */}
+            <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-black to-transparent z-10 pointer-events-none" />
+            <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-black to-transparent z-10 pointer-events-none" />
+            {/* Connecting progress spine */}
+            <div className="absolute left-2 top-3 bottom-3 w-px bg-white/10 z-20 pointer-events-none">
+              <div
+                ref={spineFillRef}
+                className="absolute inset-0 origin-top bg-gradient-to-b from-[#f36734] to-[#ffb37a] shadow-[0_0_12px_rgba(243,103,52,0.8)]"
+                style={{ transform: "scaleY(0)" }}
+              />
+              <div
+                ref={spineDotRef}
+                className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[#f36734] shadow-[0_0_10px_#f36734]"
+                style={{ top: "0%" }}
+              />
+            </div>
+            <div ref={trackRef} className="flex flex-col gap-[16vh] px-2 py-2 will-change-transform">
+              {pipelineSteps.map((step) => {
+                const isHighlighted = (hoveredStep || activeStep) === step.id;
+                return (
+                  <div
+                    key={step.id}
+                    onMouseEnter={() => setHoveredStep(step.id)}
+                    onMouseLeave={() => setHoveredStep(null)}
+                  >
+                    <StepCardBody step={step} highlighted={isHighlighted} />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
+      </div>
+
+      {/* ══════════ MOBILE / TABLET FALLBACK (no pin) ══════════ */}
+      <div className="lg:hidden max-w-7xl mx-auto px-4 sm:px-6 space-y-10">
+        <div ref={mobileHeadlineRef} className="text-center space-y-5 will-change-transform">
+          <div className="w-10 h-1 bg-[#f36734] rounded-full shadow-[0_0_12px_rgba(243,103,52,0.8)] mx-auto" />
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white leading-[1.08]">
+            From Raw Data to <span className="text-[#f36734]">Risk Intelligence</span>
+          </h2>
+          <p className="text-sm sm:text-base text-slate-400 font-normal leading-relaxed max-w-md mx-auto">
+            Risknox unifies telemetry, context, and analytics to deliver measurable cyber risk outcomes across your organization.
+          </p>
+        </div>
+        <div className="space-y-8">
+          {pipelineSteps.map((step) => {
+            const isHighlighted = (hoveredStep || activeStep) === step.id;
+            return (
+              <div
+                key={step.id}
+                ref={(el) => {
+                  const idx = pipelineSteps.findIndex((s) => s.id === step.id);
+                  mobileCardRefs.current[idx] = el;
+                }}
+                className="will-change-transform"
+                onMouseEnter={() => setHoveredStep(step.id)}
+                onMouseLeave={() => setHoveredStep(null)}
+              >
+                <StepCardBody step={step} highlighted={isHighlighted} />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       </div>
     </section>
   );

@@ -1,7 +1,6 @@
 import React from 'react';
 import Card from '../ui/Card';
 import Newsletter from './Newsletter';
-import PopularPosts from './PopularPosts';
 import { CATEGORIES } from '../../data/posts';
 import { cn } from '../../lib/utils';
 import { ArrowRight } from 'lucide-react';
@@ -12,21 +11,18 @@ import { ArrowRight } from 'lucide-react';
 export interface SidebarProps {
   selectedCategory: string | null;
   onSelectCategory: (categoryId: string | null) => void;
-  onSelectPopularPost?: (slug: string) => void;
 }
 
 /**
  * Blog Right Sidebar Layout Component.
- * Contains Categories List with post counts, Newsletter Subscription Widget, and Popular Posts list.
- * 
+ * Contains Categories List with post counts and Newsletter Subscription Widget.
+ *
  * @param selectedCategory - Active category filter ID
  * @param onSelectCategory - Category switch handler
- * @param onSelectPopularPost - Popular article click handler
  */
 export const Sidebar: React.FC<SidebarProps> = ({
   selectedCategory,
   onSelectCategory,
-  onSelectPopularPost,
 }) => {
   const totalPostsCount = 32;
 
@@ -120,9 +116,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Newsletter Subscription Widget */}
       <Newsletter />
-
-      {/* Popular Posts Widget */}
-      <PopularPosts onSelectPost={onSelectPopularPost} />
     </aside>
   );
 };
