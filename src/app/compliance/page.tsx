@@ -1,15 +1,29 @@
-import React from "react";
+import dynamic from "next/dynamic";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import SolutionCTA from "@/features/solution/components/SolutionCTA";
-import TestimonialsSection from "@/components/testimonials-section";
 import OverviewHero from "@/features/compliance/components/overview/Hero";
-import Frameworks from "@/features/compliance/components/overview/Frameworks";
-import Stack from "@/features/compliance/components/overview/Stack";
-import WhyRisknox from "@/features/compliance/components/overview/WhyRisknox";
-import PunchList from "@/features/compliance/components/overview/PunchList";
-import RiskAssessment from "@/features/compliance/components/overview/RiskAssessment";
-import OverviewFaq from "@/features/compliance/components/overview/Faq";
+
+const Frameworks = dynamic(
+  () => import("@/features/compliance/components/overview/Frameworks")
+);
+const Stack = dynamic(
+  () => import("@/features/compliance/components/overview/Stack")
+);
+const WhyRisknox = dynamic(
+  () => import("@/features/compliance/components/overview/WhyRisknox")
+);
+const PunchList = dynamic(
+  () => import("@/features/compliance/components/overview/PunchList")
+);
+const RiskAssessment = dynamic(
+  () => import("@/features/compliance/components/overview/RiskAssessment")
+);
+const OverviewFaq = dynamic(
+  () => import("@/features/compliance/components/overview/Faq")
+);
+const SolutionCTA = dynamic(
+  () => import("@/features/solution/components/SolutionCTA")
+);
 
 export const metadata = {
   title: "Compliance Hub — Get Audit-Ready Without Hiring a GRC Team | Risknox",
@@ -29,7 +43,6 @@ export default function ComplianceOverviewPage() {
         <WhyRisknox />
         <PunchList />
         <RiskAssessment />
-        <TestimonialsSection />
         <OverviewFaq />
         <SolutionCTA />
       </main>

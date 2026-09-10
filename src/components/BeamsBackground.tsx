@@ -1,17 +1,20 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import dynamic from "next/dynamic";
 
+// Preload the Beams bundle immediately at module evaluation time.
+// Without this, next/dynamic only starts downloading the chunk when
+// beamCount first becomes non-zero (after mounted=true + rAF), causing
+// a 1-2s blank background while the large Three.js bundle downloads.
 const Beams = dynamic(() => import("@/components/Beams"), { ssr: false });
+// Kick off the download right away — this is a no-op if already cached.
+void import("@/components/Beams");
 
 const OUT = "cubic-bezier(0.16,1,0.3,1)";
 
 export default function BeamsBackground({ mounted }: { mounted: boolean }) {
-  const beamCount = useMemo(() => {
-    if (!mounted) return 0;
-    return 12;
-  }, [mounted]);
+  const beamCount = mounted ? 12 : 0;
 
   return (
     <>
