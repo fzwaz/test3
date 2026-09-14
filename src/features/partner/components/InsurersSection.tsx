@@ -179,7 +179,7 @@ export default function InsurersSection() {
                 {/* Right Side: CTA Button + Security Trust Note */}
                 <div className="flex flex-col items-center sm:items-end gap-2.5 flex-shrink-0 pt-4 lg:pt-0 border-t lg:border-t-0 border-white/10">
                   <Link
-                    href="/contact?role=insurers-brokers"
+                    href="/applyPartner"
                     className="group relative inline-flex items-center justify-center p-[1px] bg-white/20 hover:bg-[#ff7936] hover:shadow-[0_0_18px_rgba(255,121,54,0.45)] transition-all duration-200 active:scale-[0.97] w-full sm:w-auto"
                     style={{
                       clipPath:

@@ -49,10 +49,8 @@ export default function SocHero() {
 
             {/* Description */}
             <p className="mt-6 max-w-[560px] text-[15px] lg:text-base text-[#cfc9c2] font-normal leading-[1.65]" style={textStyle(1300)}>
-              Risknox helps you prepare for SOC 2 — Type 1 when &ldquo;we&apos;re
-              secure&rdquo; needs backup, and Type 2 when customers need proof your
-              controls operated consistently over time. Controls designed, evidence
-              organised, owners mapped, and audit proof ready throughout.
+              Design controls, automate evidence collection, and pass your SOC 2
+              Type 1 and Type 2 audits with continuous proof.
             </p>
 
             {/* CTA */}

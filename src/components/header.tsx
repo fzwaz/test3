@@ -3,7 +3,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
 import {
   ChevronDown,
   ShieldCheck,
@@ -33,6 +34,7 @@ interface HeaderProps {
 
 export default function Header({ currentPath }: HeaderProps) {
   const routerPathname = usePathname();
+  const router = useRouter();
   const pathname = routerPathname || currentPath || "/";
   const [platformOpen, setPlatformOpen] = useState(false);
   const [complianceOpen, setComplianceOpen] = useState(false);
@@ -124,19 +126,6 @@ export default function Header({ currentPath }: HeaderProps) {
 
           {/* 2. Center: Desktop Nav Links (hidden below md) */}
           <nav className="hidden md:flex items-center space-x-1 lg:space-x-1.5 text-[11px] lg:text-xs">
-            {/* Home Link */}
-            <Link
-              href="/"
-              onClick={closeAll}
-              className={`px-2.5 py-1.5 rounded-lg transition-colors font-medium ${
-                pathname === "/"
-                  ? "text-orange-400 font-semibold"
-                  : "text-slate-300 hover:text-white hover:bg-white/[0.08]"
-              }`}
-            >
-              Home
-            </Link>
-
             {/* Platform Dropdown Trigger */}
             <div
               className="relative"
@@ -146,9 +135,9 @@ export default function Header({ currentPath }: HeaderProps) {
               <Link
                 href="/platform"
                 onClick={closeAll}
-                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-all duration-200 cursor-pointer ${
-                  platformOpen || pathname.startsWith("/platform")
-                    ? "text-orange-400 bg-white/[0.1] shadow-[0_0_12px_rgba(249,115,22,0.3)]"
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-colors font-medium ${
+                  pathname.startsWith("/platform")
+                    ? "text-orange-400 font-semibold"
                     : "text-slate-300 hover:text-white hover:bg-white/[0.08]"
                 }`}
                 aria-expanded={platformOpen}
@@ -156,15 +145,15 @@ export default function Header({ currentPath }: HeaderProps) {
                 <span>Platform</span>
                 <ChevronDown
                   className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                    platformOpen ? "rotate-180 text-orange-400" : ""
-                  }`}
+                    platformOpen ? "rotate-180" : ""
+                  } ${pathname.startsWith("/platform") ? "text-orange-400" : ""}`}
                 />
               </Link>
 
               {/* Platform Dropdown Content */}
               {platformOpen && (
-                <div className="absolute top-full mt-3 -left-4 w-[330px] rounded-2xl bg-black/95 backdrop-blur-2xl border border-orange-500/20 p-2 shadow-[0_20px_50px_rgba(0,0,0,0.85),0_0_35px_-5px_rgba(249,115,22,0.25)] animate-in fade-in slide-in-from-top-2 overflow-hidden z-50">
-                  {/* Themed background: base dot grid + dual orange torch glows */}
+                <div className="absolute top-full mt-3 -left-4 w-[330px] rounded-2xl bg-black/95 backdrop-blur-2xl border border-white/[0.12] p-2 shadow-[0_20px_50px_rgba(0,0,0,0.85)] animate-in fade-in slide-in-from-top-2 overflow-hidden z-50">
+                  {/* Themed background: base dot grid */}
                   <div
                     className="absolute inset-0 pointer-events-none opacity-40"
                     style={{
@@ -172,10 +161,6 @@ export default function Header({ currentPath }: HeaderProps) {
                         "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='16' height='16' fill='none'%3E%3Ccircle fill='%23ffffff' cx='10' cy='10' r='1.2' opacity='0.15'/%3E%3C/svg%3E\")",
                     }}
                   />
-                  <div className="absolute -top-16 -right-10 w-56 h-56 bg-orange-500/[0.14] rounded-full blur-[60px] pointer-events-none" />
-                  <div className="absolute -bottom-20 -left-10 w-56 h-56 bg-orange-600/[0.08] rounded-full blur-[70px] pointer-events-none" />
-                  {/* Top orange hairline */}
-                  <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-orange-500/60 to-transparent pointer-events-none" />
 
                   <div className="space-y-1 relative z-10">
                     {/* Fortress */}
@@ -184,8 +169,8 @@ export default function Header({ currentPath }: HeaderProps) {
                       onClick={closeAll}
                       className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-orange-500/[0.06] transition-all"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/25 flex items-center justify-center flex-shrink-0 group-hover:border-orange-500/60 group-hover:bg-orange-500/[0.16] group-hover:shadow-[0_0_14px_rgba(249,115,22,0.35)] transition-all">
-                        <ShieldAlert className="w-4 h-4 text-orange-400" />
+                      <div className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:border-white/15 transition-all">
+                        <ShieldAlert className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors" />
                       </div>
                       <div>
                         <div className="font-semibold text-white text-xs group-hover:text-orange-400 transition-colors flex items-center gap-1.5">
@@ -203,8 +188,8 @@ export default function Header({ currentPath }: HeaderProps) {
                       onClick={closeAll}
                       className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-orange-500/[0.06] transition-all"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/25 flex items-center justify-center flex-shrink-0 group-hover:border-orange-500/60 group-hover:bg-orange-500/[0.16] group-hover:shadow-[0_0_14px_rgba(249,115,22,0.35)] transition-all">
-                        <Activity className="w-4 h-4 text-orange-400" />
+                      <div className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:border-white/15 transition-all">
+                        <Activity className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors" />
                       </div>
                       <div>
                         <div className="font-semibold text-white text-xs group-hover:text-orange-400 transition-colors flex items-center gap-1.5">
@@ -222,8 +207,8 @@ export default function Header({ currentPath }: HeaderProps) {
                       onClick={closeAll}
                       className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-orange-500/[0.06] transition-all"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/25 flex items-center justify-center flex-shrink-0 group-hover:border-orange-500/60 group-hover:bg-orange-500/[0.16] group-hover:shadow-[0_0_14px_rgba(249,115,22,0.35)] transition-all">
-                        <Compass className="w-4 h-4 text-orange-400" />
+                      <div className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:border-white/15 transition-all">
+                        <Compass className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors" />
                       </div>
                       <div>
                         <div className="font-semibold text-white text-xs group-hover:text-orange-400 transition-colors flex items-center gap-1.5">
@@ -241,8 +226,8 @@ export default function Header({ currentPath }: HeaderProps) {
                       onClick={closeAll}
                       className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-orange-500/[0.06] transition-all"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/25 flex items-center justify-center flex-shrink-0 group-hover:border-orange-500/60 group-hover:bg-orange-500/[0.16] group-hover:shadow-[0_0_14px_rgba(249,115,22,0.35)] transition-all">
-                        <Scale className="w-4 h-4 text-orange-400" />
+                      <div className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:border-white/15 transition-all">
+                        <Scale className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors" />
                       </div>
                       <div>
                         <div className="font-semibold text-white text-xs group-hover:text-orange-400 transition-colors flex items-center gap-1.5">
@@ -260,8 +245,8 @@ export default function Header({ currentPath }: HeaderProps) {
                       onClick={closeAll}
                       className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-orange-500/[0.06] transition-all"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/25 flex items-center justify-center flex-shrink-0 group-hover:border-orange-500/60 group-hover:bg-orange-500/[0.16] group-hover:shadow-[0_0_14px_rgba(249,115,22,0.35)] transition-all">
-                        <MailCheck className="w-4 h-4 text-orange-400" />
+                      <div className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:border-white/15 transition-all">
+                        <MailCheck className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors" />
                       </div>
                       <div>
                         <div className="font-semibold text-white text-xs group-hover:text-orange-400 transition-colors flex items-center gap-1.5">
@@ -298,9 +283,9 @@ export default function Header({ currentPath }: HeaderProps) {
               <Link
                 href="/compliance"
                 onClick={closeAll}
-                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-all duration-200 cursor-pointer ${
-                  complianceOpen || pathname.startsWith("/compliance")
-                    ? "text-orange-400 bg-white/[0.1] shadow-[0_0_12px_rgba(249,115,22,0.3)]"
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg transition-colors font-medium ${
+                  pathname.startsWith("/compliance")
+                    ? "text-orange-400 font-semibold"
                     : "text-slate-300 hover:text-white hover:bg-white/[0.08]"
                 }`}
                 aria-expanded={complianceOpen}
@@ -308,8 +293,8 @@ export default function Header({ currentPath }: HeaderProps) {
                 <span>Compliance</span>
                 <ChevronDown
                   className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                    complianceOpen ? "rotate-180 text-orange-400" : ""
-                  }`}
+                    complianceOpen ? "rotate-180" : ""
+                  } ${pathname.startsWith("/compliance") ? "text-orange-400" : ""}`}
                 />
               </Link>
             </div>
@@ -325,6 +310,19 @@ export default function Header({ currentPath }: HeaderProps) {
               }`}
             >
               Solutions
+            </Link>
+
+            {/* RiskBite */}
+            <Link
+              href="/risk-bite"
+              onClick={closeAll}
+              className={`px-2.5 py-1.5 rounded-lg transition-colors font-medium ${
+                pathname.startsWith("/risk-bite")
+                  ? "text-orange-400 font-semibold"
+                  : "text-slate-300 hover:text-white hover:bg-white/[0.08]"
+              }`}
+            >
+              RiskBite
             </Link>
 
             {/* Partners */}
@@ -405,9 +403,9 @@ export default function Header({ currentPath }: HeaderProps) {
           <div
             onMouseEnter={handleComplianceEnter}
             onMouseLeave={handleComplianceLeave}
-            className="absolute top-full mt-3 left-0 right-0 rounded-2xl bg-black/95 backdrop-blur-3xl border border-orange-500/20 shadow-[0_24px_60px_-12px_rgba(0,0,0,0.9),0_0_45px_-5px_rgba(249,115,22,0.25)] animate-in fade-in slide-in-from-top-2 overflow-hidden z-50"
+            className="absolute top-full mt-3 left-0 right-0 rounded-2xl bg-black/95 backdrop-blur-3xl border border-white/[0.12] shadow-[0_24px_60px_-12px_rgba(0,0,0,0.9)] animate-in fade-in slide-in-from-top-2 overflow-hidden z-50"
           >
-            {/* Themed background: base dot grid + dual orange torch glows */}
+            {/* Themed background: base dot grid (no orange glow) */}
             <div
               className="absolute inset-0 pointer-events-none opacity-40"
               style={{
@@ -415,10 +413,6 @@ export default function Header({ currentPath }: HeaderProps) {
                   "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='16' height='16' fill='none'%3E%3Ccircle fill='%23ffffff' cx='10' cy='10' r='1.2' opacity='0.15'/%3E%3C/svg%3E\")",
               }}
             />
-            <div className="absolute -top-24 left-10 w-96 h-96 bg-orange-500/[0.14] rounded-full blur-[100px] pointer-events-none" />
-            <div className="absolute -bottom-32 right-10 w-96 h-96 bg-orange-600/[0.08] rounded-full blur-[110px] pointer-events-none" />
-            {/* Top orange hairline */}
-            <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-orange-500/60 to-transparent pointer-events-none" />
 
             <div className="relative z-10 p-6 md:p-8 space-y-6">
               {/* Top Header Section */}
@@ -440,14 +434,15 @@ export default function Header({ currentPath }: HeaderProps) {
                   </p>
                 </div>
 
-                <Link
-                  href="/compliance"
-                  onClick={closeAll}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#141416] hover:bg-[#1c1c20] border border-white/[0.1] text-xs font-semibold text-white transition-all self-start md:self-center hover:border-orange-500/50"
-                >
-                  <span>Explore Compliance Hub</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-orange-400" />
-                </Link>
+                <div className="flex items-center gap-3 self-start md:self-center shrink-0">
+                  <LiquidMetalButton
+                    label="Build your GRC program"
+                    onClick={() => {
+                      closeAll();
+                      router.push("/grc-builder");
+                    }}
+                  />
+                </div>
               </div>
 
               {/* Middle Grid */}
@@ -464,27 +459,33 @@ export default function Header({ currentPath }: HeaderProps) {
                     <Link
                       href="/compliance/iso-27001"
                       onClick={closeAll}
-                      className="group p-4 rounded-xl bg-white/[0.02] border border-white/10 hover:border-orange-500/40 hover:bg-orange-500/[0.04] hover:shadow-[0_0_25px_rgba(249,115,22,0.12)] transition-all flex flex-col justify-between"
+                      className="group relative block rounded-2xl p-[1px] bg-white/10 hover:bg-orange-500/40 hover:-translate-y-0.5 shadow-[0_0_20px_rgba(255,121,54,0.05)] hover:shadow-[0_12px_35px_rgba(255,121,54,0.2)] transition-all duration-300"
                     >
-                      <div>
+                      <div className="relative rounded-[15px] bg-gradient-to-b from-white/[0.05] to-[#07080a] p-4 flex flex-col justify-between h-full overflow-hidden">
+                        <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-orange-500/70 to-transparent" />
+                        <div className="relative z-10">
                         <div className="flex items-center justify-between mb-3">
-                          <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/25 flex items-center justify-center text-[#f97316]">
+                          <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-[#f97316] shadow-[0_0_18px_rgba(249,115,22,0.2)] group-hover:scale-105 group-hover:bg-orange-500/20 transition-all duration-300">
                             <ShieldCheck className="w-4 h-4" />
                           </div>
-                          <span className="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                          <span className="font-mono text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/25">
                             Fast Track
                           </span>
                         </div>
-                        <h4 className="font-bold text-white text-sm group-hover:text-orange-400 transition-colors">
+                        <h4 className="font-bold text-white text-sm group-hover:text-orange-300 transition-colors">
                           ISO 27001 Readiness
                         </h4>
-                        <p className="text-xs text-slate-400 mt-1 line-clamp-2">
+                        <div className="w-6 h-[2px] bg-orange-500/70 rounded-full mt-2 mb-1.5 group-hover:w-10 transition-all duration-300" />
+                        <p className="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
                           End-to-end ISMS policy engine and real-time gap remediation.
                         </p>
+                        </div>
+                      <div className="relative z-10 mt-4 pt-3 border-t border-white/[0.08] flex items-center justify-between">
+                        <span className="text-xs text-white font-semibold group-hover:text-orange-300 transition-colors">Get audit-ready</span>
+                        <span className="w-7 h-7 rounded-full border border-orange-500/30 bg-orange-500/10 flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-300">
+                          <ArrowRight className="w-3.5 h-3.5 text-orange-400 group-hover:text-white transition-colors" />
+                        </span>
                       </div>
-                      <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs text-orange-400 font-medium">
-                        <span>Get audit-ready</span>
-                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </div>
                     </Link>
 
@@ -492,27 +493,33 @@ export default function Header({ currentPath }: HeaderProps) {
                     <Link
                       href="/compliance/soc-2"
                       onClick={closeAll}
-                      className="group p-4 rounded-xl bg-white/[0.02] border border-white/10 hover:border-orange-500/40 hover:bg-orange-500/[0.04] hover:shadow-[0_0_25px_rgba(249,115,22,0.12)] transition-all flex flex-col justify-between"
+                      className="group relative block rounded-2xl p-[1px] bg-white/10 hover:bg-orange-500/40 hover:-translate-y-0.5 shadow-[0_0_20px_rgba(255,121,54,0.05)] hover:shadow-[0_12px_35px_rgba(255,121,54,0.2)] transition-all duration-300"
                     >
-                      <div>
+                      <div className="relative rounded-[15px] bg-gradient-to-b from-white/[0.05] to-[#07080a] p-4 flex flex-col justify-between h-full overflow-hidden">
+                        <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-orange-500/70 to-transparent" />
+                        <div className="relative z-10">
                         <div className="flex items-center justify-between mb-3">
-                          <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/25 flex items-center justify-center text-orange-400">
+                          <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 shadow-[0_0_18px_rgba(249,115,22,0.2)] group-hover:scale-105 group-hover:bg-orange-500/20 transition-all duration-300">
                             <FileCheck className="w-4 h-4" />
                           </div>
-                          <span className="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                          <span className="font-mono text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/25">
                             Type I & II
                           </span>
                         </div>
-                        <h4 className="font-bold text-white text-sm group-hover:text-orange-400 transition-colors">
+                        <h4 className="font-bold text-white text-sm group-hover:text-orange-300 transition-colors">
                           SOC 2 Readiness
                         </h4>
-                        <p className="text-xs text-slate-400 mt-1 line-clamp-2">
+                        <div className="w-6 h-[2px] bg-orange-500/70 rounded-full mt-2 mb-1.5 group-hover:w-10 transition-all duration-300" />
+                        <p className="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
                           Automated trust service criteria tests and auditor-ready evidence vault.
                         </p>
+                        </div>
+                      <div className="relative z-10 mt-4 pt-3 border-t border-white/[0.08] flex items-center justify-between">
+                        <span className="text-xs text-white font-semibold group-hover:text-orange-300 transition-colors">Get audit-ready</span>
+                        <span className="w-7 h-7 rounded-full border border-orange-500/30 bg-orange-500/10 flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-300">
+                          <ArrowRight className="w-3.5 h-3.5 text-orange-400 group-hover:text-white transition-colors" />
+                        </span>
                       </div>
-                      <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs text-orange-400 font-medium transition-colors">
-                        <span>Get audit-ready</span>
-                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </div>
                     </Link>
 
@@ -520,27 +527,33 @@ export default function Header({ currentPath }: HeaderProps) {
                     <Link
                       href="/compliance/dpdpa-data-mapping"
                       onClick={closeAll}
-                      className="group p-4 rounded-xl bg-white/[0.02] border border-white/10 hover:border-orange-500/40 hover:bg-orange-500/[0.04] hover:shadow-[0_0_25px_rgba(249,115,22,0.12)] transition-all flex flex-col justify-between"
+                      className="group relative block rounded-2xl p-[1px] bg-white/10 hover:bg-orange-500/40 hover:-translate-y-0.5 shadow-[0_0_20px_rgba(255,121,54,0.05)] hover:shadow-[0_12px_35px_rgba(255,121,54,0.2)] transition-all duration-300"
                     >
-                      <div>
+                      <div className="relative rounded-[15px] bg-gradient-to-b from-white/[0.05] to-[#07080a] p-4 flex flex-col justify-between h-full overflow-hidden">
+                        <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-orange-500/70 to-transparent" />
+                        <div className="relative z-10">
                         <div className="flex items-center justify-between mb-3">
-                          <div className="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/25 flex items-center justify-center text-orange-400">
+                          <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 shadow-[0_0_18px_rgba(249,115,22,0.2)] group-hover:scale-105 group-hover:bg-orange-500/20 transition-all duration-300">
                             <Database className="w-4 h-4" />
                           </div>
-                          <span className="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                          <span className="font-mono text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/25">
                             Accord Module
                           </span>
                         </div>
-                        <h4 className="font-bold text-white text-sm group-hover:text-orange-400 transition-colors">
+                        <h4 className="font-bold text-white text-sm group-hover:text-orange-300 transition-colors">
                           DPDPA Data Flow Mapping
                         </h4>
-                        <p className="text-xs text-slate-400 mt-1 line-clamp-2">
+                        <div className="w-6 h-[2px] bg-orange-500/70 rounded-full mt-2 mb-1.5 group-hover:w-10 transition-all duration-300" />
+                        <p className="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
                           Automated data principal consent & lineage discovery engine.
                         </p>
+                        </div>
+                      <div className="relative z-10 mt-4 pt-3 border-t border-white/[0.08] flex items-center justify-between">
+                        <span className="text-xs text-white font-semibold group-hover:text-orange-300 transition-colors">Get audit-ready</span>
+                        <span className="w-7 h-7 rounded-full border border-orange-500/30 bg-orange-500/10 flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-300">
+                          <ArrowRight className="w-3.5 h-3.5 text-orange-400 group-hover:text-white transition-colors" />
+                        </span>
                       </div>
-                      <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs text-orange-400 font-medium transition-colors">
-                        <span>Get audit-ready</span>
-                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </div>
                     </Link>
                   </div>
@@ -658,21 +671,20 @@ export default function Header({ currentPath }: HeaderProps) {
 
                 <div className="flex items-center gap-3 w-full sm:w-auto">
                   <Link
+                    href="/compliance"
+                    onClick={closeAll}
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-[#141416] hover:bg-[#1c1c20] border border-white/[0.1] text-xs font-semibold text-white transition-all hover:border-orange-500/50"
+                  >
+                    <span>Explore Compliance Hub</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-orange-400" />
+                  </Link>
+                  <Link
                     href="/contact/rollout"
                     onClick={closeAll}
                     className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-white/[0.03] hover:bg-orange-500/10 border border-white/10 hover:border-orange-500/40 text-xs font-medium text-white transition-all"
                   >
                     <PhoneCall className="w-3.5 h-3.5 text-orange-400" />
                     <span>Talk to us about a managed rollout</span>
-                  </Link>
-
-                  <Link
-                    href="/grc-builder"
-                    onClick={closeAll}
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-[#f97316] hover:bg-[#ff7d1c] text-xs font-semibold text-white shadow-[0_0_16px_rgba(249,115,22,0.45)] hover:shadow-[0_0_24px_rgba(249,115,22,0.6)] transition-all active:scale-95"
-                  >
-                    <SlidersHorizontal className="w-3.5 h-3.5" />
-                    <span>Build your GRC program</span>
                   </Link>
                 </div>
               </div>
@@ -684,14 +696,7 @@ export default function Header({ currentPath }: HeaderProps) {
       {/* 4. Mobile Menu Overlay & Drawer (below md) */}
       {mobileMenuOpen && (
         <div className="md:hidden mt-2 rounded-2xl bg-black/95 backdrop-blur-2xl border border-white/[0.12] p-4 max-h-[85vh] overflow-y-auto shadow-[0_20px_50px_rgba(0,0,0,0.9)] animate-in fade-in slide-in-from-top-2 space-y-3 z-50">
-          {/* Main Mobile Links */}
-          <Link
-            href="/"
-            onClick={closeAll}
-            className="block px-3.5 py-2 rounded-lg text-sm font-semibold text-orange-400 bg-white/[0.04]"
-          >
-            Home
-          </Link>
+          {/* Main Mobile Links — placeholder for RiskBite (rendered between Solutions/Partners below) */}
 
           {/* Platform Accordion */}
           <div className="rounded-xl bg-white/[0.02] border border-white/[0.08] overflow-hidden">
@@ -857,6 +862,17 @@ export default function Header({ currentPath }: HeaderProps) {
             }`}
           >
             Solutions
+          </Link>
+          <Link
+            href="/risk-bite"
+            onClick={closeAll}
+            className={`block px-3.5 py-2 rounded-lg text-sm transition-colors ${
+              pathname.startsWith("/risk-bite")
+                ? "text-orange-400 font-semibold bg-orange-500/10"
+                : "text-slate-300 hover:text-white hover:bg-white/[0.08]"
+            }`}
+          >
+            RiskBite
           </Link>
           <Link
             href="/partner"

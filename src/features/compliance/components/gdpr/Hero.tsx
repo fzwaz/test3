@@ -49,9 +49,8 @@ export default function GdprHero() {
 
             {/* Description */}
             <p className="mt-6 max-w-[560px] text-[15px] lg:text-base text-[#cfc9c2] font-normal leading-[1.65]" style={textStyle(1300)}>
-              Risknox helps you prepare for the General Data Protection Regulation
-              — mapping personal data flows, rights handling, vendor records, breach
-              workflows, privacy evidence, and cross-border data risks.
+              Operationalize EU privacy compliance with automated data mapping,
+              RoPA, rights handling, and audit-ready records.
             </p>
 
             {/* CTA */}

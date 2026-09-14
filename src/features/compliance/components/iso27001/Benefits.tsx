@@ -49,13 +49,23 @@ export default function Benefits() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {BENEFITS.map((b, i) => (
             <Reveal key={b.title} delay={i * 0.1} className="h-full">
-              <div className="h-full rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-8 hover:border-orange-500/40 hover:shadow-[0_0_35px_rgba(249,115,22,0.12)] transition-all duration-300">
-                <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/25 flex items-center justify-center mb-6">
-                  <b.Icon className="w-6 h-6 text-orange-400" />
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-6 sm:p-7 hover:border-orange-500/50 hover:-translate-y-1 hover:shadow-[0_16px_50px_rgba(249,115,22,0.16)] transition-all duration-300">
+                <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-orange-500/70 to-transparent" />
+                <span className="pointer-events-none absolute -top-1 right-5 text-[56px] font-bold leading-none text-white/[0.06] tabular-nums select-none">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div className="flex items-center justify-between mb-6">
+                  <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center shadow-[0_0_20px_rgba(249,115,22,0.15)] group-hover:scale-105 group-hover:bg-orange-500/15 transition-all duration-300">
+                    <b.Icon className="w-6 h-6 text-orange-400" />
+                  </div>
+                  <span className="text-[11px] font-mono font-bold tracking-[0.18em] text-orange-400/80 border border-orange-500/25 bg-orange-500/[0.07] rounded-full px-3 py-1">
+                    0{i + 1}
+                  </span>
                 </div>
-                <h3 className="text-xl font-bold text-white tracking-tight mb-3">
+                <h3 className="text-xl font-bold text-white tracking-tight mb-2.5">
                   {b.title}
                 </h3>
+                <div className="w-10 h-[2px] bg-orange-500/70 rounded-full mb-4 group-hover:w-16 transition-all duration-300" />
                 <p className="text-sm text-slate-400 leading-relaxed">{b.description}</p>
               </div>
             </Reveal>

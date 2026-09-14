@@ -2,8 +2,7 @@
 
 import React, { useState, useRef, useLayoutEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
@@ -29,7 +28,7 @@ const pipelineSteps: StepData[] = [
     kicker: "See everything, as it happens",
     title: "Monitor — Pulse",
     description:
-      "See your cyber environment in real time with continuous AI-powered monitoring, anomaly detection, and actionable alerts.",
+      "Continuous AI monitoring, anomaly detection, and actionable alerts across your cyber environment.",
     ctaText: "Explore Pulse",
     ctaLink: "#pulse",
     renderIcon: () => (
@@ -60,7 +59,7 @@ const pipelineSteps: StepData[] = [
     kicker: "From signals to dollar impact",
     title: "Quantify — Fortress",
     description:
-      "Turn cyber exposure into financial impact with risk intelligence your leadership and board can understand and act on.",
+      "Translate cyber exposure into dollar impact your leadership and board can act on.",
     ctaText: "Explore Fortress",
     ctaLink: "#fortress",
     renderIcon: () => (
@@ -100,7 +99,7 @@ const pipelineSteps: StepData[] = [
     kicker: "Underwrite with confidence",
     title: "Underwrite — Compass",
     description:
-      "Transform technical risk signals into underwriting-grade intelligence for faster, smarter risk assessment and premium decisions.",
+      "Turn technical risk signals into underwriting-grade intelligence for faster premium decisions.",
     ctaText: "Explore Compass",
     ctaLink: "#compass",
     renderIcon: () => (
@@ -134,7 +133,7 @@ const pipelineSteps: StepData[] = [
     kicker: "Govern what you deploy",
     title: "Govern — Accord",
     description:
-      "Bring AI governance, compliance, and insurability into one framework with automated workflows aligned to leading standards.",
+      "Unify AI governance, compliance, and insurability with automated workflows.",
     ctaText: "Explore Accord",
     ctaLink: "#accord",
     renderIcon: () => (
@@ -162,6 +161,49 @@ const pipelineSteps: StepData[] = [
       </svg>
     ),
   },
+  {
+    id: "05",
+    stepNumber: "",
+    stageName: "DMARC",
+    kicker: "Stop domain spoofing",
+    title: "Monitor — DMARC",
+    description:
+      "Continuous SPF/DKIM/DMARC monitoring and domain spoofing alerts.",
+    ctaText: "Explore DMARC",
+    ctaLink: "#dmarc",
+    renderIcon: () => (
+      <svg viewBox="0 0 40 40" className="w-7 h-7 drop-shadow-[0_0_8px_rgba(243,103,52,0.8)]" fill="none">
+        <circle cx="20" cy="20" r="12" stroke="#f36734" strokeWidth="2.4" fill="none" />
+        <path d="M20 12 L26 20 L20 28 L14 20 Z" fill="#f36734" opacity="0.3" />
+        <path d="M20 16 L24 20 L20 24 L16 20 Z" fill="#f36734" />
+      </svg>
+    ),
+    renderGraphic: () => (
+      <svg viewBox="0 0 240 200" className="w-full max-w-[180px] sm:max-w-[200px] drop-shadow-[0_15px_30px_rgba(0,0,0,0.9)]" fill="none">
+        {/* Isometric base platform */}
+        <path d="M120 130 L185 160 L120 190 L55 160 Z" fill="#0f1117" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" />
+        <path d="M55 160 L120 190 V196 L55 166 Z" fill="#090a0d" />
+        <path d="M185 160 L120 190 V196 L185 166 Z" fill="#07080a" />
+        {/* Envelope body — isometric front face */}
+        <path d="M88 75 L88 128 L152 128 L152 75 Z" fill="#13151c" stroke="rgba(255,255,255,0.12)" strokeWidth="1.2" />
+        {/* Envelope flap */}
+        <path d="M88 75 L120 100 L152 75 Z" fill="#1a1d28" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+        {/* Envelope V-crease lines */}
+        <path d="M88 128 L120 105 L152 128" stroke="#f36734" strokeWidth="1.4" strokeOpacity="0.6" />
+        {/* SPF / DKIM / DMARC labels */}
+        <rect x="96" y="108" width="18" height="10" rx="2" fill="#f36734" fillOpacity="0.15" stroke="#f36734" strokeWidth="1" strokeOpacity="0.7" />
+        <text x="105" y="116" fill="#f36734" fontSize="5.5" fontWeight="bold" textAnchor="middle">SPF</text>
+        <rect x="117" y="108" width="22" height="10" rx="2" fill="#f36734" fillOpacity="0.15" stroke="#f36734" strokeWidth="1" strokeOpacity="0.7" />
+        <text x="128" y="116" fill="#f36734" fontSize="5.5" fontWeight="bold" textAnchor="middle">DKIM</text>
+        <rect x="142" y="108" width="24" height="10" rx="2" fill="#f36734" fillOpacity="0.15" stroke="#f36734" strokeWidth="1" strokeOpacity="0.7" />
+        <text x="154" y="116" fill="#f36734" fontSize="5.5" fontWeight="bold" textAnchor="middle">DMARC</text>
+        {/* Shield badge — bottom right */}
+        <circle cx="168" cy="142" r="15" fill="#0c0d12" stroke="#f36734" strokeWidth="1.8" />
+        <path d="M168 134 L175 137 V144 C175 149 171.5 152 168 154 C164.5 152 161 149 161 144 V137 Z" fill="rgba(243,103,52,0.15)" stroke="#f36734" strokeWidth="1.4" strokeLinejoin="round" />
+        <path d="M164 143 L167 146 L173 140" stroke="#f36734" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
 ];
 
 // ── Timeline segment lengths (seconds in scrub timeline) ──
@@ -179,17 +221,14 @@ function StepCardBody({ step, highlighted }: { step: StepData; highlighted: bool
   return (
     <div
       className={`group relative rounded-[24px] transition-all duration-500 overflow-hidden p-6 sm:p-8 ${highlighted
-        ? "bg-[#0a0a0a] shadow-[0_20px_50px_rgba(0,0,0,0.95),0_0_35px_rgba(243,103,52,0.16)] ring-1 ring-white/[0.06]"
-        : "bg-[#0a0a0a]/90 shadow-[0_12px_35px_rgba(0,0,0,0.7)] ring-1 ring-white/[0.04]"
+        ? "bg-black shadow-[0_20px_50px_rgba(0,0,0,0.95),0_0_35px_rgba(243,103,52,0.16)] ring-1 ring-white/[0.06]"
+        : "bg-black shadow-[0_12px_35px_rgba(0,0,0,0.7)] ring-1 ring-white/[0.04]"
         }`}
     >
       <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 sm:gap-4 items-center">
-        {/* Left: Step Number + Radar Icon Badge */}
-        <div className="sm:col-span-3 flex flex-row sm:flex-col items-center sm:items-start justify-between sm:justify-center gap-4 sm:gap-6 flex-shrink-0">
-          <span className="font-mono text-3xl sm:text-4xl font-extrabold text-[#f36734] tracking-tight leading-none">
-            {step.id}
-          </span>
-          <div className="relative flex items-center justify-center">
+          {/* Left: Radar Icon Badge + Step Number */}
+          <div className="sm:col-span-3 flex flex-col items-center sm:items-start justify-center gap-4 sm:gap-6 flex-shrink-0">
+            <div className="relative flex items-center justify-center">
             <div className="w-16 h-16 rounded-full border border-[#f36734]/25 flex items-center justify-center relative bg-[#0a0800] shadow-[0_0_18px_rgba(243,103,52,0.2)]">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#f36734]/80" />
               <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1 h-1 rounded-full bg-[#f36734]/80" />
@@ -200,6 +239,9 @@ function StepCardBody({ step, highlighted }: { step: StepData; highlighted: bool
               </div>
             </div>
           </div>
+          <span className="font-mono text-3xl sm:text-4xl font-extrabold text-[#f36734] tracking-tight leading-none">
+            {step.id}
+          </span>
         </div>
 
                           {/* Center: Title, Description & CTA Button */}
@@ -214,16 +256,13 @@ function StepCardBody({ step, highlighted }: { step: StepData; highlighted: bool
           <p className="text-xs sm:text-sm text-slate-300/90 leading-relaxed font-normal">
             {step.description}
           </p>
-          <div className="pt-1.5">
-            <Link
-              href={step.ctaLink}
-              onClick={(e) => e.stopPropagation()}
-              className="group/btn relative inline-flex items-center justify-center px-4 py-2 bg-[#f36734] text-[#080808] rounded-[12px] sm:rounded-[14px] font-semibold text-xs sm:text-[13px] overflow-hidden shadow-[0_0_16px_rgba(243,103,52,0.3)] hover:shadow-[0_0_24px_rgba(243,103,52,0.5)] active:scale-[0.98] transition-all cursor-pointer"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 ease-in-out" />
-              <span className="relative z-10 font-bold">{step.ctaText}</span>
-              <ArrowRight className="relative z-10 ml-1.5 w-3.5 h-3.5 text-[#080808] group-hover/btn:translate-x-1 transition-transform" />
-            </Link>
+          <div className="pt-1.5" onClick={(e) => e.stopPropagation()}>
+            <LiquidMetalButton
+              label={step.ctaText}
+              onClick={() => {
+                window.location.hash = step.ctaLink;
+              }}
+            />
           </div>
         </div>
 

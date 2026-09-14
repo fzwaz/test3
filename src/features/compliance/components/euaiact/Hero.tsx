@@ -49,15 +49,8 @@ export default function EuAiHero() {
 
             {/* Description */}
             <p className="mt-6 max-w-[560px] text-[15px] lg:text-base text-[#cfc9c2] font-normal leading-[1.65]" style={textStyle(1300)}>
-              Risknox helps organisations prepare for the EU AI Act — identifying AI
-              systems, classifying AI-related risk, establishing governance and
-              accountability, managing documentation and evidence, and building a
-              structured approach to responsible AI.
-            </p>
-            <p className="mt-3 max-w-[560px] text-sm text-slate-500 leading-relaxed" style={textStyle(1350)}>
-              The Act applies progressively on different timelines, so organisations
-              need to understand which requirements apply to their AI use cases —
-              and when.
+              Inventory AI systems, classify risk tiers, and automate governance
+              documentation to meet EU AI Act requirements.
             </p>
 
             {/* CTA */}

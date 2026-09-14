@@ -49,10 +49,8 @@ export default function NistHero() {
 
             {/* Description */}
             <p className="mt-6 max-w-[560px] text-[15px] lg:text-base text-[#cfc9c2] font-normal leading-[1.65]" style={textStyle(1300)}>
-              Risknox helps organisations establish a practical NIST Cybersecurity
-              Framework programme — identifying critical assets and risks, assessing
-              capabilities, implementing controls, strengthening incident response,
-              and building continuous cyber resilience.
+              Assess your security posture, map controls across NIST CSF 2.0
+              functions, and build continuous cyber resilience.
             </p>
 
             {/* CTA */}

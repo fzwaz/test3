@@ -49,10 +49,8 @@ export default function DpdpaHero() {
 
             {/* Description */}
             <p className="mt-6 max-w-[560px] text-[15px] lg:text-base text-[#cfc9c2] font-normal leading-[1.65]" style={textStyle(1300)}>
-              Risknox enables organisations to establish a practical DPDPA compliance
-              framework — identifying personal data flows, managing consent and data
-              principal requests, implementing Data Fiduciary obligations,
-              strengthening breach response, and governing third-party data handling.
+              Map personal data flows, automate consent and principal rights,
+              and maintain continuous compliance under India&apos;s DPDP Act.
             </p>
 
             {/* CTA */}

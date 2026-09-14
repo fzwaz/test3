@@ -22,7 +22,7 @@ const navColumns = [
       { label: "SOC 2", href: "#soc2" },
       { label: "DPDPA Mapping", href: "#dpdpa" },
       { label: "Build Your GRC", href: "#grc" },
-      { label: "Pricing", href: "#pricing" },
+      { label: "Pricing", href: "/pricing" },
     ],
   },
   {
@@ -45,8 +45,9 @@ const navColumns = [
   {
     heading: "ACCOUNT",
     links: [
-      { label: "Sign up", href: "#signup" },
-      { label: "Log in", href: "#login" },
+      { label: "Sign up", href: "/signup" },
+      { label: "Log in", href: "/login" },
+      { label: "My Risknox", href: "/my-risknox" },
     ],
   },
 ];

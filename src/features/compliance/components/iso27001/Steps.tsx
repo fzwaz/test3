@@ -59,14 +59,24 @@ export default function Steps() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {STEPS.map((s, i) => (
             <Reveal key={s.title} delay={(i % 3) * 0.1} className="h-full">
-              <div className="h-full rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-7 hover:border-orange-500/40 hover:shadow-[0_0_35px_rgba(249,115,22,0.12)] transition-all duration-300">
-                <p className="text-xs font-mono font-bold tracking-[0.2em] text-[#ff7d1c] mb-4 tabular-nums">
-                  {String(i + 1).padStart(2, "0")} / 06
-                </p>
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 sm:p-7 hover:border-orange-500/50 hover:-translate-y-1 hover:shadow-[0_16px_50px_rgba(249,115,22,0.15)] transition-all duration-300">
+                <div className="flex items-center justify-between mb-5">
+                  <span className="inline-flex items-center gap-2 text-[11px] font-mono font-bold tracking-[0.18em] text-orange-400 bg-orange-500/[0.08] border border-orange-500/25 rounded-full px-3 py-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-orange-400" />
+                    STEP {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-xs font-mono text-slate-600 tabular-nums">
+                    / 06
+                  </span>
+                </div>
                 <h3 className="text-lg font-bold text-white tracking-tight mb-2.5">
                   {s.title}
                 </h3>
                 <p className="text-sm text-slate-400 leading-relaxed">{s.description}</p>
+                <span className="pointer-events-none absolute -bottom-3 right-4 text-[64px] font-bold leading-none text-white/[0.05] tabular-nums select-none">
+                  {i + 1}
+                </span>
+                <div className="absolute bottom-0 left-0 h-[2px] w-8 bg-orange-500 group-hover:w-full transition-all duration-500" />
               </div>
             </Reveal>
           ))}

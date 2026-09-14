@@ -49,10 +49,8 @@ export default function IsoHero() {
 
             {/* Description */}
             <p className="mt-6 max-w-[560px] text-[15px] lg:text-base text-[#cfc9c2] font-normal leading-[1.65]" style={textStyle(1300)}>
-              Risknox helps you prepare for ISO 27001:2022 by building a cleaner
-              Information Security Management System — mapping controls, completing
-              risk assessment and treatment, drafting the statement of applicability,
-              assigning owners, organising evidence, and getting your audit trail ready.
+              Build a cleaner ISMS, map Annex A controls, and automate evidence
+              collection for audit-ready ISO 27001:2022 certification.
             </p>
 
             {/* CTA */}

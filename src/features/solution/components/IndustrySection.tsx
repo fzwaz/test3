@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import SpecularCardBorder from "@/components/SpecularCard";
 
 type Industry = {
   id: string;
@@ -309,8 +310,8 @@ export default function IndustrySection() {
         </div>
 
         {/* 2. Industry Tabs Bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 border border-white/10 bg-[#07080a] mb-6 rounded-t-sm">
-          {INDUSTRIES.map((industry) => {
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 border border-white/10 bg-[#07080a] mb-6 rounded-t-sm overflow-hidden">
+          {INDUSTRIES.map((industry, idx) => {
             const isActive = activeTab === industry.id;
             const IconComponent = industry.icon;
 
@@ -320,56 +321,66 @@ export default function IndustrySection() {
                 onClick={() => setActiveTab(industry.id)}
                 className={`relative flex flex-col items-center justify-center p-4 sm:p-5 text-center transition-all duration-200 border-r border-b lg:border-b-0 border-white/10 last:border-r-0 group cursor-pointer ${
                   isActive
-                    ? "bg-[#0c0e12] border-t-2 border-t-[#f97316] -mt-[1px]"
-                    : "hover:bg-white/[0.03] text-zinc-400 hover:text-white"
+                    ? "bg-gradient-to-b from-orange-500/[0.14] to-transparent border-t-2 border-t-[#f97316] -mt-[1px] shadow-[0_8px_24px_rgba(249,115,22,0.12)]"
+                    : "hover:bg-white/[0.04] text-zinc-400 hover:text-white"
                 }`}
               >
                 {/* Active bottom line indicator with downward triangle */}
                 {isActive && (
-                  <div className="absolute -bottom-[2px] left-0 right-0 h-[2px] bg-[#f97316] z-20">
+                  <div className="absolute -bottom-[2px] left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#f97316] to-transparent z-20">
                     <div className="absolute top-[2px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[5px] border-t-[#f97316]" />
                   </div>
                 )}
 
-                {/* Icon */}
+                {/* Icon in boxed container */}
                 <div
-                  className={`mb-3 transition-colors ${
+                  className={`w-11 h-11 rounded-lg border flex items-center justify-center mb-3 transition-all duration-200 ${
                     isActive
-                      ? "text-[#f97316]"
-                      : "text-zinc-400 group-hover:text-white"
+                      ? "bg-orange-500/15 border-orange-500/40 text-[#f97316] shadow-[0_0_18px_rgba(249,115,22,0.25)]"
+                      : "bg-white/[0.03] border-white/10 text-zinc-500 group-hover:text-white group-hover:border-white/25"
                   }`}
                 >
-                  <IconComponent className="w-6 h-6 mx-auto" />
+                  <IconComponent className="w-5 h-5 mx-auto" />
                 </div>
 
                 {/* Label */}
                 <span
-                  className={`text-xs sm:text-[13px] font-medium leading-tight transition-colors ${
+                  className={`text-xs sm:text-[13px] leading-tight transition-colors ${
                     isActive
-                      ? "text-[#f97316] font-semibold"
-                      : "text-zinc-300 group-hover:text-white"
+                      ? "text-white font-semibold"
+                      : "text-zinc-400 font-medium group-hover:text-white"
                   }`}
                 >
                   {industry.name}
+                </span>
+                <span
+                  className={`mt-1 text-[10px] font-mono tabular-nums tracking-widest ${
+                    isActive ? "text-orange-400/80" : "text-zinc-600"
+                  }`}
+                >
+                  {String(idx + 1).padStart(2, "0")}
                 </span>
               </button>
             );
           })}
         </div>
 
-        {/* 3. Main Detail Card with Cyber Chamfered Corner */}
-        <div className="relative bg-[#07080a] border border-white/10 p-6 sm:p-8 md:p-10 transition-all duration-300">
-          {/* Top-Right Chamfer Corner Accent */}
-          <div className="absolute top-0 right-0 w-8 h-8 pointer-events-none overflow-hidden">
-            <div className="absolute -top-6 -right-6 w-12 h-12 bg-[#000000] rotate-45 border-b border-white/20" />
-          </div>
+        {/* 3. Main Detail Card — chamfered top-right like reference, same hover as role cards */}
+        <div className="relative group">
+        <div className="relative bg-white/10 hover:bg-white/25 shadow-[0_0_20px_rgba(255,121,54,0.05)] hover:shadow-[0_0_30px_rgba(255,121,54,0.15)] transition-all duration-300 [clip-path:polygon(0_0,calc(100%-32px)_0,100%_32px,100%_100%,0_100%)] p-px">
+          <div className="relative bg-[#07080a] [clip-path:polygon(0_0,calc(100%-31px)_0,100%_31px,100%_100%,0_100%)] p-6 sm:p-8 md:p-10 overflow-hidden">
+          {/* Subtle Ambient Orange Glow — same as role cards */}
+          <div className="absolute -top-12 -right-12 w-36 h-36 bg-[#ff7936]/[0.05] group-hover:bg-[#ff7936]/[0.12] rounded-full blur-2xl pointer-events-none transition-all duration-500" />
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+          <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
             {/* Left Column: Overview */}
             <div className="lg:col-span-6 flex flex-col justify-between">
               <div>
-                <div className="text-[11px] font-mono font-semibold uppercase tracking-widest text-[#f97316] mb-3">
-                  INDUSTRY OVERVIEW
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-[11px] font-mono font-semibold uppercase tracking-widest text-[#f97316]">
+                    INDUSTRY OVERVIEW
+                  </span>
+                  <span className="h-px flex-1 bg-gradient-to-r from-orange-500/40 to-transparent" />
                 </div>
 
                 <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">
@@ -388,10 +399,12 @@ export default function IndustrySection() {
               <div>
                 <Link
                   href={`/contact?industry=${currentIndustry.id}`}
-                  className="group inline-flex items-center justify-between gap-4 px-6 py-3.5 rounded-none bg-[#050608] border border-white/20 hover:border-orange-500 text-white text-sm font-medium transition-all duration-200 hover:bg-orange-500/[0.04] w-full sm:w-auto min-w-[280px]"
+                  className="group inline-flex items-center justify-between gap-4 px-6 py-3.5 rounded-none bg-gradient-to-r from-[#0c0a07] to-[#050608] border border-white/20 hover:border-orange-500 hover:shadow-[0_0_28px_rgba(249,115,22,0.3)] text-white text-sm font-medium transition-all duration-200 hover:bg-orange-500/[0.08] w-full sm:w-auto min-w-[280px]"
                 >
                   <span>{currentIndustry.cta}</span>
-                  <ArrowRight className="w-4 h-4 text-[#f97316] group-hover:translate-x-1 transition-transform" />
+                  <span className="w-8 h-8 border border-orange-500/40 bg-orange-500/10 flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-200">
+                    <ArrowRight className="w-4 h-4 text-[#f97316] group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+                  </span>
                 </Link>
               </div>
             </div>
@@ -405,11 +418,15 @@ export default function IndustrySection() {
                 </div>
 
                 <div className="divide-y divide-dotted divide-white/10 border-b border-dotted border-white/10">
-                  {currentIndustry.risks.map((risk) => (
+                  {currentIndustry.risks.map((risk, idx) => (
                     <div
                       key={risk}
-                      className="py-3 text-sm sm:text-[15px] text-zinc-200 font-normal tracking-wide"
+                      className="group flex items-center gap-3 py-3.5 text-sm sm:text-[15px] text-zinc-300 font-normal tracking-wide hover:text-white hover:bg-orange-500/[0.04] hover:pl-1.5 transition-all duration-200"
                     >
+                      <span className="text-[11px] font-mono text-zinc-600 group-hover:text-orange-400 tabular-nums transition-colors">
+                        {String(idx + 1).padStart(2, "0")}
+                      </span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-orange-500/60 group-hover:bg-orange-500 group-hover:shadow-[0_0_10px_rgba(249,115,22,0.9)] flex-shrink-0 transition-all" />
                       {risk}
                     </div>
                   ))}
@@ -426,15 +443,19 @@ export default function IndustrySection() {
                   {currentIndustry.frameworks.map((fw) => (
                     <span
                       key={fw}
-                      className="px-4 py-1.5 bg-[#0e1015] border border-white/15 text-white text-xs font-mono font-medium tracking-wide"
+                      className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#0e1015] border border-white/15 hover:border-orange-500/50 hover:bg-orange-500/[0.08] hover:shadow-[0_0_16px_rgba(249,115,22,0.18)] text-white text-xs font-mono font-medium tracking-wide transition-all duration-200 cursor-default"
                     >
+                      <span className="w-1 h-1 rounded-full bg-orange-500" />
                       {fw}
                     </span>
                   ))}
                 </div>
               </div>
+              </div>
             </div>
           </div>
+          </div>
+        <SpecularCardBorder />
         </div>
 
         {/* 4. Bottom Banner */}
@@ -467,7 +488,7 @@ export default function IndustrySection() {
             <div className="h-6 w-px bg-white/10 hidden sm:block mr-5" />
             <Link
               href="/contact"
-              className="group inline-flex items-center gap-3 px-4 py-2 border border-white/20 hover:border-orange-500 bg-[#0b0d11] text-white text-xs sm:text-sm font-medium hover:text-[#f97316] transition-colors w-full sm:w-auto justify-between sm:justify-start"
+              className="group inline-flex items-center gap-3 px-4 py-2 border border-white/20 hover:border-orange-500 hover:shadow-[0_0_20px_rgba(249,115,22,0.25)] bg-[#0b0d11] hover:bg-orange-500/[0.08] text-white text-xs sm:text-sm font-medium hover:text-white transition-all duration-200 w-full sm:w-auto justify-between sm:justify-start"
             >
               <span>Talk to Risknox</span>
               <ArrowRight className="w-3.5 h-3.5 text-[#f97316] group-hover:translate-x-1 transition-transform" />

@@ -1,13 +1,15 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
+import React, { useState } from "react";
 import CircuitTrace from "@/components/circuit-trace";
 import { UserPlus, Lock, BarChart2, ArrowRight } from "lucide-react";
+import TryCompassModal from "@/components/TryCompassModal";
 
 export default function EvaluationSection() {
+  const [tryOpen, setTryOpen] = useState(false);
   return (
     <section className="py-12 px-4 sm:px-6 lg:px-8 relative z-10 bg-[#000000] text-slate-100">
+      <TryCompassModal open={tryOpen} onClose={() => setTryOpen(false)} />
       <div className="max-w-6xl mx-auto">
         {/* Section eyebrow label */}
         <p className="text-xs font-mono font-bold uppercase tracking-widest text-[#ff7936] mb-5">
@@ -121,9 +123,10 @@ export default function EvaluationSection() {
                 </div>
 
                 <div className="flex flex-col items-center sm:items-end gap-2.5 flex-shrink-0 pt-4 lg:pt-0 border-t lg:border-t-0 border-white/10">
-                  <Link
-                    href="/contact?role=trial-account"
-                    className="group relative inline-flex items-center justify-center p-[1px] bg-white/20 hover:bg-[#ff7936] hover:shadow-[0_0_18px_rgba(255,121,54,0.45)] transition-all duration-200 active:scale-[0.97] w-full sm:w-auto"
+                  <button
+                    type="button"
+                    onClick={() => setTryOpen(true)}
+                    className="group relative inline-flex items-center justify-center p-[1px] bg-white/20 hover:bg-[#ff7936] hover:shadow-[0_0_18px_rgba(255,121,54,0.45)] transition-all duration-200 active:scale-[0.97] w-full sm:w-auto cursor-pointer"
                     style={{ clipPath: "polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px)" }}
                   >
                     <div
@@ -133,7 +136,7 @@ export default function EvaluationSection() {
                       <span>Request a Trial Account</span>
                       <ArrowRight className="w-4 h-4 text-orange-300 group-hover:text-[#ff7936] group-hover:translate-x-1 transition-all duration-200" />
                     </div>
-                  </Link>
+                  </button>
 
                   <div className="flex items-center gap-1.5 text-xs text-zinc-400">
                     <Lock className="w-3.5 h-3.5 text-zinc-500" />

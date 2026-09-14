@@ -127,40 +127,42 @@ export default function DmarcHero() {
               </div>
             </div>
 
-            <h1 className="text-[38px] sm:text-[50px] lg:text-[60px] font-bold text-[#f4f1ed] tracking-[-0.02em] leading-[1.08] select-none">
+            <h1 className="text-[32px] sm:text-[44px] lg:text-[48px] font-bold text-[#f4f1ed] tracking-[-0.02em] leading-[1.08] select-none">
               <span className="block overflow-hidden pb-1">
-                <span className="block" style={textStyle(900)}>Stop attackers from</span>
+                <span className="block lg:whitespace-nowrap" style={textStyle(900)}>Stop attackers from</span>
               </span>
               <span className="block overflow-hidden pb-2">
-                <span className="block" style={textStyle(1050)}>
-                  sending email <span className="text-[#ff7d1c]">as you.</span>
+                <span className="block lg:whitespace-nowrap" style={textStyle(1050)}>
+                  spoofing <span className="text-[#ff7d1c]">your domain.</span>
                 </span>
               </span>
             </h1>
 
             <p className="mt-6 max-w-[560px] text-[15px] lg:text-base text-[#cfc9c2] font-normal leading-[1.65]" style={textStyle(1300)}>
-              Know exactly who is sending email using your domain. Monitor
-              authentication, identify unauthorised senders, and move safely
-              toward complete DMARC enforcement.
+              Continuous SPF, DKIM and DMARC monitoring with real-time alerts when your email authentication breaks — plus a
+              free instant check to see where you stand today.
             </p>
 
             <div className="mt-9 flex flex-col sm:flex-row items-stretch sm:items-center gap-4" style={textStyle(1500)}>
-              <Link
-                href="#senders"
+              <a
+                href="#dmarc-free-check"
                 className="group inline-flex items-center justify-center gap-3 px-7 py-[15px] rounded-[10px] bg-black/70 text-white font-semibold text-[15px] border border-[#f97316]/70 shadow-[0_0_20px_rgba(249,115,22,0.15)] hover:border-orange-400 hover:shadow-[0_0_28px_rgba(249,115,22,0.35)] hover:bg-[#140c06] transition-all duration-200 active:scale-[0.98] backdrop-blur-xl cursor-pointer"
               >
-                <span>Explore DMARC Monitoring</span>
+                <span>Check your domain — free</span>
                 <ArrowRight className="w-[18px] h-[18px] stroke-[2.5] text-orange-400 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              </a>
 
-              <Link
-                href="/contact?role=dmarc-check"
+              <a
+                href="#dmarc-paid-tier"
                 className="group inline-flex items-center justify-center gap-3 px-7 py-[15px] rounded-[10px] bg-black/70 text-white font-semibold text-[15px] border border-white/15 hover:border-orange-400 hover:shadow-[0_0_28px_rgba(249,115,22,0.25)] hover:bg-[#140c06] transition-all duration-200 active:scale-[0.98] backdrop-blur-xl cursor-pointer"
               >
-                <span>Check Your Domain</span>
+                <span>See paid tier</span>
                 <ArrowRight className="w-[18px] h-[18px] stroke-[2.5] text-orange-400 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              </a>
             </div>
+            <p className="mt-3 text-xs font-mono text-slate-500" style={textStyle(1500)}>
+              Instant pass/fail — no email required · Full report gated like RiskBite
+            </p>
           </div>
 
           {/* ── RIGHT: Spoof animation ── */}

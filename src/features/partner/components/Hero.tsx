@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, ArrowRight, ShieldCheck, Compass } from "luc
 import Link from "next/link";
 import BeamsBackground from "@/components/BeamsBackground";
 import { useHeroReveal } from "@/hooks/useHeroReveal";
+import TryCompassModal from "@/components/TryCompassModal";
 
 const PARTNER_SLIDES = [
   {
@@ -23,6 +24,7 @@ export default function PartnerHero() {
   const { mounted, textStyle } = useHeroReveal();
   const [activeIdx, setActiveIdx] = useState(0);
   const [dir, setDir] = useState<1 | -1>(1);
+  const [tryCompassOpen, setTryCompassOpen] = useState(false);
   const total = PARTNER_SLIDES.length;
 
   const go = useCallback(
@@ -85,7 +87,7 @@ export default function PartnerHero() {
             {/* CTA Buttons */}
             <div className="mt-9 flex flex-col sm:flex-row items-stretch sm:items-center gap-4" style={textStyle(1500)}>
               <Link
-                href="/contact?role=insurers-brokers"
+                href="/applyPartner"
                 className="group inline-flex items-center justify-center gap-3 px-7 py-[15px] rounded-[10px] bg-black/70 text-white font-semibold text-[15px] border border-[#f97316]/70 shadow-[0_0_20px_rgba(249,115,22,0.15)] hover:border-orange-400 hover:shadow-[0_0_28px_rgba(249,115,22,0.35)] hover:bg-[#140c06] transition-all duration-200 active:scale-[0.98] backdrop-blur-xl cursor-pointer"
               >
                 <ShieldCheck className="w-[18px] h-[18px] text-orange-400" />
@@ -93,16 +95,19 @@ export default function PartnerHero() {
                 <ArrowRight className="w-[18px] h-[18px] stroke-[2.5] text-orange-400 group-hover:translate-x-1 transition-transform" />
               </Link>
 
-              <Link
-                href="/platform/compass"
+              <button
+                type="button"
+                onClick={() => setTryCompassOpen(true)}
                 className="group inline-flex items-center justify-center gap-3 px-7 py-[15px] rounded-[10px] bg-black/70 text-white font-semibold text-[15px] border border-[#f97316]/70 shadow-[0_0_20px_rgba(249,115,22,0.15)] hover:border-orange-400 hover:shadow-[0_0_28px_rgba(249,115,22,0.35)] hover:bg-[#140c06] transition-all duration-200 active:scale-[0.98] backdrop-blur-xl cursor-pointer"
               >
                 <Compass className="w-[18px] h-[18px] text-orange-400" />
                 <span>Try Compass</span>
                 <ArrowRight className="w-[18px] h-[18px] stroke-[2.5] text-orange-400 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              </button>
             </div>
           </div>
+
+          <TryCompassModal open={tryCompassOpen} onClose={() => setTryCompassOpen(false)} />
 
           {/* ── RIGHT: Path carousel (text + nav only) ── */}
           <div

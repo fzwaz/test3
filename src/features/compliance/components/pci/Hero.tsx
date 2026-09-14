@@ -49,9 +49,8 @@ export default function PciHero() {
 
             {/* Description */}
             <p className="mt-6 max-w-[560px] text-[15px] lg:text-base text-[#cfc9c2] font-normal leading-[1.65]" style={textStyle(1300)}>
-              Risknox helps you prepare for the Payment Card Industry Data Security
-              Standard — mapping your cardholder data environment, tightening payment
-              controls, organising scan evidence, and reducing audit stress.
+              Scope your cardholder data environment, tighten payment controls,
+              and streamline scan evidence for PCI DSS v4.0 readiness.
             </p>
 
             {/* CTA */}
