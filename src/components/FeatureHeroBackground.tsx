@@ -58,13 +58,13 @@ export function FeatureHeroBackground({ mounted }: { mounted: boolean }) {
               flex: `1 0 ${bar.width}%`,
               maxWidth: `${bar.width}%`,
               opacity: bar.opacity,
-              // Bright orange glow: transparent at top, intense orange in mid, fiery at bottom
+              // Bright orange glow: solid at bottom, fades to transparent at top (keeps top dark)
               background:
                 `linear-gradient(to top,
-                  rgba(255, 80, 0, 0.0) 0%,
-                  rgba(220, 70, 0, 0.9) 20%,
-                  rgba(255, 120, 0, 1.0) 45%,
-                  rgba(200, 55, 0, 0.7) 70%,
+                  rgba(200, 45, 0, 1) 0%,
+                  rgba(220, 70, 0, 1) 18%,
+                  rgba(255, 120, 0, 1) 42%,
+                  rgba(220, 75, 0, 0.85) 68%,
                   rgba(0, 0, 0, 0.0) 100%
                 )`,
               boxShadow: `0 0 18px 4px rgba(255, 90, 0, 0.25)`,

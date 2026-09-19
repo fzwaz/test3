@@ -2,7 +2,6 @@ import React from "react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import PlatformHero from "@/features/platform/components/overview/Hero";
-import Overview from "@/features/platform/components/overview/Overview";
 import Products from "@/features/platform/components/overview/Products";
 import Connects from "@/features/platform/components/overview/Connects";
 import Finder from "@/features/platform/components/overview/Finder";
@@ -21,7 +20,6 @@ export default function PlatformPage() {
 
       <main className="flex-grow relative z-10 font-sans">
         <PlatformHero />
-        <Overview />
         <Products />
         <Connects />
         <Finder />

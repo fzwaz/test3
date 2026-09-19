@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState, useRef, useLayoutEffect } from "react";
-import Link from "next/link";
-import { ArrowRight, Activity, ShieldAlert, Compass as CompassIcon, Scale, MailCheck } from "lucide-react";
+import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { LiquidMetalButton } from "@/components/ui/liquid-metal-button";
 
 interface ProductData {
   id: string;
@@ -17,7 +17,6 @@ interface ProductData {
   flow: string;
   builtFor: string;
   href: string;
-  Icon: React.ComponentType<{ className?: string }>;
 }
 
 const PRODUCTS: ProductData[] = [
@@ -32,7 +31,6 @@ const PRODUCTS: ProductData[] = [
     flow: "Monitor → Detect → Prioritise",
     builtFor: "Security & operations teams",
     href: "/platform/pulse",
-    Icon: Activity,
   },
   {
     id: "02",
@@ -45,7 +43,6 @@ const PRODUCTS: ProductData[] = [
     flow: "Assess → Quantify → Prioritise",
     builtFor: "CISOs, risk leaders & executives",
     href: "/platform/fortress",
-    Icon: ShieldAlert,
   },
   {
     id: "03",
@@ -58,7 +55,6 @@ const PRODUCTS: ProductData[] = [
     flow: "Assess → Evaluate → Underwrite",
     builtFor: "Insurers, underwriters, MGAs & brokers",
     href: "/platform/compass",
-    Icon: CompassIcon,
   },
   {
     id: "04",
@@ -71,7 +67,6 @@ const PRODUCTS: ProductData[] = [
     flow: "Discover → Assess → Govern",
     builtFor: "AI, compliance, risk & tech teams",
     href: "/platform/accord",
-    Icon: Scale,
   },
   {
     id: "05",
@@ -84,7 +79,6 @@ const PRODUCTS: ProductData[] = [
     flow: "Monitor → Identify → Enforce",
     builtFor: "Security, IT & email teams",
     href: "/platform/dmarc-monitoring",
-    Icon: MailCheck,
   },
 ];
 
@@ -97,68 +91,47 @@ const CARDS_START = SEG_HEADLINE + SEG_PANEL_IN;
 const TOTAL = CARDS_START + TRACK + SEG_OUTRO;
 
 function ProductCardBody({ product, highlighted }: { product: ProductData; highlighted: boolean }) {
+  const router = useRouter();
+  const short = product.name === "DMARC Monitoring" ? "DMARC" : product.name;
   return (
     <div
-      className={`group relative rounded-[24px] transition-all duration-500 overflow-hidden p-6 sm:p-8 ${highlighted
-        ? "bg-[#0a0a0a] shadow-[0_20px_50px_rgba(0,0,0,0.95),0_0_35px_rgba(243,103,52,0.16)] ring-1 ring-white/[0.06]"
-        : "bg-[#0a0a0a]/90 shadow-[0_12px_35px_rgba(0,0,0,0.7)] ring-1 ring-white/[0.04]"
+      className={`group relative rounded-[24px] transition-all duration-500 overflow-hidden p-6 sm:p-8 lg:p-9 ${highlighted
+        ? "bg-[#080808] shadow-[0_20px_60px_rgba(0,0,0,0.95),0_0_40px_rgba(243,103,52,0.16)] ring-1 ring-white/[0.08]"
+        : "bg-[#080808] shadow-[0_16px_45px_rgba(0,0,0,0.85)] ring-1 ring-white/[0.05]"
         }`}
     >
-      <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 sm:gap-4 items-center">
-        {/* Left: Number + Icon Badge */}
-        <div className="sm:col-span-3 flex flex-row sm:flex-col items-center sm:items-start justify-between sm:justify-center gap-4 sm:gap-6 flex-shrink-0">
-          <span className="font-mono text-3xl sm:text-4xl font-extrabold text-[#f36734] tracking-tight leading-none">
-            {product.id}
-          </span>
-          <div className="relative flex items-center justify-center">
-            <div className="w-16 h-16 rounded-full border border-[#f36734]/25 flex items-center justify-center relative bg-[#0a0800] shadow-[0_0_18px_rgba(243,103,52,0.2)]">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#f36734]/80" />
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-1 h-1 rounded-full bg-[#f36734]/80" />
-              <div className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#f36734] shadow-[0_0_6px_#f36734]" />
-              <div className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#f36734]/80" />
-              <div className="w-11 h-11 rounded-full border border-[#f36734]/50 flex items-center justify-center bg-[#0e0c00]/90 shadow-[0_0_14px_rgba(243,103,52,0.35)]">
-                <product.Icon className="w-5 h-5 text-[#f36734] drop-shadow-[0_0_8px_rgba(243,103,52,0.8)]" />
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Top eyebrow — like reference */}
+      <p className="text-center text-[11px] sm:text-xs font-semibold tracking-[0.28em] uppercase text-[#d98c5a] mb-7 sm:mb-9">
+        {product.tagline}
+      </p>
 
-        {/* Center: Tagline, Name, Description & CTA */}
-        <div className="sm:col-span-5 space-y-3.5 text-left">
-          <p className="text-[11px] font-mono font-semibold uppercase tracking-[0.18em] text-[#f36734]/90 whitespace-nowrap">
-            {product.tagline}
-          </p>
-          <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug group-hover:text-orange-100 transition-colors">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+        {/* Center: title, description & CTA */}
+        <div className="lg:col-span-7 space-y-3.5 text-left">
+          <h3 className="text-2xl sm:text-[28px] font-bold text-[#db7043] tracking-tight leading-none">
             {product.name}
           </h3>
-          <p className="text-xs sm:text-sm text-slate-300/90 leading-relaxed font-normal">
+          <p className="text-[14px] sm:text-[15px] text-[#a8adb7] leading-[1.65] max-w-[42ch]">
             {product.description}
           </p>
-          <p className="text-[11px] font-mono text-slate-500">
-            {product.flow} <span className="text-slate-700 mx-1">·</span> {product.builtFor}
+          <p className="text-[12px] font-mono text-[#6b7280] pt-1">
+            {product.flow} <span className="text-white/20 mx-1">·</span> {product.builtFor}
           </p>
-          <div className="pt-1.5">
-            <Link
-              href={product.href}
-              onClick={(e) => e.stopPropagation()}
-              className="group/btn relative inline-flex items-center justify-center px-4 py-2 bg-[#f36734] text-[#080808] rounded-[12px] sm:rounded-[14px] font-semibold text-xs sm:text-[13px] overflow-hidden shadow-[0_0_16px_rgba(243,103,52,0.3)] hover:shadow-[0_0_24px_rgba(243,103,52,0.5)] active:scale-[0.98] transition-all cursor-pointer"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 ease-in-out" />
-              <span className="relative z-10 font-bold">Explore {product.name === "DMARC Monitoring" ? "DMARC" : product.name}</span>
-              <ArrowRight className="relative z-10 ml-1.5 w-3.5 h-3.5 text-[#080808] group-hover/btn:translate-x-1 transition-transform" />
-            </Link>
+          <div className="pt-4">
+            <LiquidMetalButton label={`Explore ${short}`} onClick={() => router.push(product.href)} />
           </div>
         </div>
 
         {/* Right: What it does */}
-        <div className="sm:col-span-4">
-          <p className="text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">
+        <div className="lg:col-span-5 lg:pl-8 relative">
+          <div className="hidden lg:block absolute left-0 top-0 bottom-0 w-px bg-[#db7043]/30 -ml-4" aria-hidden />
+          <p className="text-[11px] font-semibold tracking-[0.22em] uppercase text-[#6b7280] mb-4">
             What it does
           </p>
-          <ul className="space-y-2">
+          <ul className="space-y-3">
             {product.does.map((d) => (
-              <li key={d} className="flex items-start gap-2 text-xs sm:text-[13px] text-slate-300">
-                <span className="mt-[5px] w-1.5 h-1.5 rounded-full bg-[#f36734] shrink-0 shadow-[0_0_6px_rgba(243,103,52,0.8)]" />
+              <li key={d} className="flex items-start gap-3 text-[14px] text-[#d1d5db] leading-snug">
+                <span className="mt-[7px] w-2 h-2 rounded-full bg-[#e8a07a] shrink-0 shadow-[0_0_10px_rgba(232,160,122,0.9)]" />
                 {d}
               </li>
             ))}

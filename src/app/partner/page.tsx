@@ -3,8 +3,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import PartnerHero from "@/features/partner/components/Hero";
 import TrustStrip from "@/components/trust-strip";
-import InsurersSection from "@/features/partner/components/InsurersSection";
-import EvaluationSection from "@/features/partner/components/EvaluationSection";
+import PartnerStack from "@/features/partner/components/PartnerStack";
 import RiskNumberCTASection from "@/components/risk-number-cta-section";
 
 export const metadata = {
@@ -18,11 +17,10 @@ export default function PartnerPage() {
     <div className="min-h-screen flex flex-col bg-[#000000] text-slate-100 selection:bg-orange-500/30 selection:text-orange-200 relative overflow-x-clip">
       <Header currentPath="/partner" />
 
-      <main className="flex-grow relative z-10 font-sans space-y-12 sm:space-y-16 pb-20">
+      <main className="flex-grow relative z-10 font-sans pb-20">
         <PartnerHero />
         <TrustStrip />
-        <InsurersSection />
-        <EvaluationSection />
+        <PartnerStack />
         <RiskNumberCTASection />
       </main>
 
