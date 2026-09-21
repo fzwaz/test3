@@ -69,7 +69,7 @@ function extendMaterial(BaseMaterial: any, cfg: any) {
 
 const CanvasWrapper = ({ children }: { children: React.ReactNode }) => (
   <Canvas
-    dpr={[1, 2]}
+    dpr={[1, 1.5]}
     frameloop="always"
     className="beams-container"
     onCreated={({ gl }) => {

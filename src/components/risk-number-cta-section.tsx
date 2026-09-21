@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, TrendingUp, IndianRupee, ShieldAlert } from "lucide-react";
@@ -77,7 +77,7 @@ export default function BusinessSection() {
             {/* CTA Button */}
             <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
               <Link
-                href="#book-call"
+                href="/contact"
                 className="group relative inline-flex items-center justify-center w-full sm:w-auto min-h-[52px] px-8 py-3.5 bg-[#FF6B35] text-white rounded-[16px] font-semibold text-[16px] overflow-hidden shadow-[0_0_20px_rgba(255,107,53,0.3)] active:scale-[0.98] transition-all"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>

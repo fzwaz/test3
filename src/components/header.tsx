@@ -855,10 +855,10 @@ export default function Header({ currentPath }: HeaderProps) {
           <Link
             href="/solution"
             onClick={closeAll}
-            className={`block px-3.5 py-2 rounded-lg text-sm transition-colors ${
+            className={`flex items-center min-h-[44px] px-3.5 py-2.5 rounded-xl text-sm transition-all active:scale-[0.99] ${
               pathname.startsWith("/solution")
                 ? "text-orange-400 font-semibold bg-orange-500/10"
-                : "text-slate-300 hover:text-white hover:bg-white/[0.08]"
+                : "text-slate-300 hover:text-white hover:bg-white/[0.06]"
             }`}
           >
             Solutions
@@ -866,10 +866,10 @@ export default function Header({ currentPath }: HeaderProps) {
           <Link
             href="/risk-bite"
             onClick={closeAll}
-            className={`block px-3.5 py-2 rounded-lg text-sm transition-colors ${
+            className={`flex items-center min-h-[44px] px-3.5 py-2.5 rounded-xl text-sm transition-all active:scale-[0.99] ${
               pathname.startsWith("/risk-bite")
                 ? "text-orange-400 font-semibold bg-orange-500/10"
-                : "text-slate-300 hover:text-white hover:bg-white/[0.08]"
+                : "text-slate-300 hover:text-white hover:bg-white/[0.06]"
             }`}
           >
             RiskBite
@@ -877,10 +877,10 @@ export default function Header({ currentPath }: HeaderProps) {
           <Link
             href="/partner"
             onClick={closeAll}
-            className={`block px-3.5 py-2 rounded-lg text-sm transition-colors ${
+            className={`flex items-center min-h-[44px] px-3.5 py-2.5 rounded-xl text-sm transition-all active:scale-[0.99] ${
               pathname.startsWith("/partner")
                 ? "text-orange-400 font-semibold bg-orange-500/10"
-                : "text-slate-300 hover:text-white hover:bg-white/[0.08]"
+                : "text-slate-300 hover:text-white hover:bg-white/[0.06]"
             }`}
           >
             Partners
@@ -888,10 +888,10 @@ export default function Header({ currentPath }: HeaderProps) {
           <Link
             href="/resources"
             onClick={closeAll}
-            className={`block px-3.5 py-2 rounded-lg text-sm transition-colors ${
+            className={`flex items-center min-h-[44px] px-3.5 py-2.5 rounded-xl text-sm transition-all active:scale-[0.99] ${
               pathname.startsWith("/resource")
                 ? "text-orange-400 font-semibold bg-orange-500/10"
-                : "text-slate-300 hover:text-white hover:bg-white/[0.08]"
+                : "text-slate-300 hover:text-white hover:bg-white/[0.06]"
             }`}
           >
             Resources
@@ -899,24 +899,28 @@ export default function Header({ currentPath }: HeaderProps) {
           <Link
             href="/why-risknox"
             onClick={closeAll}
-            className={`block px-3.5 py-2 rounded-lg text-sm transition-colors ${
+            className={`flex items-center min-h-[44px] px-3.5 py-2.5 rounded-xl text-sm transition-all active:scale-[0.99] ${
               pathname.startsWith("/why")
                 ? "text-orange-400 font-semibold bg-orange-500/10"
-                : "text-slate-300 hover:text-white hover:bg-white/[0.08]"
+                : "text-slate-300 hover:text-white hover:bg-white/[0.06]"
             }`}
           >
             Why Risknox
           </Link>
-          <span className="block px-3.5 py-2 text-sm text-orange-400/90 select-none">
+          <Link
+            href="/contact"
+            onClick={closeAll}
+            className="flex items-center min-h-[44px] px-3.5 py-2.5 text-sm text-orange-400/90 hover:text-orange-300 active:scale-[0.99] transition-all font-medium"
+          >
             Under attack?
-          </span>
+          </Link>
 
           {/* Mobile Bottom Action CTAs */}
-          <div className="pt-3 border-t border-white/[0.1] space-y-2">
+          <div className="pt-3 border-t border-white/[0.1] space-y-2.5">
             <Link
               href="/grc-builder"
               onClick={closeAll}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-semibold text-sm shadow-[0_0_20px_rgba(249,115,22,0.4)]"
+              className="w-full flex items-center justify-center gap-2 min-h-[48px] py-3 rounded-xl bg-orange-500 hover:bg-orange-600 active:scale-[0.98] text-white font-semibold text-sm shadow-[0_0_20px_rgba(249,115,22,0.4)] transition-all"
             >
               <SlidersHorizontal className="w-4 h-4" />
               <span>Build Your GRC Program</span>
@@ -924,7 +928,7 @@ export default function Header({ currentPath }: HeaderProps) {
             <Link
               href="/contact"
               onClick={closeAll}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.15] text-white font-semibold text-sm"
+              className="w-full flex items-center justify-center gap-2 min-h-[48px] py-3 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] active:scale-[0.98] border border-white/[0.15] text-white font-semibold text-sm transition-all"
             >
               <span>Book a Demo</span>
               <ArrowRight className="w-4 h-4 text-orange-400" />

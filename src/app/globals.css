@@ -126,6 +126,32 @@ body {
   overflow-x: clip;
 }
 
+/* Prevent iOS Safari 100% zoom-on-focus by enforcing min 16px on mobile inputs */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Touch active micro-animations */
+@media (hover: none) and (pointer: coarse) {
+  .touch-press {
+    transition: transform 0.12s ease;
+  }
+  .touch-press:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Native horizontal scroll snap utility */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
 }

@@ -69,29 +69,35 @@ export default function Home() {
       {/* Fixed navbar — rendered outside flex flow */}
       <Header currentPath="/" />
 
-      <div className="relative min-h-screen flex flex-col bg-black overflow-hidden" style={{ contain: "layout style" }}>
+      <div className="relative min-h-[86vh] md:min-h-screen flex flex-col bg-black overflow-hidden" style={{ contain: "layout style" }}>
         {/* Animated orange bar background */}
         <FeatureHeroBackground mounted={mounted} />
         {/* Centered hero content — fills remaining viewport height, padded for fixed navbar */}
-        <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 pt-28 pb-12 max-w-6xl mx-auto -translate-y-8">
-          <h1 className="text-5xl sm:text-6xl xl:text-7xl font-black leading-[0.92] tracking-[-0.055em] select-none">
-            <span className="block overflow-hidden pb-3 -mb-1">
+        <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-24 sm:pt-28 pb-8 md:pb-12 max-w-6xl mx-auto md:-translate-y-8">
+          {/* Subtle mobile brand badge */}
+          <div className="md:hidden inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/25 mb-4" style={textStyle(750)}>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#f95700] shadow-[0_0_6px_#f95700]" />
+            <span className="text-[11px] font-mono font-bold tracking-[0.18em] text-[#ff7d1c] uppercase">RISKNOX</span>
+          </div>
+
+          <h1 className="text-[2.65rem] sm:text-6xl xl:text-7xl font-black leading-[1.05] sm:leading-[0.92] tracking-[-0.04em] sm:tracking-[-0.055em] select-none">
+            <span className="block overflow-hidden pb-1 sm:pb-3 -mb-1">
               <span className="block text-white" style={textStyle(900)}>Know your cyber risk.</span>
             </span>
-            <span className="block overflow-hidden mt-2 pb-3 -mb-1">
+            <span className="block overflow-hidden mt-1 sm:mt-2 pb-2 sm:pb-3 -mb-1">
               <span className="block text-[#f95700]" style={textStyle(1050)}>In dollars, not just scores.</span>
             </span>
           </h1>
 
-          <p className="mt-6 max-w-[880px] text-lg md:text-xl text-slate-300 font-normal leading-relaxed" style={textStyle(1300)}>
+          <p className="mt-4 sm:mt-6 max-w-lg md:max-w-[880px] text-sm sm:text-lg md:text-xl text-slate-300 font-normal leading-relaxed" style={textStyle(1300)}>
             Risknox turns your security posture into a quantified financial number, maps your compliance obligations, and connects the result directly to the right insurance coverage — AI-driven, in one platform.
           </p>
 
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4" style={textStyle(1550)}>
+          <div className="mt-7 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto" style={textStyle(1550)}>
             <button
               type="button"
               onClick={() => setActiveModal("demo")}
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#f95700] hover:bg-[#ff6a20] text-white font-semibold text-base shadow-[0_0_30px_rgba(249,87,0,0.5)] hover:shadow-[0_0_40px_rgba(249,87,0,0.7)] transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] px-7 py-3.5 rounded-full bg-[#f95700] hover:bg-[#ff6a20] text-white font-semibold text-base shadow-[0_0_30px_rgba(249,87,0,0.5)] hover:shadow-[0_0_40px_rgba(249,87,0,0.7)] transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
             >
               <span>Book A Demo</span>
               <ArrowRight className="w-4 h-4" />
@@ -100,7 +106,7 @@ export default function Home() {
             <button
               type="button"
               onClick={() => setActiveModal("posture")}
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-black text-white border border-[#f95700]/80 hover:border-[#f95700] font-semibold text-base shadow-[0_0_0_1px_rgba(249,87,0,0.3)] hover:shadow-[0_0_20px_rgba(249,87,0,0.25)] transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] px-7 py-3.5 rounded-full bg-black text-white border border-[#f95700]/80 hover:border-[#f95700] font-semibold text-base shadow-[0_0_0_1px_rgba(249,87,0,0.3)] hover:shadow-[0_0_20px_rgba(249,87,0,0.25)] transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
             >
               <span>Find your risk posture</span>
               <ArrowRight className="w-4 h-4 text-orange-400" />

@@ -375,7 +375,7 @@ export default function FaqSection({ defaultCategory }: { defaultCategory?: stri
   const [selectedCategory, setSelectedCategory] = useState(initial);
 
   return (
-    <section className="relative overflow-hidden bg-black border-t border-white/[0.06] px-4 py-20 md:py-28 text-white">
+    <section className="relative overflow-hidden bg-black border-t border-white/[0.06] px-4 py-14 sm:py-20 md:py-28 text-white">
       <Reveal>
         <FAQHeader title="Frequently Asked Questions" subtitle="Let's answer some questions" />
       </Reveal>

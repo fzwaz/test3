@@ -636,33 +636,90 @@ export default function PipelineSection() {
         </div>
       </div>
 
-      {/* ══════════ MOBILE / TABLET FALLBACK (no pin) ══════════ */}
-      <div className="lg:hidden max-w-7xl mx-auto px-4 sm:px-6 space-y-10">
-        <div ref={mobileHeadlineRef} className="text-center space-y-5 will-change-transform">
+      {/* ══════════ MOBILE / TABLET HORIZONTAL SNAP CAROUSEL ══════════ */}
+      <div className="lg:hidden max-w-7xl mx-auto px-4 sm:px-6 space-y-7">
+        <div ref={mobileHeadlineRef} className="text-center space-y-4 will-change-transform">
           <div className="w-10 h-1 bg-[#f36734] rounded-full shadow-[0_0_12px_rgba(243,103,52,0.8)] mx-auto" />
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white leading-[1.08]">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white leading-[1.1]">
             From Raw Data to <span className="text-[#f36734]">Risk Intelligence</span>
           </h2>
-          <p className="text-sm sm:text-base text-slate-400 font-normal leading-relaxed max-w-md mx-auto">
-            Risknox unifies telemetry, context, and analytics to deliver measurable cyber risk outcomes across your organization.
+          <p className="text-xs sm:text-sm text-slate-400 font-normal leading-relaxed max-w-md mx-auto">
+            Risknox unifies telemetry, context, and analytics to deliver measurable cyber risk outcomes.
           </p>
+
+          {/* Step Selector Pills on Mobile */}
+          <div className="flex items-center justify-center gap-1.5 pt-2 overflow-x-auto scrollbar-none">
+            {pipelineSteps.map((step, idx) => {
+              const isSelected = (activeStep || "01") === step.id;
+              return (
+                <button
+                  key={step.id}
+                  type="button"
+                  onClick={() => {
+                    setActiveStep(step.id);
+                    const el = mobileCardRefs.current[idx];
+                    if (el) {
+                      el.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+                    }
+                  }}
+                  className={`px-3 py-1.5 rounded-full text-xs font-mono font-medium transition-all active:scale-95 ${
+                    isSelected
+                      ? "bg-[#f36734] text-white font-bold shadow-[0_0_12px_rgba(243,103,52,0.6)]"
+                      : "bg-white/[0.05] text-slate-400 border border-white/[0.08]"
+                  }`}
+                >
+                  {step.id} {step.stageName}
+                </button>
+              );
+            })}
+          </div>
         </div>
-        <div className="space-y-8">
-          {pipelineSteps.map((step) => {
+
+        {/* Horizontal Snap Scroll Track */}
+        <div
+          className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 px-1 scrollbar-none touch-pan-x"
+          onScroll={(e) => {
+            const container = e.currentTarget;
+            const scrollPos = container.scrollLeft;
+            const cardWidth = container.offsetWidth * 0.85;
+            const newIdx = Math.min(
+              pipelineSteps.length - 1,
+              Math.max(0, Math.round(scrollPos / (cardWidth + 16)))
+            );
+            if (pipelineSteps[newIdx] && pipelineSteps[newIdx].id !== activeStep) {
+              setActiveStep(pipelineSteps[newIdx].id);
+            }
+          }}
+        >
+          {pipelineSteps.map((step, idx) => {
             const isHighlighted = (hoveredStep || activeStep) === step.id;
             return (
               <div
                 key={step.id}
                 ref={(el) => {
-                  const idx = pipelineSteps.findIndex((s) => s.id === step.id);
                   mobileCardRefs.current[idx] = el;
                 }}
-                className="will-change-transform"
+                className="w-[86vw] max-w-[440px] shrink-0 snap-center will-change-transform"
                 onMouseEnter={() => setHoveredStep(step.id)}
                 onMouseLeave={() => setHoveredStep(null)}
               >
                 <StepCardBody step={step} highlighted={isHighlighted} />
               </div>
+            );
+          })}
+        </div>
+
+        {/* Active Dots Indicator */}
+        <div className="flex items-center justify-center gap-2 pt-1">
+          {pipelineSteps.map((step) => {
+            const isCurr = (activeStep || "01") === step.id;
+            return (
+              <span
+                key={step.id}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  isCurr ? "w-6 bg-[#f36734] shadow-[0_0_8px_#f36734]" : "w-1.5 bg-white/20"
+                }`}
+              />
             );
           })}
         </div>

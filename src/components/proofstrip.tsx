@@ -16,7 +16,7 @@ export default function ProofStrip() {
   }, []);
 
   return (
-    <section className="relative w-full px-4 sm:px-6 lg:px-8 pt-10 md:pt-12 pb-16 md:pb-20 bg-black overflow-x-clip">
+    <section className="relative w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 md:pt-12 pb-12 md:pb-20 bg-black overflow-x-clip">
       {/* — Beam continuation from hero — */}
       <div className="absolute inset-x-0 top-0 h-[88px] flex pointer-events-none" aria-hidden>
         {beamExtension.map((bar, i) => (

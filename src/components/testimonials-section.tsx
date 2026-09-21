@@ -143,18 +143,9 @@ export default function TestimonialsSection() {
         }
       `}</style>
 
-      <div
-        style={{
-          maxWidth: "1320px",
-          margin: "0 auto",
-          padding: "0 40px",
-          width: "100%",
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
+      <div className="max-w-[1320px] mx-auto px-4 sm:px-8 lg:px-10 w-full relative z-10">
         {/* -- Header Section -- */}
-        <div style={{ marginBottom: "44px" }}>
+        <div style={{ marginBottom: "36px" }}>
           {/* Badge */}
           <div style={{ marginBottom: "16px" }}>
             <span
@@ -193,13 +184,13 @@ export default function TestimonialsSection() {
               display: "flex",
               alignItems: "flex-end",
               justifyContent: "space-between",
-              gap: "24px",
+              gap: "20px",
               flexWrap: "wrap",
             }}
           >
             <h2
               style={{
-                fontSize: "clamp(28px, 4vw, 46px)",
+                fontSize: "clamp(24px, 4vw, 44px)",
                 fontWeight: 700,
                 lineHeight: 1.15,
                 letterSpacing: "-0.02em",
@@ -285,12 +276,13 @@ export default function TestimonialsSection() {
       <div style={{ position: "relative", width: "100%", overflow: "hidden" }}>
         {/* Left Fade Effect */}
         <div
+          className="hidden sm:block"
           style={{
             position: "absolute",
             top: 0,
             left: 0,
             bottom: 0,
-            width: "140px",
+            width: "120px",
             background: "linear-gradient(to right, #000000 25%, transparent 100%)",
             zIndex: 10,
             pointerEvents: "none",
@@ -299,12 +291,13 @@ export default function TestimonialsSection() {
 
         {/* Right Fade Effect */}
         <div
+          className="hidden sm:block"
           style={{
             position: "absolute",
             top: 0,
             right: 0,
             bottom: 0,
-            width: "140px",
+            width: "120px",
             background: "linear-gradient(to left, #000000 25%, transparent 100%)",
             zIndex: 10,
             pointerEvents: "none",
@@ -325,11 +318,11 @@ export default function TestimonialsSection() {
           onTouchMove={handleTouchMove}
           style={{
             display: "flex",
-            gap: "24px",
+            gap: "18px",
             overflowX: "scroll",
             scrollBehavior: isDragging ? "auto" : "smooth",
             cursor: isDragging ? "grabbing" : "grab",
-            padding: "16px 60px 24px",
+            padding: "16px 20px 24px",
             scrollbarWidth: "none",
             msOverflowStyle: "none",
             userSelect: "none",
@@ -339,19 +332,7 @@ export default function TestimonialsSection() {
           {displayTestimonials.map((item, idx) => (
             <div
               key={`${item.id}-${idx}`}
-              className="testimonial-card"
-              style={{
-                minWidth: "380px",
-                maxWidth: "380px",
-                borderRadius: "20px",
-                background: "#000000",
-                padding: "32px 28px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                minHeight: "310px",
-                flexShrink: 0,
-              }}
+              className="testimonial-card w-[84vw] max-w-[380px] min-w-[280px] sm:min-w-[380px] p-6 sm:p-8 rounded-[20px] bg-black flex flex-col justify-between min-h-[290px] sm:min-h-[310px] shrink-0"
             >
               {/* Top Row: Stars + Quote Icon */}
               <div>
